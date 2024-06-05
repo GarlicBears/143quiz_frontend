@@ -16,10 +16,10 @@ const LandingPage = () => {
     test();
   }, []);
   return (
-    <>
-      <h1>Landing Page</h1>
-      <h2>{msg}</h2>
-    </>
+      <>
+        <h1>Landing Page</h1>
+        <h2>{msg}</h2>
+      </>
   );
 };
 export default LandingPage;
