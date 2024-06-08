@@ -1,14 +1,21 @@
 import React from 'react';
 import { Flex } from '@chakra-ui/react';
-import CustomButton from '../Components/Common/Button';
+import CustomButton from '../Components/Common/CustomButton';
+import ModalButton from '../Components/Common/ModalButton';
 
 const LandingPage = () => {
   return (
     <>
-      <h1>자신있는 주제를 고르세요</h1>
-      <h2>143개의 하트를 모으면 뱃지를 받을 수 있어요!</h2>
-      <Flex justifyContent="center" alignItems="center">
-        <CustomButton text="게임 시작" />
+      <Flex justifyContent="center" alignItems="center" flexDirection="column">
+        <CustomButton text="게임 시작" variant="solid" />
+        <ModalButton
+          type="default"
+          buttonText="Modal button"
+          variant="outline"
+          img="https://via.placeholder.com/150"
+          imgAlt="placeholder"
+          contentText="모달 내용"
+        />
       </Flex>
     </>
   );
