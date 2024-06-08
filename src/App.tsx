@@ -1,21 +1,17 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LandingPage from './Pages/LandingPage';
-import Layout from './Components/Common/Layout';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainPage from './Pages/MainPage';
+import LandingPage from './Pages/LandingPage';
+import React from 'react';
 
-function App() {
+const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LandingPage />}>
-          {/*<Route path="main" element={<MainPage />} />*/}
-          {/*<Route path="main" element={<MainPage />} />*/}
-          {/*<Route index element={<LandingPage />} />*/}
-        </Route>
+        <Route path="/landing" element={<LandingPage />} />
+        <Route path="/main" element={<MainPage />} />
       </Routes>
     </Router>
   );
-}
+};
 
 export default App;

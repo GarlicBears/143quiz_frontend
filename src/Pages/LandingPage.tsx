@@ -1,9 +1,8 @@
 import React from 'react';
 import { Box, SimpleGrid, Text } from '@chakra-ui/react';
 
-import axios from 'axios';
 const LandingPage = () => {
-    return (
+  return (
     <Box border="1px solid red" bg="blue.50" minH="100vh" py={10} px={5}>
       <SimpleGrid columns={3}>
         <Box bg="blue.400" p={-4} borderRadius="md" w="50px" h="50px">
@@ -33,9 +32,7 @@ const LandingPage = () => {
           w="50px"
           h="50px"
         >
-          <Text fontSize="3xl" color="white" textAlign="center">
-            3
-          </Text>
+          <Text fontSize="3xl" color="white" textAlign="center"></Text>
         </Box>
       </SimpleGrid>
       {/*--------------------143--------------------------*/}
