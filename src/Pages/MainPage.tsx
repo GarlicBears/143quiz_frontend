@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Text, Flex, SimpleGrid, Image } from '@chakra-ui/react';
-
+//메인페이지:게임명, 게임설명, '게임 시작버튼으로 주제선택 이동 - 화면정의서와 기능정의서 'GB_GAME_001' 이 여기에 해당함.
 const MainPage: React.FC = () => {
   return (
     <Box border="1px solid red" bg="blue.50" minH="100vh" py={10} px={5}>
