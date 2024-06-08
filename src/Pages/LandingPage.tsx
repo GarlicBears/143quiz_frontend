@@ -1,25 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
+import { Flex } from '@chakra-ui/react';
+import CustomButton from '../Components/Common/Button';
 
 const LandingPage = () => {
-  const [msg, setMsg] = useState('' as string);
-  const test = async () => {
-    try {
-      const response = await axios.get('http://localhost:8080/api/hello');
-      console.log(response.data);
-      setMsg(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  useEffect(() => {
-    test();
-  }, []);
   return (
-      <>
-        <h1>Landing Page</h1>
-        <h2>{msg}</h2>
-      </>
+    <>
+      <h1>자신있는 주제를 고르세요</h1>
+      <h2>143개의 하트를 모으면 뱃지를 받을 수 있어요!</h2>
+      <Flex justifyContent="center" alignItems="center">
+        <CustomButton text="게임 시작" />
+      </Flex>
+    </>
   );
 };
 export default LandingPage;
