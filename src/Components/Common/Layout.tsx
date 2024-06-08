@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, ButtonGroup, Container, Flex } from '@chakra-ui/react';
+import { Box, Button, Container, Flex } from '@chakra-ui/react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 const Layout: React.FC = () => {
@@ -14,7 +14,7 @@ const Layout: React.FC = () => {
         as="header"
         width="100%"
         bg="var(--primary-color)"
-        color="var(--text-color)"
+        color="var(--text-color-white)"
         justifyContent="center"
         alignItems="center"
         position="sticky"
@@ -30,7 +30,7 @@ const Layout: React.FC = () => {
           <Button
             width="120px"
             bg="transparent"
-            color="var(--text--color)"
+            color="var(--text-color-white)"
             _hover={{ bg: 'transparent' }}
             onClick={handleBackClick}
           >
@@ -64,7 +64,7 @@ const Layout: React.FC = () => {
         width="100%"
         height="50px"
         textAlign="center"
-        bg="var(--background-color)"
+        bg="var(--bg-color-gray)"
         mt={4}
         position="fixed"
         bottom="50px"
@@ -76,8 +76,8 @@ const Layout: React.FC = () => {
         width="100%"
         height="50px"
         padding="4"
-        bg="var(--secondary-color)"
-        color="white"
+        bg="var(--bg-color)"
+        color="var(--text-color)"
         textAlign="center"
         position="fixed"
         bottom="0"
