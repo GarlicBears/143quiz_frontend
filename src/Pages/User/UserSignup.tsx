@@ -36,7 +36,7 @@ function UserSignup() {
   const [nickNameAvailable, setNickNameAvailable] = useState(false);
 
   const [gender, setGender] = useState('');
-  const [location, setLocation] = useState();
+  const [location, setLocation] = useState('');
   const [birthYear, setBirthYear] = useState('');
   // 이메일 비밀번호, 비번확인, 별명, 별명확인, 성별, 거주지, 출생연도 (1940-2022)
 
@@ -211,14 +211,16 @@ function UserSignup() {
                   ))}
                 </Select>
               </FormControl>
-              {/* 회원가입하기 버튼*/}
-              <Button isDisabled={!submitAvailable} onClick={handleSubmit}>
+            </CardBody>
+            <UserAgreement />
+            <CardFooter>
+              <Button
+                w="100%"
+                isDisabled={!submitAvailable}
+                onClick={handleSubmit}
+              >
                 가입하기
               </Button>
-            </CardBody>
-            {/*회원 이용약관 */}
-            <CardFooter>
-              <UserAgreement />
             </CardFooter>
           </Card>
         </Box>

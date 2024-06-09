@@ -8,8 +8,10 @@ const Layout: React.FC = () => {
   const handleBackClick = () => {
     navigate(-1); // 뒤로 이동
   };
+
   return (
-    <Box>
+    <Box minHeight="100vh" display="flex" flexDirection="column">
+      {/* Header */}
       <Flex
         as="header"
         width="100%"
@@ -19,6 +21,8 @@ const Layout: React.FC = () => {
         alignItems="center"
         position="sticky"
         top="0"
+        zIndex="1000"
+        boxShadow="md"
       >
         <Flex
           width={{ base: '100%', md: '720px' }}
@@ -31,7 +35,7 @@ const Layout: React.FC = () => {
             width="120px"
             bg="transparent"
             color="var(--text-color-white)"
-            _hover={{ bg: 'transparent' }}
+            _hover={{ bg: 'transparent', textDecoration: 'underline' }}
             onClick={handleBackClick}
           >
             <i className="fa-solid fa-arrow-left fa-xl"></i>
@@ -50,27 +54,38 @@ const Layout: React.FC = () => {
           </Flex>
         </Flex>
       </Flex>
+
+      {/* Main Content */}
       <Container
+        flex="1"
         maxW="container.md"
         mt={4}
-        width={{ base: '80%', md: '720px' }}
-        height={{ base: 'calc(100vh - 150px)', md: 'calc(100vh - 250px)' }}
+        width={{ base: '100%', md: '720px' }}
         bg="var(--background-color)"
-        overflow="scroll"
+        overflowY="auto"
+        paddingBottom="200px"
       >
         <Outlet />
       </Container>
+
+      {/* Add Section */}
       <Box
         width="100%"
         height="50px"
         textAlign="center"
         bg="var(--bg-color-gray)"
-        mt={4}
         position="fixed"
         bottom="50px"
+        zIndex="1000"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        boxShadow="md"
       >
         Add
       </Box>
+
+      {/* Footer */}
       <Box
         as="footer"
         width="100%"
@@ -81,6 +96,11 @@ const Layout: React.FC = () => {
         textAlign="center"
         position="fixed"
         bottom="0"
+        zIndex="1000"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        boxShadow="md"
       >
         &copy; 2024 Garlic Bears
       </Box>

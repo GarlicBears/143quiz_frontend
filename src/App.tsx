@@ -1,19 +1,24 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import MainPage from './Pages/MainPage';
-import LandingPage from './Pages/LandingPage';
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import LandingPage from './Pages/LandingPage';
+import Layout from './Components/Common/Layout';
 import UserSignup from './Pages/User/UserSignup';
+import MainPage from './Pages/MainPage';
+import UserLogin from './Pages/User/UserLogin';
 
-const App = () => {
+function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/landing" element={<LandingPage />} />
-        <Route path="/main" element={<MainPage />} />
-        <Route path="/signup" element={<UserSignup />} />
+        <Route path="landing" index element={<LandingPage />} />
+        <Route path="/" element={<Layout />}>
+          <Route path="/main" element={<MainPage />} />
+          <Route path="/signup" element={<UserSignup />} />
+          <Route path="/login" element={<UserLogin />} />
+        </Route>
       </Routes>
     </Router>
   );
-};
+}
 
 export default App;
