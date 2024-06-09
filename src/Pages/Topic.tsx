@@ -3,6 +3,7 @@ import { Flex, Grid, VStack, Box, Image, Text } from '@chakra-ui/react';
 import badgeImg96 from '../Asset/images/badge96.png';
 import CustomButton from '../Components/Common/CustomButton';
 import TopicCard from '../Components/Common/TopicCard';
+import topicList from '../Asset/topicList';
 
 const Topic = () => {
   return (
@@ -46,7 +47,7 @@ const Topic = () => {
               color="white"
               fontWeight="bold"
             >
-              Its Box!
+              모은 뱃지
             </Box>
           ))}
         </Flex>
@@ -57,8 +58,8 @@ const Topic = () => {
         gap={4}
         width={{ base: '100%', md: '720px' }}
       >
-        {[...Array(8)].map((_, index) => (
-          <TopicCard key={index} />
+        {topicList.map((topic, index) => (
+          <TopicCard key={index} name={topic.name} imgSrc={topic.imgSrc} />
         ))}
       </Grid>
 
