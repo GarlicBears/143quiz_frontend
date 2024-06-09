@@ -72,6 +72,7 @@ function UserLogin() {
           </CardBody>
           <CardFooter>
             <Button w="100%">로그인하기</Button>
+            {/* Click the button to go to the topic selection screen :'로그인 버튼' 하면 주제 선택 화면으로 이동 */}
           </CardFooter>
         </Card>
       </Box>
