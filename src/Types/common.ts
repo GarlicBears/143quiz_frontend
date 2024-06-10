@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 // Components/Common/CustomButton.tsx
 interface CustomButtonProps {
@@ -10,6 +10,7 @@ interface CustomButtonProps {
   onClick?: () => void;
   colorScheme?: string;
   soundSrc?: string;
+  isDisabled?: boolean;
 }
 
 // Components/Common/ModalButton.tsx
@@ -34,4 +35,10 @@ interface ModalProps {
   size?: string;
 }
 
-export type { CustomButtonProps, ModalButtonProps, ModalProps };
+// Components/Game/Chance.tsx
+interface ChanceProps {
+  chance: number;
+  setChance: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export type { CustomButtonProps, ModalButtonProps, ModalProps, ChanceProps };
