@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
 import { Box, Flex, Container, Text, Button } from '@chakra-ui/react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Modal from '../Common/Modal';
 
 const Layout: React.FC = () => {
-  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleBackClick = () => {
-    navigate(-1); // 뒤로 이동
-  };
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -20,7 +15,7 @@ const Layout: React.FC = () => {
   };
 
   // TODO : 해당 게임의 topic명 넣기
-  const topic = '과일';
+  const topic = '동물';
 
   return (
     <Box
