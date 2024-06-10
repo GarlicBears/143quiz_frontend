@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import CustomButton from './CustomButton';
-import { Button, Flex } from '@chakra-ui/react';
+import { Button, Flex, Text } from '@chakra-ui/react';
 import Modal from './Modal';
 import { ModalButtonProps } from '../../Types/common';
 
@@ -34,18 +34,7 @@ const ModalButton: React.FC<ModalButtonProps> = ({
         closeOnOverlayClick
         isCentered
         size="md"
-        footer={
-          modalType === 'confirm' ? (
-            <>
-              <Button variant="ghost" onClick={closeModal}>
-                취소
-              </Button>
-              <Button colorScheme="blue" onClick={closeModal} ml={3}>
-                확인
-              </Button>
-            </>
-          ) : undefined
-        }
+        type={modalType}
       >
         <Flex
           height="100%"
@@ -54,7 +43,7 @@ const ModalButton: React.FC<ModalButtonProps> = ({
           flexDirection="column"
         >
           {img && <img src={img} alt={imgAlt} />}
-          {contentText && <p>{contentText}</p>}
+          {contentText && <Text>{contentText}</Text>}
         </Flex>
       </Modal>
     </>

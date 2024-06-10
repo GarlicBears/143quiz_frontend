@@ -4,10 +4,12 @@ import { ReactNode } from 'react';
 interface CustomButtonProps {
   variant?: string;
   text?: string;
+  baseWidth?: number;
   width?: number;
   height?: number;
   onClick?: () => void;
   colorScheme?: string;
+  soundSrc?: string;
 }
 
 // Components/Common/ModalButton.tsx

@@ -4,8 +4,10 @@ import badgeImg96 from '../Asset/images/badge96.png';
 import CustomButton from '../Components/Common/CustomButton';
 import TopicCard from '../Components/Common/TopicCard';
 import topicList from '../Asset/topicList';
+import { useNavigate } from 'react-router-dom';
 
 const Topic = () => {
+  const navigate = useNavigate();
   return (
     <VStack spacing={6} align="center" width="100%">
       <Flex justifyContent="center" width="100%" bg="gray.200" p={4}>
@@ -63,7 +65,13 @@ const Topic = () => {
         ))}
       </Grid>
 
-      <Box position="fixed" bottom="100px" width="100%" textAlign="center">
+      <Box
+        position="fixed"
+        bottom="100px"
+        width="100%"
+        textAlign="center"
+        onClick={() => navigate('/game')}
+      >
         <CustomButton />
       </Box>
     </VStack>
