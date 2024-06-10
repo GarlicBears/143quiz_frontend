@@ -23,11 +23,16 @@ const Layout: React.FC = () => {
   const topic = '과일';
 
   return (
-    <Box minHeight="100vh" display="flex" flexDirection="column">
+    <Box
+      minHeight="100vh"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+    >
       {/* Header */}
       <Flex
         as="header"
-        width="100%"
+        width={{ base: '100%', md: '720px' }}
         height="50px"
         bg="var(--bg-color)"
         color="var(--text-color)"
