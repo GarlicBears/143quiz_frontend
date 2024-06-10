@@ -4,13 +4,17 @@ import blackboard from '../Asset/images/blackboard.png';
 import CustomButton from '../Components/Common/CustomButton';
 import buttonSound from '../Asset/audios/button.mp3';
 import Chance from '../Components/Game/Chance';
+import Pass from '../Components/Game/Pass';
 
 const Game = () => {
   const [seconds, setSeconds] = useState(30); // 타이머 상태
   const [isPaused, setIsPaused] = useState(false); // 일시정지 상태
+  const [questionIndex, setQuestionIndex] = useState(0);
+  const [question, setQuestion] = useState('ㄱㄸㅂㄹ');
   const topic = '동물';
-  const question = 'ㄱㄸㅂㄹ';
   const wrongAnswerSubmit = 0;
+
+  const data = [{ question: ['ㄱㅇㅇ', 'ㅎㄹㅇ', 'ㄱㄱㄹ'] }];
 
   // 타이머 설정
   useEffect(() => {
@@ -38,6 +42,13 @@ const Game = () => {
       setFontSize('4rem'); // 4글자 이하일 때 글씨 크기를 기본값으로 설정
     }
   }, [question]);
+
+  const fetchNextQuestion = () => {
+    const nextIndex = (questionIndex + 1) % data[0].question.length;
+    setQuestionIndex(nextIndex);
+    setQuestion(data[0].question[nextIndex]);
+    setSeconds(30); // 새 문제를 가져왔을 때 타이머 리셋
+  };
 
   return (
     <>
@@ -82,13 +93,9 @@ const Game = () => {
             <Chance setIsPaused={setIsPaused} />
           </GridItem>
           <GridItem colSpan={1}>
-            <CustomButton
-              text="패스"
-              variant="outline"
-              soundSrc={buttonSound}
-              baseWidth={148}
-              width={200}
-              onClick={() => alert('패스를 사용했습니다.')}
+            <Pass
+              fetchNextQuestion={fetchNextQuestion}
+              setIsPaused={setIsPaused}
             />
           </GridItem>
           <GridItem colSpan={1}>
