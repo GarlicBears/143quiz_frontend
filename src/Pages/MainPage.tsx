@@ -45,29 +45,21 @@ function MainPage() {
               주어진 자음에 맞는 단어를 맟줘보세요
             </Text>
             <Box
+              gap={2}
               display="flex"
               mt={5}
-              border="1px solid black"
+              border="0px solid black"
               w="100%"
-              h="200px"
-              // alignItems="center"
+              justifyContent="center"
             >
-              <Button
-                alignSelf="center"
-                border="1px solid black"
-                onClick={handlePreClick}
-              >
+              <Button alignSelf="center" onClick={handlePreClick}>
                 이전
               </Button>
               <Img
                 src={photos[currentIndex]}
                 alt={`Photo ${currentIndex + 1}`}
               />
-              <Button
-                alignSelf="center"
-                border="1px solid black"
-                onClick={handleNextClick}
-              >
+              <Button alignSelf="center" onClick={handleNextClick}>
                 다음
               </Button>
             </Box>
