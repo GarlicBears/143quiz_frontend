@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Modal from '../Common/Modal';
 import { Button } from '@chakra-ui/react';
-import buttonSound from '../../Asset/audios/button.mp3';
 import CustomButton from '../Common/CustomButton';
+import buttonSound from '../../Asset/audios/button.mp3';
 
 interface ChanceProps {
   setIsPaused: React.Dispatch<React.SetStateAction<boolean>>; // 타이머 일시정지 상태 변경 함수

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Modal from '../Common/Modal';
 import { Button } from '@chakra-ui/react';
-import buttonSound from '../../Asset/audios/button.mp3';
 import CustomButton from '../Common/CustomButton';
+import buttonSound from '../../Asset/audios/button.mp3';
 
 interface PassProps {
   fetchNextQuestion: () => void;
