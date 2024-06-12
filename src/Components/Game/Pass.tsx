@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Modal from '../Common/Modal';
-import { Button } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import CustomButton from '../Common/CustomButton';
 import buttonSound from '../../Asset/audios/button.mp3';
 
@@ -23,6 +23,7 @@ const Pass: React.FC<PassProps> = ({ fetchNextQuestion, setIsPaused }) => {
   };
 
   const handleConfirm = () => {
+    console.log('confirmed');
     setIsOpen(false);
     fetchNextQuestion(); // 다음 문제 가져오기
     setIsPaused(false); // 타이머 재개
@@ -39,21 +40,13 @@ const Pass: React.FC<PassProps> = ({ fetchNextQuestion, setIsPaused }) => {
         onClick={handleOpen}
       />
       <Modal
-        type="default"
+        type="confirm"
         isOpen={isOpen}
         onClose={handleClose}
-        footer={
-          <>
-            <Button variant="ghost" onClick={handleClose}>
-              아니오
-            </Button>
-            <Button colorScheme="blue" onClick={handleConfirm} ml={3}>
-              예
-            </Button>
-          </>
-        }
+        onConfirm={handleConfirm}
       >
         <p>이 문제를 건너뛰시겠습니까?</p>
+        <Text>해당 문제는 오답처리 됩니다.</Text>
       </Modal>
     </>
   );

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Flex, Container, Text, Button } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
-import Modal from '../Common/Modal';
+import GameStop from './GameStop';
 
 const Layout: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -75,10 +75,7 @@ const Layout: React.FC = () => {
       {/* Footer */}
 
       {/* Modal */}
-      <Modal isOpen={isModalOpen} onClose={handleModalClose} type={'confirm'}>
-        <Text>게임을 그만두시겠습니까?</Text>
-        <Text>지금까지의 풀이 기록이 모두 삭제됩니다. </Text>
-      </Modal>
+      <GameStop isOpen={isModalOpen} onClose={handleModalClose} />
     </Box>
   );
 };

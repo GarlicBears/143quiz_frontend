@@ -20,7 +20,7 @@ const Footer = () => {
         justifyContent="center"
         boxShadow="md"
       >
-        &copy; 2024 Garlic Bears
+        &copy; 2024 Garlic Bears. All rights reserved.
       </Box>
     </>
   );

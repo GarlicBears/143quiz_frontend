@@ -21,6 +21,7 @@ const Modal: React.FC<ModalProps> = ({
   top = '30%',
   left = '30%',
   transform = 'translate(-30%, -30%)',
+  onConfirm,
 }) => {
   return (
     <ChakraModal
@@ -38,12 +39,23 @@ const Modal: React.FC<ModalProps> = ({
         {type !== 'default' && <ModalCloseButton />}
         <ModalBody>{children}</ModalBody>
         <ModalFooter>
-          {footer ||
+          {type === 'confirm' ? (
+            <>
+              <Button colorScheme="red" mr={3} onClick={onClose}>
+                아니오
+              </Button>
+              <Button colorScheme="green" onClick={onConfirm}>
+                예
+              </Button>
+            </>
+          ) : (
+            footer ||
             (type !== 'default' && (
               <Button colorScheme="blue" mr={3} onClick={onClose}>
                 Close
               </Button>
-            ))}
+            ))
+          )}
         </ModalFooter>
       </ModalContent>
     </ChakraModal>

@@ -105,11 +105,15 @@ const Chance: React.FC<ChanceProps> = ({ setIsPaused }) => {
         footer={
           showButtons ? (
             <>
-              <Button variant="ghost" onClick={handleClose}>
-                취소
+              <Button
+                colorScheme="customOrange"
+                variant="outline"
+                onClick={handleClose}
+              >
+                아니오
               </Button>
-              <Button colorScheme="blue" onClick={handleConfirm} ml={3}>
-                확인
+              <Button colorScheme="customOrange" onClick={handleConfirm} ml={3}>
+                예
               </Button>
             </>
           ) : null

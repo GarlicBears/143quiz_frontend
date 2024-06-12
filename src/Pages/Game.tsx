@@ -1,4 +1,3 @@
-// Game.tsx
 import React, { useEffect, useState } from 'react';
 import { Flex, Text, Grid, GridItem, useDisclosure } from '@chakra-ui/react';
 import { useRecoilState } from 'recoil';
@@ -9,6 +8,7 @@ import AnswerSpeak from '../Components/Game/AnswerSpeak';
 import AnswerWrite from '../Components/Game/AnswerWrite';
 import Correct from '../Components/Game/Correct';
 import Incorrect from '../Components/Game/Incorrect';
+import Timeout from '../Components/Game/Timeout';
 import { answerSubmitCountState } from '../Recoil/atom';
 
 const Game = () => {
@@ -31,6 +31,11 @@ const Game = () => {
     onOpen: onIncorrectOpen,
     onClose: onIncorrectClose,
   } = useDisclosure();
+  const {
+    isOpen: isTimeoutOpen,
+    onOpen: onTimeoutOpen,
+    onClose: onTimeoutClose,
+  } = useDisclosure();
 
   const data = [
     { question: 'ㄱㅇㅈ', answer: '강아지' },
@@ -48,9 +53,14 @@ const Game = () => {
         setSeconds((prevSeconds) => prevSeconds - 1);
       }, 1000);
     } else if (seconds === 0) {
-      // 타이머가 0이 되었을 때 시간종료 알림 후 오답 처리하고 다음 문제로 넘어가기
-      console.log('시간이 종료되었습니다!');
-      checkAnswer('');
+      // 타이머가 0이 되었을 때 Timeout 모달 열기
+      onTimeoutOpen();
+      setIsPaused(true);
+      setTimeout(() => {
+        onTimeoutClose();
+        fetchNextQuestion();
+        setIsPaused(false);
+      }, 2000);
     }
     return () => clearInterval(timerId);
   }, [isPaused, seconds]);
@@ -170,6 +180,7 @@ const Game = () => {
         onClose={onIncorrectClose}
         onNextQuestion={fetchNextQuestion}
       />
+      <Timeout isOpen={isTimeoutOpen} onClose={onTimeoutClose} />
     </>
   );
 };

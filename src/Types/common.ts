@@ -38,6 +38,7 @@ interface ModalProps {
   top?: BoxProps['top'];
   left?: BoxProps['left'];
   transform?: BoxProps['transform'];
+  onConfirm?: () => void;
 }
 
 // Components/Game/Chance.tsx
