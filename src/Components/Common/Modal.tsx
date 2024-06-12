@@ -7,18 +7,10 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
-  BoxProps,
 } from '@chakra-ui/react';
 import { ModalProps } from '../../Types/common';
 
-interface CustomModalProps extends ModalProps {
-  position?: BoxProps['position'];
-  top?: BoxProps['top'];
-  left?: BoxProps['left'];
-  transform?: BoxProps['transform'];
-}
-
-const Modal: React.FC<CustomModalProps> = ({
+const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   type = 'default',

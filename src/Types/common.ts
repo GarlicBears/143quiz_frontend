@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import { BoxProps } from '@chakra-ui/react';
 
 // Components/Common/CustomButton.tsx
 interface CustomButtonProps {
@@ -33,6 +34,10 @@ interface ModalProps {
   closeOnOverlayClick?: boolean;
   isCentered?: boolean;
   size?: string;
+  position?: BoxProps['position'];
+  top?: BoxProps['top'];
+  left?: BoxProps['left'];
+  transform?: BoxProps['transform'];
 }
 
 // Components/Game/Chance.tsx
@@ -41,4 +46,15 @@ interface ChanceProps {
   setChance: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export type { CustomButtonProps, ModalButtonProps, ModalProps, ChanceProps };
+interface AnswerProps {
+  setIsPaused: React.Dispatch<React.SetStateAction<boolean>>;
+  checkAnswer: (answer: string) => void;
+}
+
+export type {
+  CustomButtonProps,
+  ModalButtonProps,
+  ModalProps,
+  ChanceProps,
+  AnswerProps,
+};
