@@ -6,6 +6,7 @@ import Topic from './Pages/Topic';
 import Game from './Pages/Game';
 import GameLayout from './Components/Game/GameLayout';
 import { RecoilRoot } from 'recoil';
+import GameComplete from './Pages/GameComplete';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/game" element={<GameLayout />}>
             <Route index element={<Game />} />
           </Route>
+          <Route path="/game/complete" element={<GameComplete />} />
         </Routes>
       </Router>
     </RecoilRoot>
