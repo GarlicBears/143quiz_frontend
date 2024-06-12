@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Topic = () => {
   const navigate = useNavigate();
+
   return (
     <VStack spacing={6} align="center" width="100%">
       <Flex justifyContent="center" width="100%" bg="gray.200" p={4}>
@@ -64,7 +65,6 @@ const Topic = () => {
           <TopicCard key={index} name={topic.name} imgSrc={topic.imgSrc} />
         ))}
       </Grid>
-
       <Box
         position="fixed"
         bottom="100px"
