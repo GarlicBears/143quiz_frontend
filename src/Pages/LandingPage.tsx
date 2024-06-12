@@ -3,9 +3,16 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
   Container,
+  Heading,
   SimpleGrid,
+  Stack,
   Text,
+  VStack,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 //First Page
@@ -29,9 +36,10 @@ const LandingPage = () => {
       bg="var(--background-color)"
       overflowY="auto"
       paddingBottom="200px"
+      border="0px solid black"
     >
       <Box
-        border="1px solid red"
+        border="0px solid brown"
         minH="90vh"
         py={10}
         px={5}
@@ -40,79 +48,37 @@ const LandingPage = () => {
         alignItems="center" // 자식 요소를 가운데 정렬
         width="100%" // 전체 너비 사용
       >
-        <Box w="80%" h="20px">
-          {/*143*/}
-          <SimpleGrid columns={3}>
-            <Box
-              bg="blue.300"
-              p={4}
-              borderRadius="md"
-              w="80px"
-              h="80px"
-              ml="20px"
-            >
-              <Text fontSize="3xl" color="white" textAlign="center">
-                1
-              </Text>
-            </Box>
-            <Box
-              bg="pink.300"
-              transform="rotate(-20deg)"
-              p={4}
-              borderRadius="md"
-              w="80px"
-              h="80px"
-            >
-              <Text fontSize="3xl" color="white" textAlign="center">
-                4
-              </Text>
-            </Box>
-            <Box
-              bg="green.400"
-              transform="rotate(20deg)"
-              p={4}
-              borderRadius="md"
-              w="80px"
-              h="80px"
-              ml="-10px"
-            >
-              <Text fontSize="3xl" color="white" textAlign="center">
-                3
-              </Text>
-            </Box>
-          </SimpleGrid>
-          {/*Text '초성게임'*/}
-          <SimpleGrid columns={4} mt={5} gap={3} mr={30}>
-            <Box bg="#ff8d41" p={4} borderRadius="md">
-              <Text fontSize="3xl" color="black" textAlign="center">
-                초
-              </Text>
-            </Box>
-            <Box bg="#ff8d41" p={4} borderRadius="md">
-              <Text fontSize="3xl" color="black" textAlign="center">
-                성
-              </Text>
-            </Box>
-            <Box bg="#ff8d41" p={4} borderRadius="md">
-              <Text fontSize="3xl" color="black" textAlign="center">
-                게
-              </Text>
-            </Box>
-            <Box bg="#ff8d41" p={4} borderRadius="md">
-              <Text fontSize="3xl" color="black" textAlign="center">
-                임
-              </Text>
-            </Box>
-          </SimpleGrid>
-        </Box>
-        <ButtonGroup
-          flexDirection="column"
-          alignItems="center"
-          width="80%"
-          display="flex"
+        <Card
+          h="500px"
+          w="100%"
+          backgroundColor="green.600"
+          border="5px solid orange"
         >
-          <Button onClick={handleClickLogin}>로그인하기</Button>
-          <Button onClick={hadleClickSignup}>회원가입하기</Button>
+          <CardHeader></CardHeader>
+          <CardBody border="0px solid red"></CardBody>
+          <CardFooter border="0px solid blue">
+            <SimpleGrid columns={4} spacing="1px">
+              {/*<Box bg="tomato" w="40px" h="40px"></Box>*/}
+            </SimpleGrid>
+          </CardFooter>
+        </Card>
+        <ButtonGroup mt={5} w="100%" gap={2}>
+          <Button
+            justifyContent="center"
+            w="100%"
+            backgroundColor="orange.400"
+            onClick={handleClickLogin}
+          >
+            로그인하기
+          </Button>
+          <Button
+            w="100%"
+            justifyContent="center"
+            backgroundColor="orange.400"
+            onClick={hadleClickSignup}
+          >
+            회원가입하기
+          </Button>
         </ButtonGroup>
       </Box>
     </Container>
