@@ -6,6 +6,7 @@ import UserSignup from './Pages/User/UserSignup';
 import MainPage from './Pages/MainPage';
 import UserLogin from './Pages/User/UserLogin';
 import Topic from './Pages/Topic';
+import UserInfo from './Pages/User/UserInfo';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/main" element={<MainPage />} />
           <Route path="/signup" element={<UserSignup />} />
           <Route path="/login" element={<UserLogin />} />
+          <Route path="/userInfo" element={<UserInfo />} />
           <Route path="/topic" element={<Topic />} />
         </Route>
       </Routes>
