@@ -17,6 +17,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function UserLogin() {
   const [email, setEmail] = useState('');
@@ -26,6 +27,40 @@ function UserLogin() {
 
   function handleLogin() {
     //     axios
+  }
+
+  function CheckEmailExists() {
+    axios
+      .post('/api/user/checkEmail', { email })
+      .then((response) => {
+        if (response.data.exists) {
+          toast({
+            title: '중복된 이메일',
+            description: '이미 사용 중인 이메일 입니다.',
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+          });
+        } else {
+          toast({
+            title: '사용 가능한 이메일',
+            description: '사용 가능한 이메일 입니다.',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+      })
+      .catch((error) => {
+        toast({
+          title: '오류발생',
+          description:
+            '이메일 확인 중 오류가 발생했습니다. 다시 시도해 주세요.',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      });
   }
 
   function handleClickSignup() {
