@@ -24,6 +24,7 @@ import {
   faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import UserAgreement from './UserAgreement';
+import axios from 'axios';
 
 //회원 가입 화면
 
@@ -50,7 +51,6 @@ function UserSignup() {
   if (!emailAvailable) {
     submitAvailable = false;
   }
-  // 논의 : 이메일 확인
   const handleDomainChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
     if (value === 'custom') {
@@ -66,23 +66,79 @@ function UserSignup() {
     setCustomDomain('');
   };
 
-  // 유저가 '직접 입력하기'를 선택했을 때 사용자가 이전에 입력했던 도메인을 유지하지 않고 입력필드를 비워둠
-  // 사용자가 리스트에서 다른 도메인을 선택했을 때 '직접 입력하기' 필드를 사용하지 않으므로 빈 문자열로 설정.
-
-  const handleSubmit = () => {
-    const fullEmail =
-      domain === 'custom' ? `${email}@${customDomain}` : `${email}@${domain}`;
-    toast({
-      title: '이메일 확인',
-      description: `입력한 이메일 주소는 ${fullEmail} 입니다.`,
-      status: 'info',
-      duration: 5000,
-      isClosable: true,
-    });
-  };
+  function checkEmailExists() {
+    axios
+      .post('/api/user/checkEmail', { email })
+      .then((response) => {
+        setEmailAvailable(!response.data.exists);
+        toast({
+          title: response.data.exists ? '중복된 이메일' : '사용 가능한 이메일',
+          description: response.data.exists
+            ? '이미 사용 중인 이메일입니다.'
+            : '사용 가능한 이메일입니다.',
+          status: response.data.exists ? 'error' : 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+      })
+      .catch((error) => {
+        toast({
+          title: '오류발생',
+          description:
+            '이메일 확인 중 오류가 발생했습니다. 다시 시도해 주세요.',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      });
+  }
+  function checkNicknameExists() {
+    axios
+      .post('api/user/checkNickname', { nickName })
+      .then((response) => {
+        setNickNameAvailable(!response.data.exists);
+        toast({
+          title: response.data.exists ? '중복된 별명' : '사용 가능한 별명',
+          description: response.data.exists
+            ? '이미 사용 중인 별명입니다.'
+            : '사용 가능한 별명입니다.',
+          status: response.data.exists ? 'error' : 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+      })
+      .catch((error) => {
+        toast({
+          title: '오류발생',
+          description: '별명 확인 중 오류가 발생했습니다. 다시 시도해 주세요.',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      });
+  }
   const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedYear = event.target.value;
     setBirthYear(selectedYear);
+  };
+  const handleSubmit = () => {
+    if (submitAvailable) {
+      toast({
+        title: '가입 성공',
+        description: '회원가입이 성공적으로 완료되었습니다.',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: '오류',
+        description: '입력한 정보를 다시 확인해주세요.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
@@ -94,7 +150,6 @@ function UserSignup() {
           </CardHeader>
           <CardBody>
             <FormControl mb={5}>
-              {/*<FormControl mb={5} isInvalid={!EmailAvailable}>*/}
               <FormLabel>이메일</FormLabel>
               <Flex gap={2}>
                 <Input
@@ -131,7 +186,9 @@ function UserSignup() {
                     <option value="custom">직접 입력</option>
                   </Select>
                 )}
-                <Button variant="outline">중복확인</Button>
+                <Button variant="outline" onClick={checkEmailExists}>
+                  중복확인
+                </Button>
                 {/*<Button onClick={handleEmailCheck}>중복확인</Button>*/}
               </Flex>
               <FormErrorMessage>이메일 중복체크를 해주세요.</FormErrorMessage>
@@ -178,8 +235,9 @@ function UserSignup() {
                     style={{ color: '#ff711a' }}
                   />
                 </Button>
-                <Button variant="outline">중복확인</Button>
-                {/*<Button onClick={handleNickNameCheck}>중복확인</Button>*/}
+                <Button variant="outline" onClick={checkNicknameExists}>
+                  중복확인
+                </Button>
               </Flex>
               <FormErrorMessage>별명 중복 확인을 해주세요.</FormErrorMessage>
             </FormControl>
