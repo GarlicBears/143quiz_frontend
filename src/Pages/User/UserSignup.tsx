@@ -46,7 +46,14 @@ function UserSignup() {
   const [birthYear, setBirthYear] = useState('');
   // 이메일 비밀번호, 비번확인, 별명, 별명확인, 성별, 거주지, 출생연도 (1940-2022)
 
-  let submitAvailable = true;
+  let submitAvailable =
+    emailAvailable &&
+    nickNameAvailable &&
+    password &&
+    password === passwordCheck &&
+    gender &&
+    birthYear &&
+    location;
 
   if (!emailAvailable) {
     submitAvailable = false;
