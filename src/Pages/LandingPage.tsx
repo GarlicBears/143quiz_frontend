@@ -43,10 +43,10 @@ const LandingPage = () => {
         minH="90vh"
         py={10}
         px={5}
-        display="flex" // Flexbox layout 사용
-        flexDirection="column" // 자식 요소를 세로로 배열
-        alignItems="center" // 자식 요소를 가운데 정렬
-        width="100%" // 전체 너비 사용
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        width="100%"
       >
         <Card
           h="500px"

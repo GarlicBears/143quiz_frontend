@@ -84,8 +84,13 @@ function UserSignup() {
             ? '이미 사용 중인 이메일입니다.'
             : '사용 가능한 이메일입니다.',
           status: response.data.exists ? 'error' : 'success',
-          duration: 3000,
+          duration: 2000,
           isClosable: true,
+          position: 'top',
+          containerStyle: {
+            display: 'flex',
+            justifyContent: 'center',
+          },
         });
       })
       .catch((error) => {
@@ -94,8 +99,13 @@ function UserSignup() {
           description:
             '이메일 확인 중 오류가 발생했습니다. 다시 시도해 주세요.',
           status: 'error',
-          duration: 3000,
+          duration: 2000,
           isClosable: true,
+          position: 'top',
+          containerStyle: {
+            display: 'flex',
+            justifyContent: 'center',
+          },
         });
       });
   }
@@ -110,8 +120,13 @@ function UserSignup() {
             ? '이미 사용 중인 별명입니다.'
             : '사용 가능한 별명입니다.',
           status: response.data.exists ? 'error' : 'success',
-          duration: 3000,
+          duration: 2000,
           isClosable: true,
+          position: 'top',
+          containerStyle: {
+            display: 'flex',
+            justifyContent: 'center',
+          },
         });
       })
       .catch((error) => {
@@ -119,8 +134,13 @@ function UserSignup() {
           title: '오류발생',
           description: '별명 확인 중 오류가 발생했습니다. 다시 시도해 주세요.',
           status: 'error',
-          duration: 3000,
+          duration: 2000,
           isClosable: true,
+          position: 'top',
+          containerStyle: {
+            display: 'flex',
+            justifyContent: 'center',
+          },
         });
       });
   }
@@ -134,7 +154,7 @@ function UserSignup() {
         title: '가입 성공',
         description: '회원가입이 성공적으로 완료되었습니다.',
         status: 'success',
-        duration: 3000,
+        duration: 2000,
         isClosable: true,
       });
     } else {
@@ -142,12 +162,11 @@ function UserSignup() {
         title: '오류',
         description: '입력한 정보를 다시 확인해주세요.',
         status: 'error',
-        duration: 3000,
+        duration: 2000,
         isClosable: true,
       });
     }
   };
-
   return (
     <>
       <Center>

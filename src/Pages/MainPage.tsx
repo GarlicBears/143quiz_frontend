@@ -12,6 +12,8 @@ import {
   Text,
 } from '@chakra-ui/react';
 import CustomButton from '../Components/Common/CustomButton';
+import { faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const photos = [
   'https://via.placeholder.com/600x400?text=Photo+1',
@@ -40,9 +42,9 @@ function MainPage() {
             <Heading>143 초성게임</Heading>
           </CardHeader>
           <CardBody>
-            <Text textAlign="center">
+            <Text textAlign="center" fontSize="xl">
               주제를 고른 후, <br />
-              주어진 자음에 맞는 단어를 맟줘보세요
+              주어진 자음에 맞는 단어를 맞춰보세요
             </Text>
             <Box
               gap={2}
@@ -52,15 +54,33 @@ function MainPage() {
               w="100%"
               justifyContent="center"
             >
-              <Button alignSelf="center" onClick={handlePreClick}>
-                이전
+              <Button
+                variant="ghost"
+                alignSelf="center"
+                onClick={handlePreClick}
+              >
+                <FontAwesomeIcon
+                  icon={faAngleUp}
+                  rotation={270}
+                  size="xl"
+                  style={{ color: '#ef720b' }}
+                />
               </Button>
               <Img
                 src={photos[currentIndex]}
                 alt={`Photo ${currentIndex + 1}`}
               />
-              <Button alignSelf="center" onClick={handleNextClick}>
-                다음
+              <Button
+                variant="ghost"
+                alignSelf="center"
+                onClick={handleNextClick}
+              >
+                <FontAwesomeIcon
+                  icon={faAngleUp}
+                  rotation={90}
+                  size="xl"
+                  style={{ color: '#ef720b' }}
+                />
               </Button>
             </Box>
           </CardBody>
