@@ -8,6 +8,9 @@ import GameLayout from './Components/Game/GameLayout';
 import { RecoilRoot } from 'recoil';
 import GameComplete from './Pages/GameComplete';
 import UserInfo from './Pages/User/UserInfo';
+import MainPage from './Pages/MainPage';
+import UserSignup from './Pages/User/UserSignup';
+import UserLogin from './Pages/User/UserLogin';
 
 function App() {
   return (
@@ -17,10 +20,10 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<LandingPage />} />
             <Route path="/topic" element={<Topic />} />
-              <Route path="/main" element={<MainPage />} />
-              <Route path="/signup" element={<UserSignup />} />
-              <Route path="/login" element={<UserLogin />} />
-              <Route path="/userInfo" element={<UserInfo />} />
+            <Route path="/main" element={<MainPage />} />
+            <Route path="/signup" element={<UserSignup />} />
+            <Route path="/login" element={<UserLogin />} />
+            <Route path="/userInfo" element={<UserInfo />} />
           </Route>
           <Route path="/game" element={<GameLayout />}>
             <Route index element={<Game />} />
