@@ -1,55 +1,51 @@
 import React from 'react';
-import { HStack, IconButton } from '@chakra-ui/react';
-import {
-  ArrowBackIcon,
-  SettingsIcon,
-  BellIcon,
-  InfoIcon,
-} from '@chakra-ui/icons';
+import { Box, Button, Flex } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
+  const navigate = useNavigate();
+  const handleBackClick = () => {
+    navigate(-1); // 뒤로 이동
+  };
   return (
-    <HStack
-      justifyContent="space-between"
+    <Flex
+      as="header"
+      width="100%"
+      bg="var(--primary-color)"
+      color="var(--text-color-white)"
+      justifyContent="center"
       alignItems="center"
-      padding="2"
-      bg="gray.50"
-      borderBottom="1px"
-      borderColor="gray.200"
-      width="80%"
+      position="sticky"
+      top="0"
+      zIndex="1000"
+      boxShadow="md"
     >
-      <IconButton
-        icon={<ArrowBackIcon />}
-        variant="ghost"
-        aria-label="Back"
-        border="none"
-        backgroundColor="transparent"
-      />
-      <p>이전으로</p>
-      <HStack spacing="2">
-        <IconButton
-          icon={<InfoIcon />}
-          variant="ghost"
-          aria-label="Home"
-          border="none"
-          backgroundColor="transparent"
-        />
-        <IconButton
-          icon={<BellIcon />}
-          variant="ghost"
-          aria-label="Notifications"
-          border="none"
-          backgroundColor="transparent"
-        />
-        <IconButton
-          icon={<SettingsIcon />}
-          variant="ghost"
-          aria-label="Settings"
-          border="none"
-          backgroundColor="transparent"
-        />
-      </HStack>
-    </HStack>
+      <Flex
+        width={{ base: '100%', md: '720px' }}
+        padding="4"
+        bg="transparent"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Button
+          width="120px"
+          bg="transparent"
+          color="var(--text-color-white)"
+          _hover={{ bg: 'transparent' }}
+          onClick={handleBackClick}
+        >
+          <i className="fa-solid fa-arrow-left fa-xl"></i>
+          <Box marginLeft={4}>이전으로</Box>
+        </Button>
+        <i className="fa-solid fa-house fa-xl"></i>
+        <Flex width="120px" justifyContent="flex-end">
+          <Flex width="80px" justifyContent="space-around" alignItems="center">
+            <i className="fa-solid fa-medal fa-xl"></i>
+            <i className="fa-solid fa-gear fa-xl"></i>
+          </Flex>
+        </Flex>
+      </Flex>
+    </Flex>
   );
 };
 
