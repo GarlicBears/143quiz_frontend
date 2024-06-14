@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CustomModal from '../Common/CustomModal';
-import { Text, Button, Flex, Image, VStack } from '@chakra-ui/react';
+import { Text, Button, Flex, Image, VStack, Box } from '@chakra-ui/react';
 import CustomButton from '../Common/CustomButton';
 import buttonSound from '../../Asset/audios/button.mp3';
 import hintImage from '../../Asset/images/hint.png';
@@ -15,7 +15,24 @@ const Chance: React.FC<ChanceProps> = ({ setIsPaused }) => {
   const [showButtons, setShowButtons] = useState(true);
 
   const modalText = (
-    <Flex justifyContent="center" alignItems="center" marginTop="16px">
+    <Flex
+      justifyContent="center"
+      alignItems="center"
+      flexDirection="column"
+      marginTop="16px"
+    >
+      <Box
+        boxSize="80px"
+        bg="orange.100"
+        borderRadius="full"
+        p={4}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        marginBottom="16px"
+      >
+        <Image src={hintImage} alt="hint" />
+      </Box>
       <Text textAlign="center" width="100%" fontSize="lg">
         찬스를 사용하시겠습니까?
       </Text>
@@ -56,8 +73,21 @@ const Chance: React.FC<ChanceProps> = ({ setIsPaused }) => {
     if (!showButtons) {
       setModalContent(
         <VStack>
-          <Image src={hintImage} alt="hint" />
-          <Text>찬스 내용</Text>
+          <Box
+            boxSize="80px"
+            bg="orange.100"
+            borderRadius="full"
+            p={4}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            margin="16px"
+          >
+            <Image src={hintImage} alt="hint" />
+          </Box>
+          <Text fontSize="lg" as="b">
+            찬스 내용
+          </Text>
           <Text>{seconds} 초 후에 창이 닫힙니다.</Text>
         </VStack>,
       );

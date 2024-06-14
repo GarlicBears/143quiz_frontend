@@ -14,18 +14,8 @@ interface CustomButtonProps {
   isDisabled?: boolean;
 }
 
-// Components/Common/ModalButton.tsx
-interface ModalButtonProps {
-  type?: 'default' | 'info' | 'confirm';
-  buttonText?: string;
-  variant?: string;
-  img?: string;
-  imgAlt?: string;
-  contentText?: string;
-}
-
-// Components/Common/Modal.tsx
-interface ModalProps {
+// Components/Common/CustomModal.tsx
+interface CustomModalProps {
   isOpen: boolean;
   onClose: () => void;
   type?: 'default' | 'info' | 'confirm';
@@ -52,10 +42,4 @@ interface AnswerProps {
   checkAnswer: (answer: string) => void;
 }
 
-export type {
-  CustomButtonProps,
-  ModalButtonProps,
-  ModalProps,
-  ChanceProps,
-  AnswerProps,
-};
+export type { CustomButtonProps, CustomModalProps, ChanceProps, AnswerProps };

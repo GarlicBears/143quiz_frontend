@@ -1,6 +1,15 @@
 import React, { useEffect, useRef } from 'react';
-import { Modal, ModalOverlay, ModalContent, ModalBody } from '@chakra-ui/react';
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalBody,
+  Flex,
+  Image,
+  Box,
+} from '@chakra-ui/react';
 import correctSound from '../../Asset/audios/correct1.mp3';
+import correctImage from '../../Asset/images/correct.png';
 
 interface CorrectProps {
   isOpen: boolean;
@@ -22,10 +31,30 @@ const Correct: React.FC<CorrectProps> = ({ isOpen, onClose }) => {
   }, [isOpen]);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered size="md">
       <ModalOverlay />
       <ModalContent>
-        <ModalBody>정답이에요!</ModalBody>
+        <ModalBody>
+          <Flex
+            justifyContent="center"
+            alignItems="center"
+            flexDirection="column"
+          >
+            <Box
+              boxSize="80px"
+              bg="orange.100"
+              borderRadius="full"
+              p={4}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              margin="16px"
+            >
+              <Image src={correctImage} alt="correct" />
+            </Box>
+            정답이에요!
+          </Flex>
+        </ModalBody>
       </ModalContent>
     </Modal>
   );

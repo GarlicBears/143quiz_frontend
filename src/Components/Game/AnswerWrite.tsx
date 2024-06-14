@@ -11,10 +11,12 @@ import {
   Box,
   Center,
   Input,
+  Image,
 } from '@chakra-ui/react';
 import buttonSound from '../../Asset/audios/button.mp3';
 import CustomButton from '../Common/CustomButton';
 import { AnswerProps } from '../../Types/common';
+import writeImage from '../../Asset/images/write.png';
 
 const AnswerWrite: React.FC<AnswerProps> = ({ setIsPaused, checkAnswer }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,6 +41,11 @@ const AnswerWrite: React.FC<AnswerProps> = ({ setIsPaused, checkAnswer }) => {
     setIsOpen(false);
     setIsPaused(false);
     setText('');
+  };
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && text) {
+      handleConfirm();
+    }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,7 +84,7 @@ const AnswerWrite: React.FC<AnswerProps> = ({ setIsPaused, checkAnswer }) => {
                 justifyContent="center"
                 alignItems="center"
               >
-                <Box boxSize="40px" bg="orange" />
+                <Image src={writeImage} alt="write" />
               </Box>
             </Center>
             <Text fontSize="xl" fontWeight="bold" textAlign="center">
@@ -88,6 +95,7 @@ const AnswerWrite: React.FC<AnswerProps> = ({ setIsPaused, checkAnswer }) => {
               placeholder="정답 입력"
               value={text}
               onChange={handleChange}
+              onKeyPress={handleKeyPress}
               ref={inputRef}
             />
           </ModalBody>
