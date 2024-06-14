@@ -8,19 +8,15 @@ import {
   ModalCloseButton,
   Button,
 } from '@chakra-ui/react';
-import { ModalProps } from '../../Types/common';
+import { CustomModalProps } from '../../Types/common';
 
-const Modal: React.FC<ModalProps> = ({
+const CustomModal: React.FC<CustomModalProps> = ({
   isOpen,
   onClose,
   type = 'default',
   children = 'Default Content',
   footer,
   closeOnOverlayClick = true,
-  position = 'absolute',
-  top = '30%',
-  left = '30%',
-  transform = 'translate(-30%, -30%)',
   onConfirm,
 }) => {
   return (
@@ -28,30 +24,32 @@ const Modal: React.FC<ModalProps> = ({
       isOpen={isOpen}
       onClose={onClose}
       closeOnOverlayClick={closeOnOverlayClick}
+      isCentered
+      size="sm"
     >
       <ModalOverlay />
-      <ModalContent
-        position={position}
-        top={top}
-        left={left}
-        transform={transform}
-      >
+      <ModalContent>
         {type !== 'default' && <ModalCloseButton />}
         <ModalBody>{children}</ModalBody>
         <ModalFooter>
           {type === 'confirm' ? (
             <>
-              <Button colorScheme="red" mr={3} onClick={onClose}>
+              <Button
+                colorScheme="customOrange"
+                variant="outline"
+                mr={3}
+                onClick={onClose}
+              >
                 아니오
               </Button>
-              <Button colorScheme="green" onClick={onConfirm}>
+              <Button colorScheme="customOrange" onClick={onConfirm}>
                 예
               </Button>
             </>
           ) : (
             footer ||
             (type !== 'default' && (
-              <Button colorScheme="blue" mr={3} onClick={onClose}>
+              <Button colorScheme="customOrange" mr={3} onClick={onClose}>
                 Close
               </Button>
             ))
@@ -62,4 +60,4 @@ const Modal: React.FC<ModalProps> = ({
   );
 };
 
-export default React.memo(Modal);
+export default React.memo(CustomModal);

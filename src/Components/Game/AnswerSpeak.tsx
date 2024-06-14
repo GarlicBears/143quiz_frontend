@@ -62,7 +62,7 @@ const AnswerSpeak: React.FC<AnswerProps> = ({ setIsPaused, checkAnswer }) => {
 
   const startRecognition = () => {
     if (recognitionRef.current) {
-      setText('강아지');
+      setText('...');
       recognitionRef.current.start();
     }
   };
