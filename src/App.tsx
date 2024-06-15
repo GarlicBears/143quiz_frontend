@@ -7,6 +7,7 @@ import Game from './Pages/Game';
 import GameLayout from './Components/Game/GameLayout';
 import { RecoilRoot } from 'recoil';
 import GameComplete from './Pages/GameComplete';
+import EarnBadge from './Pages/EarnBadge';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route index element={<Game />} />
           </Route>
           <Route path="/game/complete" element={<GameComplete />} />
+          <Route path="/game/earnbadge" element={<EarnBadge />} />
         </Routes>
       </Router>
     </RecoilRoot>
