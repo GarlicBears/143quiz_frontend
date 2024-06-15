@@ -1,23 +1,27 @@
-import React from 'react';
-import {
-  Box,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Center,
-  Grid,
-  GridItem,
-  Heading,
-  Text,
-} from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { Box, Card, Center, Grid, GridItem, Text } from '@chakra-ui/react';
+import axios from 'axios';
 
 function UserInfo() {
+  const [userInfo, setUserInfo] = useState({
+    profileImage: '',
+    nickname: '',
+    gender: '',
+  });
+  useEffect(() => {
+    axios
+      .get('/api/user/')
+      .then((response) => {
+        setUserInfo(response.data);
+      })
+      .catch((error) => {
+        console.error('사용자 정보를 불러오는데 실패했습니다.', error);
+      });
+  }, []);
   return (
     <>
       <Center>
         <Card w="100%" gap={2}>
-          {/*<Box border="1px solid black">*/}
           <Grid
             templateAreas={`"header header"
                   "nav main"
@@ -29,8 +33,15 @@ function UserInfo() {
             color="blackAlpha.700"
             fontWeight="bold"
           >
-            <GridItem pl="2" bg="pink.300" area={'nav'}>
-              유저가 설정한 프로필 이미지
+            <GridItem
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              pl="2"
+              bg="pink.300"
+              area={'nav'}
+            >
+              <Box border="1px solid black">전희연</Box>{' '}
             </GridItem>
             <GridItem pl="2" bg="green.300" area={'main'}>
               유저의 닉네임
@@ -69,12 +80,6 @@ function UserInfo() {
           <Text border="1px solid black" mt={5} fontSize="xl">
             로그아웃
           </Text>
-          {/*<CardHeader textAlign="center" border="2px solid blue"></CardHeader>*/}
-          {/*<CardBody border="2px solid red"></CardBody>*/}
-          {/*<CardFooter border="1px solid black" justifyContent="center">*/}
-          {/*  {' '}*/}
-          {/*  CardFooter*/}
-          {/*</CardFooter>*/}
         </Card>
       </Center>
     </>
