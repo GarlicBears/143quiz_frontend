@@ -3,6 +3,8 @@ import { Box, Flex, Container, Text, Image } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 import GameStop from './GameStop';
 import xImage from '../../Asset/images/blackX.png';
+import Add from '../Common/Add';
+import Footer from '../Common/Footer';
 
 const Layout: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -58,25 +60,8 @@ const Layout: React.FC = () => {
       >
         <Outlet />
       </Container>
-
-      {/* Add Section */}
-      <Box
-        width="100%"
-        height="50px"
-        textAlign="center"
-        bg="var(--bg-color-gray)"
-        position="fixed"
-        bottom="0"
-        zIndex="1000"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        boxShadow="md"
-      >
-        Add
-      </Box>
-      {/* Footer */}
-
+      <Add />
+      <Footer />
       {/* Modal */}
       <GameStop isOpen={isModalOpen} onClose={handleModalClose} />
     </Box>
