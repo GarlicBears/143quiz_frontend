@@ -338,7 +338,7 @@ function UserSignup() {
               <FormLabel>거주지</FormLabel>
               <Select
                 placeholder={'거주 지역 선택'}
-                // onChange={(e) => setLocation(e.target.value)}
+                onChange={(e) => setLocation(e.target.value)}
               >
                 {[
                   '서울',
@@ -362,6 +362,7 @@ function UserSignup() {
           <CardFooter>
             <Button
               w="100%"
+              colorScheme={submitAvailable ? 'orange' : 'gray'}
               isDisabled={!submitAvailable}
               onClick={handleSubmit}
             >
