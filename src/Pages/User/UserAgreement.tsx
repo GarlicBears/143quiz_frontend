@@ -87,7 +87,7 @@ function UserAgreement() {
           cursor="pointer"
           textDecoration="underline"
         >
-          개인정보 수집 및 이용 동의 (내용확인)
+          개인정보 수집 및 이용 약관
         </Text>
       </VStack>
 

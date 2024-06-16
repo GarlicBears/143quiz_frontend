@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import UserAgreement from './UserAgreement';
 
 function UserInfo() {
   const navigate = useNavigate();
@@ -42,6 +43,17 @@ function UserInfo() {
   //회원 정보를 수정할 수 있는 화면으로 이동
   function handleChangeUserInfo() {
     navigate('/userInfo/update');
+  }
+
+  function handleLogout() {
+    axios
+      .post('/api/user/logout/')
+      .then(() => {
+        navigate('/landing');
+      })
+      .catch((error) => {
+        console.error('Failed to logout', error);
+      });
   }
 
   return (
@@ -115,10 +127,14 @@ function UserInfo() {
           <Text mt={5} fontSize="xl">
             이용 정책
           </Text>
-          <Box w="100%" justifyContent="center" border="1px solid red">
-            개인정보처리방침
-          </Box>
-          <Text border="1px solid black" mt={5} fontSize="xl">
+          <UserAgreement />
+
+          <Text
+            border="1px solid black"
+            mt={5}
+            fontSize="xl"
+            onClick={handleLogout}
+          >
             로그아웃
           </Text>
         </Card>
