@@ -7,6 +7,7 @@ import {
   GridItem,
   Text,
   Image,
+  Heading,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -47,7 +48,8 @@ function UserInfo() {
     <>
       <Center>
         <Card border="1px solid black" w="100%" gap={2}>
-          <Box border="1px solid black" onClick={handleChangeUserInfo}>
+          <Box border="1px solid blue" onClick={handleChangeUserInfo}>
+            <Heading> 회원 정보</Heading>
             <Grid
               templateAreas={`"header header"
                   "nav main"
