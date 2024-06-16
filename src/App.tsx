@@ -11,6 +11,7 @@ import UserInfo from './Pages/User/UserInfo';
 import MainPage from './Pages/MainPage';
 import UserSignup from './Pages/User/UserSignup';
 import UserLogin from './Pages/User/UserLogin';
+import UserInfoUpdate from './Pages/User/UserInfoUpdate';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path="/signup" element={<UserSignup />} />
             <Route path="/login" element={<UserLogin />} />
             <Route path="/userInfo" element={<UserInfo />} />
+            <Route path="/userInfo/update" element={<UserInfoUpdate />} />
           </Route>
           <Route path="/game" element={<GameLayout />}>
             <Route index element={<Game />} />

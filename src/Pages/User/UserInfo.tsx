@@ -40,7 +40,7 @@ function UserInfo() {
 
   //회원 정보를 수정할 수 있는 화면으로 이동
   function handleChangeUserInfo() {
-    navigate('/');
+    navigate('/userInfo/update');
   }
 
   return (
