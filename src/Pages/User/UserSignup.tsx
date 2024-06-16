@@ -111,7 +111,7 @@ function UserSignup() {
   }
   function checkNicknameExists() {
     axios
-      .post('api/user/checkNickname', { nickName })
+      .post('/api/user/checkNickname', { nickname: nickName }) // "nickName" 변수를 "nickname" 키로 사용
       .then((response) => {
         setNickNameAvailable(!response.data.exists);
         toast({
@@ -142,6 +142,7 @@ function UserSignup() {
             justifyContent: 'center',
           },
         });
+        console.error('Request failed:', error.response || error); // 오류 로그 추가
       });
   }
   const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -150,13 +151,46 @@ function UserSignup() {
   };
   const handleSubmit = () => {
     if (submitAvailable) {
-      toast({
-        title: '가입 성공',
-        description: '회원가입이 성공적으로 완료되었습니다.',
-        status: 'success',
-        duration: 2000,
-        isClosable: true,
-      });
+      // 서버에 데이터를 전송하는 axios.post 호출
+      axios
+        .post('/api/user/signup', {
+          email: email,
+          password: password,
+          nickname: nickName,
+          gender: gender,
+          birthYear: birthYear,
+          location: location,
+        })
+        .then((response) => {
+          // 성공적으로 저장되었을 때의 처리
+          toast({
+            title: '가입 성공',
+            description: '회원가입이 성공적으로 완료되었습니다.',
+            status: 'success',
+            duration: 2000,
+            isClosable: true,
+            position: 'top',
+            containerStyle: {
+              display: 'flex',
+              justifyContent: 'center',
+            },
+          });
+        })
+        .catch((error) => {
+          // 오류 발생시 처리
+          toast({
+            title: '가입 실패',
+            description: '오류가 발생했습니다. 다시 시도해 주세요.',
+            status: 'error',
+            duration: 2000,
+            isClosable: true,
+            position: 'top',
+            containerStyle: {
+              display: 'flex',
+              justifyContent: 'center',
+            },
+          });
+        });
     } else {
       toast({
         title: '오류',
@@ -167,6 +201,7 @@ function UserSignup() {
       });
     }
   };
+
   return (
     <>
       <Center>
