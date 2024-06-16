@@ -25,6 +25,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import UserAgreement from './UserAgreement';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 //회원 가입 화면
 
@@ -34,6 +35,7 @@ function UserSignup() {
   const [domain, setDomain] = useState('');
   const [customDomain, setCustomDomain] = useState('');
   const toast = useToast();
+  const navigate = useNavigate();
 
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
@@ -175,6 +177,7 @@ function UserSignup() {
               justifyContent: 'center',
             },
           });
+          navigate('/main');
         })
         .catch((error) => {
           // 오류 발생시 처리
