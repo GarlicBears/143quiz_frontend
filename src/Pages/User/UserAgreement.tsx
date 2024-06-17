@@ -91,12 +91,13 @@ function UserAgreement() {
         </Text>
       </VStack>
 
-      <Modal isOpen={isPrivacyOpen} onClose={onPrivacyClose}>
+      <Modal size="3xl" isOpen={isPrivacyOpen} onClose={onPrivacyClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
             <Box mt={35} p={5} border="1px solid black">
+              <Text display="center">개인 정보 수집 및 이용약관</Text>
               <Text whiteSpace="pre-wrap">{privacyPolicyText}</Text>
             </Box>
           </ModalBody>

@@ -59,26 +59,29 @@ function UserInfo() {
   return (
     <>
       <Center>
-        <Card border="1px solid black" w="100%" gap={2}>
-          <Box border="1px solid blue" onClick={handleChangeUserInfo}>
-            <Heading> 회원 정보</Heading>
+        <Card border="1px solid black" w="100%">
+          <Box border="1px solid blue">
+            <Heading>○ 회원 정보</Heading>
             <Grid
+              onClick={handleChangeUserInfo}
               templateAreas={`"header header"
                   "nav main"
                   "nav footer"`}
-              gridTemplateRows={'50px 1fr 50px'}
+              gridTemplateRows={'0px 2fr 50px'}
               gridTemplateColumns={'150px 1fr'}
               h="200px"
               gap="1"
               color="blackAlpha.700"
               fontWeight="bold"
+              border="1px solid red"
+              _hover={{ borderWidth: '2px' }}
             >
               <GridItem
                 display="flex"
+                border="1px solid blue"
                 justifyContent="center"
                 alignItems="center"
                 pl="2"
-                border="1px solid black"
                 area={'nav'}
               >
                 <Box border="1px solid black" borderRadius="full">
@@ -109,6 +112,7 @@ function UserInfo() {
             fontSize="xl"
             justifyContent="center"
             border="1px solid red"
+            _hover={{ borderWidth: '2px' }}
           >
             내가 모은 뱃지
           </Box>
@@ -134,6 +138,7 @@ function UserInfo() {
             mt={5}
             fontSize="xl"
             onClick={handleLogout}
+            _hover={{ borderWidth: '2px' }}
           >
             로그아웃
           </Text>
