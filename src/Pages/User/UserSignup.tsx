@@ -153,7 +153,6 @@ function UserSignup() {
   };
   const handleSubmit = () => {
     if (submitAvailable) {
-      // 서버에 데이터를 전송하는 axios.post 호출
       axios
         .post('/api/user/signup', {
           email: email,
