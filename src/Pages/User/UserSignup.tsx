@@ -224,7 +224,7 @@ function UserSignup() {
                 />
                 @
                 {domain === 'custom' ? (
-                  <InputGroup size="md" w={40}>
+                  <InputGroup w={40}>
                     <Input
                       placeholder="직접입력"
                       value={customDomain}
