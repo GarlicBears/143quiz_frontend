@@ -14,6 +14,7 @@ import {
 import CustomButton from '../Components/Common/CustomButton';
 import { faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate } from 'react-router-dom';
 
 const photos = [
   'https://via.placeholder.com/600x400?text=Photo+1',
@@ -23,6 +24,7 @@ const photos = [
 ];
 
 function MainPage() {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const handlePreClick = () => {
     setCurrentIndex((prevIndex) =>
@@ -34,6 +36,7 @@ function MainPage() {
       prevIndex === photos.length - 1 ? 0 : prevIndex + 1,
     );
   };
+
   return (
     <>
       <Center>
@@ -85,7 +88,7 @@ function MainPage() {
             </Box>
           </CardBody>
           <CardFooter justifyContent="center">
-            <CustomButton />
+            <CustomButton onClick={() => navigate('/topic')} />
           </CardFooter>
         </Card>
       </Center>
