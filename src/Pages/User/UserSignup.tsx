@@ -176,7 +176,7 @@ function UserSignup() {
               justifyContent: 'center',
             },
           });
-          navigate('/main');
+          navigate('/');
         })
         .catch((error) => {
           // 오류 발생시 처리
