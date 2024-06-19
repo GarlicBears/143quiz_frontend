@@ -72,14 +72,15 @@ function UserBadge() {
               <GridItem key={badge.label} w="100%">
                 <Box
                   // borderWidth="10px"
-                  borderRadius="xl"
-                  border="1px solid black"
+                  borderRadius="2xl"
+                  border="1px solid orange"
                   overflow="hidden"
                   textAlign="center"
+                  w="100%"
                   p={3}
                 >
                   <Box
-                    border="1px solid"
+                    border="1px solid orange"
                     borderRadius="full"
                     bg="orange.100"
                     boxSize="80px"
