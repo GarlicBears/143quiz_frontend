@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { Box, Flex, Container, Text, Button } from '@chakra-ui/react';
+import { Box, Flex, Container, Text, Image } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 import GameStop from './GameStop';
+import xImage from '../../Asset/images/blackX.png';
+import Add from '../Common/Add';
+import Footer from '../Common/Footer';
 
 const Layout: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,7 +30,7 @@ const Layout: React.FC = () => {
       {/* Header */}
       <Flex
         as="header"
-        width={{ base: '100%', md: '720px' }}
+        width={{ base: '100vw', md: '720px' }}
         height="50px"
         bg="var(--bg-color)"
         color="var(--text-color)"
@@ -36,11 +39,13 @@ const Layout: React.FC = () => {
         position="sticky"
         top="0"
         zIndex="1000"
-        boxShadow="md"
+        boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
         paddingX="20px"
       >
         <Text>143 초성게임({topic})</Text>
-        <Button onClick={handleModalOpen}>X</Button>
+        <Box onClick={handleModalOpen} width="32px" cursor="pointer">
+          <Image src={xImage} alt="exit" />
+        </Box>
       </Flex>
 
       {/* Main Content */}
@@ -55,25 +60,8 @@ const Layout: React.FC = () => {
       >
         <Outlet />
       </Container>
-
-      {/* Add Section */}
-      <Box
-        width="100%"
-        height="50px"
-        textAlign="center"
-        bg="var(--bg-color-gray)"
-        position="fixed"
-        bottom="0"
-        zIndex="1000"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        boxShadow="md"
-      >
-        Add
-      </Box>
-      {/* Footer */}
-
+      <Add />
+      <Footer />
       {/* Modal */}
       <GameStop isOpen={isModalOpen} onClose={handleModalClose} />
     </Box>

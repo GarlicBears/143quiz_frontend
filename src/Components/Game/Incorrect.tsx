@@ -5,10 +5,15 @@ import {
   ModalContent,
   ModalCloseButton,
   ModalBody,
+  Box,
+  Image,
+  Text,
+  Flex,
 } from '@chakra-ui/react';
 import { useRecoilState } from 'recoil';
 import { answerSubmitCountState } from '../../Recoil/atom';
 import incorrectSound from '../../Asset/audios/error.mp3';
+import stopImage from '../../Asset/images/colorX.png';
 
 interface IncorrectProps {
   isOpen: boolean;
@@ -51,13 +56,31 @@ const Incorrect: React.FC<IncorrectProps> = ({
   }, [isOpen]);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalCloseButton />
         <ModalBody>
-          오답이에요! {remainingChances}번의 기회가 남았어요.
-          {remainingChances <= 0 && ' 다음 문제로 이동합니다.'}
+          <Flex
+            justifyContent="center"
+            alignItems="center"
+            flexDirection="column"
+          >
+            <Box
+              boxSize="80px"
+              bg="orange.100"
+              borderRadius="full"
+              p={4}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              margin="16px"
+            >
+              <Image src={stopImage} alt="stop" />
+            </Box>
+            <Text>오답이에요! {remainingChances}번의 기회가 남았어요.</Text>
+            <Text>{remainingChances <= 0 && ' 다음 문제로 이동합니다.'}</Text>
+          </Flex>
         </ModalBody>
       </ModalContent>
     </Modal>

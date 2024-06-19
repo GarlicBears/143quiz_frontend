@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import Modal from '../Common/Modal';
-import { Text } from '@chakra-ui/react';
+import CustomModal from '../Common/CustomModal';
+import { Flex, Text, Image, Box } from '@chakra-ui/react';
 import CustomButton from '../Common/CustomButton';
 import buttonSound from '../../Asset/audios/button.mp3';
+import skipImage from '../../Asset/images/skip.png';
 
 interface PassProps {
   fetchNextQuestion: () => void;
@@ -39,15 +40,33 @@ const Pass: React.FC<PassProps> = ({ fetchNextQuestion, setIsPaused }) => {
         width={200}
         onClick={handleOpen}
       />
-      <Modal
+      <CustomModal
         type="confirm"
         isOpen={isOpen}
         onClose={handleClose}
         onConfirm={handleConfirm}
       >
-        <p>이 문제를 건너뛰시겠습니까?</p>
-        <Text>해당 문제는 오답처리 됩니다.</Text>
-      </Modal>
+        <Flex
+          justifyContent="center"
+          alignItems="center"
+          flexDirection="column"
+        >
+          <Box
+            boxSize="80px"
+            bg="orange.100"
+            borderRadius="full"
+            p={4}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            margin="16px"
+          >
+            <Image src={skipImage} alt="skip" marginBottom="16px" />
+          </Box>
+          <Text as="b">이 문제를 건너뛰시겠습니까?</Text>
+          <Text>해당 문제는 오답처리 됩니다.</Text>
+        </Flex>
+      </CustomModal>
     </>
   );
 };

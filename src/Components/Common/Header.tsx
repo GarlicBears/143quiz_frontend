@@ -1,8 +1,12 @@
 import React from 'react';
 import { Box, Button, Flex } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
-const Header = () => {
+interface HeaderProps {
+  preventBack?: boolean;
+}
+
+const Header: React.FC<HeaderProps> = ({ preventBack }) => {
   const navigate = useNavigate();
   const handleBackClick = () => {
     navigate(-1); // 뒤로 이동
@@ -27,17 +31,23 @@ const Header = () => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <Button
-          width="120px"
-          bg="transparent"
-          color="var(--text-color-white)"
-          _hover={{ bg: 'transparent' }}
-          onClick={handleBackClick}
-        >
-          <i className="fa-solid fa-arrow-left fa-xl"></i>
-          <Box marginLeft={4}>이전으로</Box>
-        </Button>
-        <i className="fa-solid fa-house fa-xl"></i>
+        {preventBack ? (
+          <Box width="120px" bg="transparent" />
+        ) : (
+          <Button
+            width="120px"
+            bg="transparent"
+            color="var(--text-color-white)"
+            _hover={{ bg: 'transparent' }}
+            onClick={handleBackClick}
+          >
+            <i className="fa-solid fa-arrow-left fa-xl"></i>
+            <Box marginLeft={4}>이전으로</Box>
+          </Button>
+        )}
+        <Link to="/">
+          <i className="fa-solid fa-house fa-xl"></i>
+        </Link>
         <Flex width="120px" justifyContent="flex-end">
           <Flex width="80px" justifyContent="space-around" alignItems="center">
             <i className="fa-solid fa-medal fa-xl"></i>
