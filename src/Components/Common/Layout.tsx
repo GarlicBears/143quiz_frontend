@@ -3,6 +3,7 @@ import { Box, Container } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 import Footer from './Footer';
 import Header from './Header';
+import Add from './Add';
 
 const Layout: React.FC = () => {
   return (
@@ -20,23 +21,7 @@ const Layout: React.FC = () => {
       >
         <Outlet />
       </Container>
-
-      {/* Add Section */}
-      <Box
-        width="100%"
-        height="50px"
-        textAlign="center"
-        bg="var(--bg-color-gray)"
-        position="fixed"
-        bottom="50px"
-        zIndex="1000"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        boxShadow="md"
-      >
-        Add
-      </Box>
+      <Add />
       <Footer />
     </Box>
   );
