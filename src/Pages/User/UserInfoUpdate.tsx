@@ -32,17 +32,17 @@ function UserInfoUpdate() {
   return (
     <Center>
       <VStack
-        border="1px solid black"
+        border="0px solid black"
         w="100%"
         p={2}
         spacing={3}
         align="stretch"
       >
         <Box textAlign="center">
-          <Text border="1px solid black">dsdkh</Text>
+          <Text border="0px solid black">dsdkh</Text>
           <Image
             // src={userImage}
-            border="1px solid black"
+            border="0px solid black"
             borderRadius="full"
             boxSize="150px"
             margin="auto"

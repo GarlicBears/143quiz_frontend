@@ -15,7 +15,7 @@ import CustomButton from '../Components/Common/CustomButton';
 import { faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
-
+// 회원가입 >> 로그인 >> 메인 화면 : 게임설명 화면
 const photos = [
   'https://via.placeholder.com/600x400?text=Photo+1',
   'https://via.placeholder.com/600x400?text=Photo+2',

@@ -61,8 +61,8 @@ function UserInfo() {
   return (
     <>
       <Center>
-        <Card border="1px solid black" w="100%">
-          <Box border="1px solid blue">
+        <Card border="0px solid black" w="100%">
+          <Box border="0px solid blue">
             <Heading textAlign="center">○ 회원 정보</Heading>
             <Grid
               onClick={handleChangeUserInfo}
@@ -75,12 +75,12 @@ function UserInfo() {
               gap="1"
               color="blackAlpha.700"
               fontWeight="bold"
-              border="1px solid red"
+              border="0px solid red"
               _hover={{ borderWidth: '2px' }}
             >
               <GridItem
                 display="flex"
-                border="1px solid blue"
+                border="0px solid blue"
                 justifyContent="center"
                 alignItems="center"
                 pl="2"
@@ -114,7 +114,7 @@ function UserInfo() {
             alignItems="center"
             fontSize="xl"
             justifyContent="center"
-            border="1px solid red"
+            border="0px solid red"
             _hover={{ borderWidth: '2px' }}
             onClick={() => navigate('/userInfo/badge')}
             display="flex"
@@ -125,13 +125,13 @@ function UserInfo() {
           <Text textAlign="center" mt={5} fontSize="xl">
             게임 설정
           </Text>
-          <Box mt={2} justifyContent="center" border="1px solid red">
+          <Box mt={2} justifyContent="center" border="0px solid red">
             효과음 설정
           </Box>
-          <Box mt={2} justifyContent="center" border="1px solid red">
+          <Box mt={2} justifyContent="center" border="0px solid red">
             알림 설정
           </Box>
-          <Box mt={2} justifyContent="center" border="1px solid red">
+          <Box mt={2} justifyContent="center" border="0px solid red">
             글씨 크기 설정
           </Box>
           <Text textAlign="center" mt={5} fontSize="xl">
@@ -140,7 +140,7 @@ function UserInfo() {
           <UserAgreement />
           <Text
             textAlign="center"
-            border="1px solid black"
+            border="0px solid black"
             mt={5}
             fontSize="xl"
             onClick={handleLogout}
