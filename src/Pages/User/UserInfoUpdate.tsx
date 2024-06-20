@@ -39,7 +39,9 @@ function UserInfoUpdate() {
         align="stretch"
       >
         <Box textAlign="center">
-          <Text border="0px solid black">dsdkh</Text>
+          <Text border="0px solid black" textAlign="center">
+            회원정보 수정
+          </Text>
           <Image
             // src={userImage}
             border="0px solid black"
