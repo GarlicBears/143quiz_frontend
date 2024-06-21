@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, ButtonGroup, Container } from '@chakra-ui/react';
+import { Box, Button, Container, Flex } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import gamelanding from '../Asset/images/gamelanding.png';
 //게임의 첫 화면
@@ -15,47 +15,33 @@ const LandingPage = () => {
   }
 
   return (
-    <Container
-      // flex="1"
-      maxW="container.xxl"
-      mt={4}
-      width={{ base: '100%', md: '720px' }}
-      overflowY="auto"
-      paddingBottom="200px"
-      border="0px solid black"
-    >
+    <Container>
       <Box
-        minH="90vh"
-        py={10}
-        px={5}
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        flexDirection="column"
         backgroundImage={`url(${gamelanding})`}
-        backgroundSize="90%"
-        backgroundPosition="top center"
-        backgroundRepeat="no-repeat"
-        w="100%"
+        height="720px"
+        bgPosition="center"
+        bgRepeat="no-repeat"
+        bgSize="cover"
       >
-        <Box flexDirection="column" mt="80%" w="70%" gap={10}>
-          <Button
-            w="100%"
-            backgroundColor="orange.400"
-            onClick={handleClickLogin}
-          >
-            로그인하기
-          </Button>
-          <Button
-            mt={2}
-            justifyContent="center"
-            w="100%"
-            backgroundColor="orange.400"
-            onClick={hadleClickSignup}
-          >
-            회원가입하기
-          </Button>
-        </Box>
+        <Flex flexDirection="column" height="100%">
+          <Box height="70%" />
+          <Flex height="30%" flexDirection="column" gap={2} alignItems="center">
+            <Button
+              onClick={handleClickLogin}
+              w="80%"
+              colorScheme="customOrange"
+            >
+              로그인
+            </Button>
+            <Button
+              onClick={hadleClickSignup}
+              w="80%"
+              colorScheme="customOrange"
+            >
+              회원가입
+            </Button>
+          </Flex>
+        </Flex>
       </Box>
     </Container>
   );
