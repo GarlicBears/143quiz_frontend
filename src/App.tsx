@@ -7,6 +7,8 @@ import Game from './Pages/Game';
 import GameLayout from './Components/Game/GameLayout';
 import { RecoilRoot } from 'recoil';
 import GameComplete from './Pages/GameComplete';
+import Error from './Pages/Error';
+import EarnBadge from './Pages/EarnBadge';
 import UserInfo from './Pages/User/UserInfo';
 import MainPage from './Pages/MainPage';
 import UserSignup from './Pages/User/UserSignup';
@@ -37,8 +39,9 @@ function App() {
           <Route path="/game" element={<GameLayout />}>
             <Route index element={<Game />} />
           </Route>
-
           <Route path="/game/complete" element={<GameComplete />} />
+          <Route path="*" element={<Error />} />
+          <Route path="/game/earnbadge" element={<EarnBadge />} />
         </Routes>
       </Router>
     </RecoilRoot>

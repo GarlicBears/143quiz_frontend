@@ -1,8 +1,6 @@
-import React, { ChangeEvent, useState } from 'react';
+import React from 'react';
 import {
   Box,
-  Button,
-  Flex,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -14,16 +12,11 @@ import {
 } from '@chakra-ui/react';
 
 function UserAgreement() {
-  const [isChecked, setIsChecked] = useState(false);
   const {
     isOpen: isPrivacyOpen,
     onOpen: onPrivacyOpen,
     onClose: onPrivacyClose,
   } = useDisclosure();
-
-  const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(e.target.checked);
-  };
 
   const privacyPolicyText = `
     제1조 (목적)
@@ -76,18 +69,12 @@ function UserAgreement() {
     1. 공정한 보관과 회사는 내부 방침에 의해 회사가 보유하고자 하는 개인 정보 이용기간을 확정하고 공표합니다.
     2. 확정된 보관기간 내에서 보유 및 이용에 대한 처리를 가진 경우 가입경로를 보유 및 이용 방침을 확정하고 이행합니다.
 
-
   `;
-
   return (
     <Box p={5} borderRadius="lg" borderWidth="1px">
       <VStack align="stretch" spacing={4}>
-        <Text
-          onClick={onPrivacyOpen}
-          cursor="pointer"
-          textDecoration="underline"
-        >
-          개인정보 수집 및 이용 약관
+        <Text onClick={onPrivacyOpen} textDecoration="underline">
+          개인정보 수집 및 이용약관 (상세)
         </Text>
       </VStack>
 
@@ -96,8 +83,8 @@ function UserAgreement() {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            <Box mt={35} p={5} border="1px solid black">
-              <Text display="center">개인 정보 수집 및 이용약관</Text>
+            <Box mt={35} p={5}>
+              <Text>개인 정보 수집 및 이용약관</Text>
               <Text whiteSpace="pre-wrap">{privacyPolicyText}</Text>
             </Box>
           </ModalBody>
