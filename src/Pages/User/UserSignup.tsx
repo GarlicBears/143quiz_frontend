@@ -7,6 +7,7 @@ import {
   CardFooter,
   CardHeader,
   Center,
+  Divider,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -111,6 +112,7 @@ function UserSignup() {
         });
       });
   }
+
   function checkNicknameExists() {
     axios
       .post('/api/user/checkNickname', { nickname: nickName }) // "nickName" 변수를 "nickname" 키로 사용
@@ -147,6 +149,7 @@ function UserSignup() {
         console.error('Request failed:', error.response || error); // 오류 로그 추가
       });
   }
+
   const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedYear = event.target.value;
     setBirthYear(selectedYear);
@@ -336,7 +339,7 @@ function UserSignup() {
               </Select>
             </FormControl>
             {/*  -------거주지 입력---------*/}
-            <FormControl>
+            <FormControl mb={5}>
               <FormLabel>거주지</FormLabel>
               <Select
                 placeholder={'거주 지역 선택'}
@@ -358,9 +361,11 @@ function UserSignup() {
                 ))}
               </Select>
             </FormControl>
+            <FormControl>
+              <FormLabel>이용약관</FormLabel>
+              <UserAgreement />
+            </FormControl>
           </CardBody>
-          <UserAgreement />
-          {/*약관동의*/}
           <CardFooter>
             <Button
               w="100%"

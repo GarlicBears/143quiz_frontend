@@ -71,13 +71,10 @@ function UserAgreement() {
 
   `;
   return (
-    <Box p={5} borderRadius="lg" borderWidth="1px">
-      <VStack align="stretch" spacing={4}>
-        <Text onClick={onPrivacyOpen} textDecoration="underline">
-          개인정보 수집 및 이용약관 (상세)
-        </Text>
-      </VStack>
-
+    <Box>
+      <Text onClick={onPrivacyOpen} textDecoration="underline">
+        개인정보 수집 및 이용약관 (상세)
+      </Text>
       <Modal size="3xl" isOpen={isPrivacyOpen} onClose={onPrivacyClose}>
         <ModalOverlay />
         <ModalContent>
