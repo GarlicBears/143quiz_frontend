@@ -1,14 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LandingPage from './Pages/LandingPage';
-import Layout from './Components/Common/Layout';
-import Topic from './Pages/Topic';
-import Game from './Pages/Game';
-import GameLayout from './Components/Game/GameLayout';
+import LandingPage from './pages/LandingPage';
+import Layout from './components/Common/Layout';
+import Topic from './pages/game/Topic';
+import Game from './pages/game/Game';
+import GameLayout from './components/Game/GameLayout';
 import { RecoilRoot } from 'recoil';
-import GameComplete from './Pages/GameComplete';
-import Error from './Pages/Error';
-import EarnBadge from './Pages/EarnBadge';
+import GameComplete from './pages/game/GameComplete';
+import Error from './pages/Error';
+import EarnBadge from './pages/game/EarnBadge';
 
 function App() {
   return (

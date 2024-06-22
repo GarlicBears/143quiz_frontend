@@ -8,8 +8,8 @@ import {
   Image,
   Box,
 } from '@chakra-ui/react';
-import correctSound from '../../Asset/audios/correct1.mp3';
-import correctImage from '../../Asset/images/correct.png';
+import correctSound from '../../asset/audios/correct1.mp3';
+import correctImage from '../../asset/images/correct.png';
 
 interface CorrectProps {
   isOpen: boolean;

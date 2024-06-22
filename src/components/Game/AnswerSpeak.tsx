@@ -12,9 +12,9 @@ import {
   Center,
   keyframes,
 } from '@chakra-ui/react';
-import buttonSound from '../../Asset/audios/button.mp3';
+import buttonSound from '../../asset/audios/button.mp3';
 import CustomButton from '../Common/CustomButton';
-import { AnswerProps } from '../../Types/common';
+import { AnswerProps } from '../../types/common';
 
 const AnswerSpeak: React.FC<AnswerProps> = ({ setIsPaused, checkAnswer }) => {
   const [isOpen, setIsOpen] = useState(false);

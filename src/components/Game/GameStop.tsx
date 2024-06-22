@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import CustomModal from '../Common/CustomModal';
 import { Flex, Text, Box, Image } from '@chakra-ui/react';
-import stopImage from '../../Asset/images/colorX.png';
+import stopImage from '../../asset/images/colorX.png';
 
 interface GameStopProps {
   isOpen: boolean;

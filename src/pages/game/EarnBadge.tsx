@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
-import Header from '../Components/Common/Header';
-import Footer from '../Components/Common/Footer';
-import Add from '../Components/Common/Add';
+import Header from '../../components/Common/Header';
+import Footer from '../../components/Common/Footer';
+import Add from '../../components/Common/Add';
 import { Box, Button, Flex, Text, VStack, Image } from '@chakra-ui/react';
-import topicList from '../Asset/topicList';
-import congratulationImage from '../Asset/images/congratulation.png';
-import congratulationSound from '../Asset/audios/glissando_up.mp3';
+import topicList from '../../asset/topicList';
+import congratulationImage from '../../asset/images/congratulation.png';
+import congratulationSound from '../../asset/audios/glissando_up.mp3';
 
 const EarnBadge = () => {
   const badgeName = '나무'; // 예시 값

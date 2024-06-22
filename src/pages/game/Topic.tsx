@@ -1,16 +1,19 @@
 import React, { useEffect } from 'react';
 import { Flex, Grid, VStack, Box, Image, Text } from '@chakra-ui/react';
-import badgeImg96 from '../../Asset/images/badge96.png';
-import CustomButton from '../../Components/Common/CustomButton';
-import TopicCard from '../../Components/Common/TopicCard';
-import topicList from '../../Asset/topicList';
+import badgeImg96 from '../../asset/images/badge96.png';
+import CustomButton from '../../components/Common/CustomButton';
+import TopicCard from '../../components/Common/TopicCard';
+import topicList from '../../asset/topicList';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../../API/axiosInstance';
+import axiosInstance from '../../api/axiosInstance';
 
 const Topic = () => {
   const navigate = useNavigate();
   // const [topicList, setTopicList] = useState(topicList);
   const [selectedTopic, setSelectedTopic] = React.useState('');
+  const [earnedBadgeList, setEarnedBadgeList] = React.useState([]);
+
+  // TODO : 전체 토픽리스트를 불러오기
 
   console.log('=====API URL:', process.env.REACT_APP_API_URL);
   // TODO : 지금까지 모은 뱃지 리스트 배열 불러오기(/game/badges), 획득한 뱃지가 없을 경우 기본 뱃지 이미지만 보여주기
@@ -18,6 +21,12 @@ const Topic = () => {
   useEffect(() => {
     axiosInstance.get('/game/badges').then((res) => {
       console.log(`획득뱃지수 : ${res.data.topics.length}`);
+      if (res.data.topics.length === 0) {
+        console.log('아직 획득한 뱃지가 없습니다.');
+      } else {
+        console.log(res.data.topics); // [{ "topicId": 0, "title": "string"}, { "topicId": 0, "title": "string"}, ...]
+        setEarnedBadgeList(res.data.topics);
+      }
     });
 
     // TODO : 뱃지 미획득 주제 리스트를 불러오기

@@ -9,7 +9,7 @@ import {
   Image,
   Box,
 } from '@chakra-ui/react';
-import timeoutImage from '../../Asset/images/timeout.png';
+import timeoutImage from '../../asset/images/timeout.png';
 
 interface TimeoutProps {
   isOpen: boolean;

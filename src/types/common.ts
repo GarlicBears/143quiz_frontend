@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { BoxProps } from '@chakra-ui/react';
 
 // Components/Common/CustomButton.tsx
-interface CustomButtonProps {
+export interface CustomButtonProps {
   variant?: string;
   text?: string;
   baseWidth?: number;
@@ -15,7 +15,7 @@ interface CustomButtonProps {
 }
 
 // Components/Common/CustomModal.tsx
-interface CustomModalProps {
+export interface CustomModalProps {
   isOpen: boolean;
   onClose: () => void;
   type?: 'default' | 'info' | 'confirm';
@@ -32,14 +32,29 @@ interface CustomModalProps {
 }
 
 // Components/Game/Chance.tsx
-interface ChanceProps {
+export interface ChanceProps {
   chance: number;
   setChance: React.Dispatch<React.SetStateAction<number>>;
 }
 
-interface AnswerProps {
+export interface AnswerProps {
   setIsPaused: React.Dispatch<React.SetStateAction<boolean>>;
   checkAnswer: (answer: string) => void;
 }
 
-export type { CustomButtonProps, CustomModalProps, ChanceProps, AnswerProps };
+// Game/Topic.tsx
+export interface TopicType {
+  topicId: number;
+  name: string;
+  imgSrc: string;
+  title: string;
+}
+
+export interface Badge {
+  topics: [
+    {
+      topicId: 0;
+      title: 'string';
+    },
+  ];
+}

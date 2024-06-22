@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Flex, Text, Grid, GridItem, useDisclosure } from '@chakra-ui/react';
 import { useRecoilState } from 'recoil';
-import blackboard from '../Asset/images/blackboard.png';
-import Chance from '../Components/Game/Chance';
-import Pass from '../Components/Game/Pass';
-import AnswerSpeak from '../Components/Game/AnswerSpeak';
-import AnswerWrite from '../Components/Game/AnswerWrite';
-import Correct from '../Components/Game/Correct';
-import Incorrect from '../Components/Game/Incorrect';
-import Timeout from '../Components/Game/Timeout';
-import { answerSubmitCountState } from '../Recoil/atom';
+import blackboard from '../../asset/images/blackboard.png';
+import Chance from '../../components/Game/Chance';
+import Pass from '../../components/Game/Pass';
+import AnswerSpeak from '../../components/Game/AnswerSpeak';
+import AnswerWrite from '../../components/Game/AnswerWrite';
+import Correct from '../../components/Game/Correct';
+import Incorrect from '../../components/Game/Incorrect';
+import Timeout from '../../components/Game/Timeout';
+import { answerSubmitCountState } from '../../recoil/atom';
 
 const Game = () => {
   const [seconds, setSeconds] = useState(30);

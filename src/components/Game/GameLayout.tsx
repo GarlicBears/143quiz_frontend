@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Flex, Container, Text, Image } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 import GameStop from './GameStop';
-import xImage from '../../Asset/images/blackX.png';
+import xImage from '../../asset/images/blackX.png';
 import Add from '../Common/Add';
 import Footer from '../Common/Footer';
 

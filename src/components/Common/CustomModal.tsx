@@ -8,7 +8,7 @@ import {
   ModalCloseButton,
   Button,
 } from '@chakra-ui/react';
-import { CustomModalProps } from '../../Types/common';
+import { CustomModalProps } from '../../types/common';
 
 const CustomModal: React.FC<CustomModalProps> = ({
   isOpen,

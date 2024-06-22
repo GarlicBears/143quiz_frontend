@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { Button, Text, Image, Flex, keyframes } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import completedSound from '../Asset/audios/correct2.mp3';
-import heartImage from '../Asset/images/heart32.png';
-import Footer from '../Components/Common/Footer';
-import Header from '../Components/Common/Header';
-import Add from '../Components/Common/Add';
+import completedSound from '../../asset/audios/correct2.mp3';
+import heartImage from '../../asset/images/heart32.png';
+import Footer from '../../components/Common/Footer';
+import Header from '../../components/Common/Header';
+import Add from '../../components/Common/Add';
 
 const GameComplete: React.FC = () => {
   const hearts = 20; // 예시 하트 수

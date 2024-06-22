@@ -1,6 +1,6 @@
 import React from 'react';
 import { Flex, Text, Box, Button } from '@chakra-ui/react';
-import errorImage from '../Asset/images/error.png';
+import errorImage from '../asset/images/error.png';
 import { Link } from 'react-router-dom';
 
 const Error = () => {

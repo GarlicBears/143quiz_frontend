@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Button } from '@chakra-ui/react';
-import { CustomButtonProps } from '../../Types/common';
+import { CustomButtonProps } from '../../types/common';
 
 const CustomButton: React.FC<CustomButtonProps> = ({
   variant = 'solid',

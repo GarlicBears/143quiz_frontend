@@ -1,15 +1,22 @@
 import React from 'react';
 import { Flex, GridItem, HStack, Image, Text } from '@chakra-ui/react';
-import heartImg from '../../Asset/images/heart32.png';
+import heartImg from '../../asset/images/heart32.png';
 
 interface TopicCardProps {
   name: string;
   imgSrc: string;
+  onClick?: () => void;
 }
 
-const TopicCard: React.FC<TopicCardProps> = ({ name, imgSrc }) => {
+// TODO : 뱃지 미획득 주제 목록 리스트 불러오기(/game/topics), 주제별로 유저가 획득한 하트 수 불러오기
+// - 주제 별로 유저가 획득한 하트 수 표시(진행도 바 표시 -> 생략?)
+//   - 배지 미획득 주제 : n / 143
+
+const TopicCard: React.FC<TopicCardProps> = ({ name, imgSrc, onClick }) => {
   return (
-    <GridItem>
+    <GridItem onClick={onClick}>
+      {' '}
+      {/* onClick 핸들러 추가 */}
       <Flex
         flexDirection="column"
         alignItems="center"
@@ -37,7 +44,7 @@ const TopicCard: React.FC<TopicCardProps> = ({ name, imgSrc }) => {
         </Text>
         <HStack mt={2}>
           <Image src={heartImg} alt="heart" boxSize="16px" />
-          <Text>9,999+</Text>
+          <Text>99 / 143</Text>
         </HStack>
       </Flex>
     </GridItem>

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import CustomModal from '../Common/CustomModal';
 import { Flex, Text, Image, Box } from '@chakra-ui/react';
 import CustomButton from '../Common/CustomButton';
-import buttonSound from '../../Asset/audios/button.mp3';
-import skipImage from '../../Asset/images/skip.png';
+import buttonSound from '../../asset/audios/button.mp3';
+import skipImage from '../../asset/images/skip.png';
 
 interface PassProps {
   fetchNextQuestion: () => void;

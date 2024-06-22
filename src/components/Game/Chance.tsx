@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import CustomModal from '../Common/CustomModal';
 import { Text, Button, Flex, Image, VStack, Box } from '@chakra-ui/react';
 import CustomButton from '../Common/CustomButton';
-import buttonSound from '../../Asset/audios/button.mp3';
-import hintImage from '../../Asset/images/hint.png';
+import buttonSound from '../../asset/audios/button.mp3';
+import hintImage from '../../asset/images/hint.png';
 
 interface ChanceProps {
   setIsPaused: React.Dispatch<React.SetStateAction<boolean>>; // 타이머 일시정지 상태 변경 함수

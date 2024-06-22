@@ -13,10 +13,10 @@ import {
   Input,
   Image,
 } from '@chakra-ui/react';
-import buttonSound from '../../Asset/audios/button.mp3';
+import buttonSound from '../../asset/audios/button.mp3';
 import CustomButton from '../Common/CustomButton';
-import { AnswerProps } from '../../Types/common';
-import writeImage from '../../Asset/images/write.png';
+import { AnswerProps } from '../../types/common';
+import writeImage from '../../asset/images/write.png';
 
 const AnswerWrite: React.FC<AnswerProps> = ({ setIsPaused, checkAnswer }) => {
   const [isOpen, setIsOpen] = useState(false);

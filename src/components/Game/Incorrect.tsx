@@ -11,9 +11,9 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { useRecoilState } from 'recoil';
-import { answerSubmitCountState } from '../../Recoil/atom';
-import incorrectSound from '../../Asset/audios/error.mp3';
-import stopImage from '../../Asset/images/colorX.png';
+import { answerSubmitCountState } from '../../recoil/atom';
+import incorrectSound from '../../asset/audios/error.mp3';
+import stopImage from '../../asset/images/colorX.png';
 
 interface IncorrectProps {
   isOpen: boolean;
