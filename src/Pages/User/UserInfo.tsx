@@ -14,6 +14,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import UserAgreement from './UserAgreement';
 import badgeIcon from '../../Asset/images/badge48.png';
+import UserBadge from './UserBadge';
 
 function UserInfo() {
   const navigate = useNavigate();
@@ -116,11 +117,9 @@ function UserInfo() {
             justifyContent="center"
             border="0px solid red"
             _hover={{ borderWidth: '2px' }}
-            onClick={() => navigate('/userInfo/badge')}
             display="flex"
           >
-            <Image src={badgeIcon} boxSize="30px" mr={2} />
-            내가 모은 뱃지
+            <UserBadge />
           </Box>
           <Text textAlign="center" mt={5} fontSize="xl">
             게임 설정
