@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import UserAgreement from './UserAgreement';
 import badgeIcon from '../../Asset/images/badge48.png';
 import UserBadge from './UserBadge';
+import UserLogout from './UserLogout';
 
 function UserInfo() {
   const navigate = useNavigate();
@@ -145,7 +146,7 @@ function UserInfo() {
             onClick={handleLogout}
             _hover={{ borderWidth: '2px' }}
           >
-            로그아웃
+            <UserLogout />
           </Text>
         </Card>
       </Center>
