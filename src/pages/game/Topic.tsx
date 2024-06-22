@@ -1,17 +1,31 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Flex, Grid, VStack, Box, Image, Text } from '@chakra-ui/react';
 import badgeImg96 from '../../asset/images/badge96.png';
 import CustomButton from '../../components/Common/CustomButton';
 import TopicCard from '../../components/Common/TopicCard';
-import topicList from '../../asset/topicList';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/axiosInstance';
+// TODO : 로컬에 저장된 이미지를 서버에 저장하기
+import topicListLocal from '../../asset/topicList';
+
+interface TopicType {
+  topicId: number;
+  title: string;
+}
+
+interface BadgeType {
+  topicId: number;
+  title: string;
+}
 
 const Topic = () => {
   const navigate = useNavigate();
-  // const [topicList, setTopicList] = useState(topicList);
-  const [selectedTopic, setSelectedTopic] = React.useState('');
-  const [earnedBadgeList, setEarnedBadgeList] = React.useState([]);
+  const [topicList, setTopicList] = useState<TopicType[]>([]);
+  const [earnedBadgeList, setEarnedBadgeList] = React.useState<BadgeType[]>([]);
+  const [selectedTopic, setSelectedTopic] = useState<{
+    id: number;
+    title: string;
+  } | null>(null);
 
   // TODO : 전체 토픽리스트를 불러오기
 
@@ -31,20 +45,32 @@ const Topic = () => {
 
     // TODO : 뱃지 미획득 주제 리스트를 불러오기
     axiosInstance.get('/game/topics').then((res) => {
-      // setTopicList(res.data);
+      setTopicList(res.data.topics);
       console.log('`뱃지 미획득 주제 리스트');
       console.log(res.data.topics);
     });
   }, []);
 
   // TODO : 주제를 선택한 후 게임 시작 버튼을 누르면 해당 topicID 의 게임으로 이동하기(/game/start/{topicId})
-  const handleTopicSelect = (topicName: string) => {
-    console.log(topicName);
-    setSelectedTopic(topicName);
-    axiosInstance.get(`/game/start/${0}`).then((res) => {
-      console.log('랜덤 게임 문제 리스트');
-      console.log(res.data.game);
-    });
+  // 주제를 선택하면 선택한 주제를 저장한 후,
+  const handleTopicSelect = (topicId: number, title: string) => {
+    console.log(topicId);
+    setSelectedTopic({ id: topicId, title });
+  };
+  // 게임 시작 버튼을 누르면 해당 게임의 데이터를 받아와서 게임 컴포넌트로 이동하기
+  const startGame = () => {
+    if (selectedTopic) {
+      axiosInstance.get(`/game/start/${selectedTopic.id}`).then((res) => {
+        console.log(`${selectedTopic.id} : ${selectedTopic.title} 문제 리스트`);
+        navigate('/game', {
+          state: {
+            topicId: selectedTopic.id,
+            title: selectedTopic.title,
+            questions: res.data.game,
+          },
+        });
+      });
+    }
   };
 
   return (
@@ -66,32 +92,38 @@ const Topic = () => {
         <Text mt={4} textAlign="center" fontWeight="bold">
           143개의 하트를 모으면 박사 뱃지를 받을 수 있어요!
         </Text>
-        <Flex
-          justifyContent="center"
-          alignItems="center"
-          overflowX="auto"
-          mt={4}
-          width="100%"
-        >
-          {[...Array(5)].map((_, index) => (
-            <Box
-              key={index}
-              boxSize="72px"
-              bg="red.500"
-              mr={2}
-              flexShrink="0"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              borderRadius="md"
-              boxShadow="sm"
-              color="white"
-              fontWeight="bold"
-            >
-              모은 뱃지
-            </Box>
-          ))}
-        </Flex>
+        {earnedBadgeList.length ? (
+          <Flex
+            justifyContent="center"
+            alignItems="center"
+            overflowX="auto"
+            mt={4}
+            width="100%"
+          >
+            {[...Array(5)].map((_, index) => (
+              <Box
+                key={index}
+                boxSize="72px"
+                bg="red.500"
+                mr={2}
+                flexShrink="0"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                borderRadius="md"
+                boxShadow="sm"
+                color="white"
+                fontWeight="bold"
+              >
+                모은 뱃지
+              </Box>
+            ))}
+          </Flex>
+        ) : (
+          <Text>
+            아직 획득한 뱃지가 없어요. 게임을 통해 하트와 뱃지를 모아보세요!
+          </Text>
+        )}
       </Flex>
 
       <Grid
@@ -102,9 +134,12 @@ const Topic = () => {
         {topicList.map((topic, index) => (
           <TopicCard
             key={index}
-            name={topic.name}
-            imgSrc={topic.imgSrc}
-            onClick={() => handleTopicSelect(topic.name)}
+            title={topic.title}
+            imgSrc={
+              topicListLocal.find((t) => t.topicId === topic.topicId)?.imgSrc ||
+              ''
+            }
+            onClick={() => handleTopicSelect(topic.topicId, topic.title)}
           />
         ))}
       </Grid>
@@ -113,7 +148,7 @@ const Topic = () => {
         bottom="100px"
         width="100%"
         textAlign="center"
-        onClick={() => navigate('/game')}
+        onClick={startGame}
       >
         <CustomButton />
       </Box>

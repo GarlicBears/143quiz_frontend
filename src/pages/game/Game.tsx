@@ -10,17 +10,41 @@ import Correct from '../../components/Game/Correct';
 import Incorrect from '../../components/Game/Incorrect';
 import Timeout from '../../components/Game/Timeout';
 import { answerSubmitCountState } from '../../recoil/atom';
+import { useLocation } from 'react-router-dom';
+
+interface AnswerType {
+  questionId: number;
+  answerText: string;
+  answerStatus: string;
+  hintUsageCount: number;
+  answerTimeTaken: number;
+  answerAt: string;
+}
 
 const Game = () => {
   const [seconds, setSeconds] = useState(30);
   const [isPaused, setIsPaused] = useState(false);
   const [questionIndex, setQuestionIndex] = useState(0);
-  const [question, setQuestion] = useState('ㄱㄸㅂㄹ');
+  const [question, setQuestion] = useState('');
   const [answerSubmitCount, setAnswerSubmitCount] = useRecoilState(
     answerSubmitCountState,
   );
   const [fontSize, setFontSize] = useState('4rem');
-  const topic = '동물';
+
+  const location = useLocation();
+  const { topicId, title, questions = [] } = location.state || {};
+  const [heartsCount, setHeartsCount] = useState(0);
+  const [answers, setAnswers] = useState<AnswerType[]>([]);
+
+  useEffect(() => {
+    console.log('Received data:', { topicId, title, questions });
+  }, [topicId, title, questions]);
+
+  useEffect(() => {
+    if (questions && questions.length > 0) {
+      setQuestion(questions[questionIndex].answerText);
+    }
+  }, [questions, questionIndex]);
 
   const {
     isOpen: isCorrectOpen,
@@ -37,14 +61,6 @@ const Game = () => {
     onOpen: onTimeoutOpen,
     onClose: onTimeoutClose,
   } = useDisclosure();
-
-  const data = [
-    { question: 'ㄱㅇㅈ', answer: '강아지' },
-    { question: 'ㄱㅇㅇ', answer: '고양이' },
-    { question: 'ㅎㄹㅇ', answer: '호랑이' },
-    { question: 'ㄴㄷ', answer: '늑대' },
-    { question: 'ㅅㅈ', answer: '사자' },
-  ];
 
   useEffect(() => {
     let timerId: ReturnType<typeof setInterval>;
@@ -70,23 +86,42 @@ const Game = () => {
 
   useEffect(() => {
     const fontSize =
-      question.length > 6 ? '2rem' : question.length > 4 ? '3rem' : '4rem';
+      question?.length > 6 ? '2rem' : question?.length > 4 ? '3rem' : '4rem';
     setFontSize(fontSize);
   }, [question]);
 
   const fetchNextQuestion = () => {
-    const nextIndex = (questionIndex + 1) % data.length;
-    setQuestionIndex(nextIndex);
-    setQuestion(data[nextIndex].question);
-    setSeconds(30);
-    setAnswerSubmitCount(0);
+    if (questions.length > 0) {
+      const nextIndex = (questionIndex + 1) % questions.length;
+      setQuestionIndex(nextIndex);
+      setQuestion(questions[nextIndex].questionText);
+      setSeconds(30);
+      setAnswerSubmitCount(0);
+    }
   };
 
   const checkAnswer = (inputAnswer: string) => {
     setIsPaused(true);
-    const correctAnswer = data[questionIndex].answer;
+    const correctAnswer = questions[questionIndex]?.questionText;
+    const currentQuestion = questions[questionIndex];
+
+    console.log('currentQuestion:', currentQuestion);
+    console.log('correctAnswer:', correctAnswer);
+
+    const newAnswer: AnswerType = {
+      questionId: currentQuestion.questionId,
+      answerText: inputAnswer,
+      answerStatus: inputAnswer === correctAnswer ? 'correct' : 'incorrect',
+      hintUsageCount: 0,
+      answerTimeTaken: 30 - seconds,
+      answerAt: new Date().toISOString(),
+    };
+
+    setAnswers((prevAnswers) => [...prevAnswers, newAnswer]);
+
     if (inputAnswer === correctAnswer) {
       onCorrectOpen();
+      setHeartsCount((prevCount) => prevCount + 1);
       setAnswerSubmitCount(0);
     } else {
       onIncorrectOpen();
@@ -100,6 +135,7 @@ const Game = () => {
         return;
       }
     }
+
     setTimeout(() => {
       if (inputAnswer === correctAnswer) {
         fetchNextQuestion();
@@ -130,7 +166,7 @@ const Game = () => {
         height="280px"
       >
         <Text color="white" marginTop="72px">
-          주제 : {topic}
+          주제 : {title}
         </Text>
         <Text color="white" fontSize={fontSize} as="b">
           {question}

@@ -3,7 +3,7 @@ import { Flex, GridItem, HStack, Image, Text } from '@chakra-ui/react';
 import heartImg from '../../asset/images/heart32.png';
 
 interface TopicCardProps {
-  name: string;
+  title: string;
   imgSrc: string;
   onClick?: () => void;
 }
@@ -12,7 +12,7 @@ interface TopicCardProps {
 // - 주제 별로 유저가 획득한 하트 수 표시(진행도 바 표시 -> 생략?)
 //   - 배지 미획득 주제 : n / 143
 
-const TopicCard: React.FC<TopicCardProps> = ({ name, imgSrc, onClick }) => {
+const TopicCard: React.FC<TopicCardProps> = ({ title, imgSrc, onClick }) => {
   return (
     <GridItem onClick={onClick}>
       {' '}
@@ -38,9 +38,9 @@ const TopicCard: React.FC<TopicCardProps> = ({ name, imgSrc, onClick }) => {
         borderWidth="1px"
         cursor="pointer"
       >
-        <Image src={imgSrc} alt={name} boxSize="72px" mb={2} />
+        <Image src={imgSrc} alt={title} boxSize="72px" mb={2} />
         <Text mt={2} fontWeight="bold">
-          {name}
+          {title}
         </Text>
         <HStack mt={2}>
           <Image src={heartImg} alt="heart" boxSize="16px" />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import CustomModal from '../Common/CustomModal';
 import { Text, Button, Flex, Image, VStack, Box } from '@chakra-ui/react';
 import CustomButton from '../Common/CustomButton';
@@ -66,7 +66,7 @@ const Chance: React.FC<ChanceProps> = ({ setIsPaused }) => {
         clearInterval(interval);
       }
     };
-  }, [isOpen, showButtons, setIsPaused]);
+  }, [isOpen, showButtons]);
 
   // 모달 안의 내용 설정 함수
   useEffect(() => {
@@ -94,25 +94,25 @@ const Chance: React.FC<ChanceProps> = ({ setIsPaused }) => {
     } else {
       setModalContent(modalText);
     }
-  }, [seconds, showButtons, modalText]);
+  }, [seconds, showButtons]);
 
-  const handleOpen = () => {
+  const handleOpen = useCallback(() => {
     setIsOpen(true);
     setIsPaused(true); // 모달이 열릴 때 타이머 일시정지
     setShowButtons(true);
-  };
+  }, [setIsPaused]);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setIsOpen(false);
     setIsPaused(false); // 모달이 닫힐 때 타이머 재개
     setShowButtons(true);
-  };
+  }, [setIsPaused]);
 
   // 찬스 내용 보여주기
-  const handleConfirm = () => {
+  const handleConfirm = useCallback(() => {
     setSeconds(2);
     setShowButtons(false);
-  };
+  }, []);
 
   return (
     <>
