@@ -8,9 +8,14 @@ import skipImage from '../../asset/images/skip.png';
 interface PassProps {
   fetchNextQuestion: () => void;
   setIsPaused: React.Dispatch<React.SetStateAction<boolean>>; // 타이머 일시정지 상태 변경 함수
+  checkAnswer: (inputAnswer: string, isPass?: boolean) => Promise<void>; // 정답 확인 함수
 }
 
-const Pass: React.FC<PassProps> = ({ fetchNextQuestion, setIsPaused }) => {
+const Pass: React.FC<PassProps> = ({
+  fetchNextQuestion,
+  setIsPaused,
+  checkAnswer,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => {
@@ -23,8 +28,9 @@ const Pass: React.FC<PassProps> = ({ fetchNextQuestion, setIsPaused }) => {
     setIsPaused(false); // 모달이 닫힐 때 타이머 재개
   };
 
-  const handleConfirm = () => {
-    console.log('confirmed');
+  const handleConfirm = async () => {
+    console.log('Pass confirmed');
+    await checkAnswer('', true); // 오답 처리 및 패스 플래그 전달
     setIsOpen(false);
     fetchNextQuestion(); // 다음 문제 가져오기
     setIsPaused(false); // 타이머 재개

@@ -141,7 +141,7 @@ const Game = () => {
         return answer;
       });
 
-      // 만약 해당 questionId가 기존 answers에 없다면 새로 추가합니다.
+      // 만약 해당 questionId가 기존 answers에 없다면 새로 추가
       if (!updatedAnswers.find((answer) => answer.questionId === questionId)) {
         updatedAnswers.push({
           questionId,
@@ -158,63 +158,68 @@ const Game = () => {
   };
 
   // 정답 확인 함수
-  const checkAnswer = (inputAnswer: string) => {
-    if (!questions[questionIndex]) return; // 질문이 없는 경우 반환
+  const checkAnswer = (inputAnswer: string, isPass = false): Promise<void> => {
+    return new Promise((resolve) => {
+      if (!questions[questionIndex]) return resolve(); // 질문이 없는 경우 반환
 
-    setIsPaused(true);
-    const correctAnswer = questions[questionIndex].questionText;
-    const currentQuestion = questions[questionIndex];
+      setIsPaused(true);
+      const correctAnswer = questions[questionIndex].questionText;
+      const currentQuestion = questions[questionIndex];
+      // 동일한 답변이 존재하는지 확인 후, 존재한다면 해당 답변에 hintUsageCount 업데이트
+      const existingAnswer = answers.find(
+        (answer) => answer.questionId === currentQuestion.questionId,
+      );
 
-    console.log('currentQuestion:', currentQuestion);
-    console.log('correctAnswer:', correctAnswer);
+      const newAnswer: AnswerType = {
+        questionId: currentQuestion.questionId,
+        answerText: inputAnswer,
+        answerStatus: isPass ? 'P' : inputAnswer === correctAnswer ? 'Y' : 'N',
+        hintUsageCount: existingAnswer ? existingAnswer.hintUsageCount : 0,
+        answerTimeTaken: 30 - seconds,
+        answerAt: formatDate(new Date()),
+      };
 
-    const existingAnswer = answers.find(
-      (answer) => answer.questionId === currentQuestion.questionId,
-    );
+      // 답변 중복 송부 방지(quetionId 로 구분, 맨 마지막 답변 송부)
+      setAnswers((prevAnswers) =>
+        prevAnswers.filter(
+          (answer) => answer.questionId !== currentQuestion.questionId,
+        ),
+      );
 
-    const newAnswer: AnswerType = {
-      questionId: currentQuestion.questionId,
-      answerText: inputAnswer,
-      answerStatus: inputAnswer === correctAnswer ? 'Y' : 'N',
-      hintUsageCount: existingAnswer ? existingAnswer.hintUsageCount : 0,
-      answerTimeTaken: 30 - seconds,
-      answerAt: formatDate(new Date()),
-    };
+      setAnswers((prevAnswers) => [...prevAnswers, newAnswer]);
 
-    setAnswers((prevAnswers) =>
-      prevAnswers.filter(
-        (answer) => answer.questionId !== currentQuestion.questionId,
-      ),
-    );
-
-    setAnswers((prevAnswers) => [...prevAnswers, newAnswer]);
-
-    if (inputAnswer === correctAnswer) {
-      onCorrectOpen();
-      setHeartsCount((prevCount) => prevCount + 1);
-      setAnswerSubmitCount(0);
-    } else {
-      onIncorrectOpen();
-      setAnswerSubmitCount((prev) => prev + 1);
-      if (answerSubmitCount + 1 >= 3) {
-        setTimeout(() => {
-          fetchNextQuestion();
-          onIncorrectClose();
-          setIsPaused(false);
-        }, 2000);
-        return;
-      }
-    }
-
-    setTimeout(() => {
       if (inputAnswer === correctAnswer) {
-        fetchNextQuestion();
+        onCorrectOpen();
+        setHeartsCount((prevCount) => prevCount + 1);
+        setAnswerSubmitCount(0);
+      } else {
+        // 패스 버튼 클릭 시에는 오답 모달 생략
+        if (!isPass) {
+          onIncorrectOpen();
+        }
+        setAnswerSubmitCount((prev) => prev + 1);
+        if (answerSubmitCount + 1 >= 3) {
+          setTimeout(() => {
+            fetchNextQuestion();
+            onIncorrectClose();
+            setIsPaused(false);
+            resolve();
+          }, 1000);
+          return;
+        }
       }
-      onCorrectClose();
-      onIncorrectClose();
-      setIsPaused(false);
-      setSeconds(30);
-    }, 2000);
+
+      setTimeout(() => {
+        if (inputAnswer === correctAnswer) {
+          fetchNextQuestion();
+        }
+        onCorrectClose();
+        onIncorrectClose();
+        setIsPaused(false);
+        setSeconds(30);
+        resolve();
+      }, 2000);
+    });
   };
 
   // 게임 종료 처리
@@ -227,6 +232,8 @@ const Game = () => {
       heartsCount,
       answers,
     };
+
+    console.log('gameResult:', gameResult);
 
     try {
       const res = await axiosInstance.post('/game/answer', gameResult);
@@ -296,6 +303,7 @@ const Game = () => {
           <Pass
             fetchNextQuestion={fetchNextQuestion}
             setIsPaused={setIsPaused}
+            checkAnswer={checkAnswer}
           />
         </GridItem>
         <GridItem colSpan={1}>
