@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -23,6 +23,15 @@ const AnswerWrite: React.FC<AnswerProps> = ({ setIsPaused, checkAnswer }) => {
   const [text, setText] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    if (isOpen && inputRef.current) {
+      const timer = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100); // 약간의 지연 시간을 추가하여 모달이 완전히 열릴 때까지 대기
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
   const handleOpen = () => {
     setIsOpen(true);
     setIsPaused(true);
@@ -42,6 +51,7 @@ const AnswerWrite: React.FC<AnswerProps> = ({ setIsPaused, checkAnswer }) => {
     setIsPaused(false);
     setText('');
   };
+
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && text) {
       handleConfirm();

@@ -4,6 +4,8 @@ import badgeImg96 from '../../asset/images/badge96.png';
 import CustomButton from '../../components/Common/CustomButton';
 import TopicCard from '../../components/Common/TopicCard';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { topicIdState, titleState, questionsState } from '../../recoil/atom';
 import axiosInstance from '../../api/axiosInstance';
 // TODO : 로컬에 저장된 이미지를 서버에 저장하기
 import topicListLocal from '../../asset/topicList';
@@ -26,8 +28,9 @@ const Topic = () => {
     id: number;
     title: string;
   } | null>(null);
-
-  // TODO : 전체 토픽리스트를 불러오기
+  const [, setTopicId] = useRecoilState(topicIdState);
+  const [, setTitle] = useRecoilState(titleState);
+  const [, setQuestions] = useRecoilState(questionsState);
 
   console.log('=====API URL:', process.env.REACT_APP_API_URL);
   // TODO : 지금까지 모은 뱃지 리스트 배열 불러오기(/game/badges), 획득한 뱃지가 없을 경우 기본 뱃지 이미지만 보여주기
@@ -58,18 +61,22 @@ const Topic = () => {
     setSelectedTopic({ id: topicId, title });
   };
   // 게임 시작 버튼을 누르면 해당 게임의 데이터를 받아와서 게임 컴포넌트로 이동하기
-  const startGame = () => {
+  const startGame = async () => {
     if (selectedTopic) {
-      axiosInstance.get(`/game/start/${selectedTopic.id}`).then((res) => {
+      try {
+        const res = await axiosInstance.get(`/game/start/${selectedTopic.id}`);
         console.log(`${selectedTopic.id} : ${selectedTopic.title} 문제 리스트`);
-        navigate('/game', {
-          state: {
-            topicId: selectedTopic.id,
-            title: selectedTopic.title,
-            questions: res.data.game,
-          },
-        });
-      });
+
+        // 순차적으로 상태를 업데이트
+        setTopicId(selectedTopic.id);
+        setTitle(selectedTopic.title);
+        setQuestions(res.data.game);
+
+        // navigate는 상태 업데이트 후에 호출
+        navigate('/game');
+      } catch (error) {
+        console.error('Error starting game:', error);
+      }
     }
   };
 
@@ -140,6 +147,7 @@ const Topic = () => {
               ''
             }
             onClick={() => handleTopicSelect(topic.topicId, topic.title)}
+            selected={selectedTopic?.id === topic.topicId}
           />
         ))}
       </Grid>

@@ -6,13 +6,19 @@ interface TopicCardProps {
   title: string;
   imgSrc: string;
   onClick?: () => void;
+  selected: boolean;
 }
 
 // TODO : 뱃지 미획득 주제 목록 리스트 불러오기(/game/topics), 주제별로 유저가 획득한 하트 수 불러오기
 // - 주제 별로 유저가 획득한 하트 수 표시(진행도 바 표시 -> 생략?)
 //   - 배지 미획득 주제 : n / 143
 
-const TopicCard: React.FC<TopicCardProps> = ({ title, imgSrc, onClick }) => {
+const TopicCard: React.FC<TopicCardProps> = ({
+  title,
+  imgSrc,
+  onClick,
+  selected,
+}) => {
   return (
     <GridItem onClick={onClick}>
       {' '}
@@ -23,6 +29,7 @@ const TopicCard: React.FC<TopicCardProps> = ({ title, imgSrc, onClick }) => {
         p={4}
         bg="gray.50"
         borderRadius="md"
+        border={selected ? '4px solid orange' : '0'}
         boxShadow="sm"
         transition="transform 0.2s, border 0.2s"
         _hover={{

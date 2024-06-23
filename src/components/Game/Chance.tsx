@@ -7,12 +7,23 @@ import hintImage from '../../asset/images/hint.png';
 
 interface ChanceProps {
   setIsPaused: React.Dispatch<React.SetStateAction<boolean>>; // 타이머 일시정지 상태 변경 함수
+  updateHintUsageCount: (questionId: number) => void; // 힌트 사용 횟수 업데이트 함수
+  questionId: number; // 현재 질문의 ID
+  questionText: string; // 현재 질문의 텍스트
 }
 
-const Chance: React.FC<ChanceProps> = ({ setIsPaused }) => {
+const Chance: React.FC<ChanceProps> = ({
+  setIsPaused,
+  updateHintUsageCount,
+  questionId,
+  questionText,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [seconds, setSeconds] = useState(2);
   const [showButtons, setShowButtons] = useState(true);
+  const [displayText, setDisplayText] = useState('');
+  const [updateCount, setUpdateCount] = useState(0);
+  const [currentQuestionId, setCurrentQuestionId] = useState(questionId);
 
   const modalText = (
     <Flex
@@ -86,7 +97,7 @@ const Chance: React.FC<ChanceProps> = ({ setIsPaused }) => {
             <Image src={hintImage} alt="hint" />
           </Box>
           <Text fontSize="lg" as="b">
-            찬스 내용
+            {displayText}
           </Text>
           <Text>{seconds} 초 후에 창이 닫힙니다.</Text>
         </VStack>,
@@ -94,7 +105,16 @@ const Chance: React.FC<ChanceProps> = ({ setIsPaused }) => {
     } else {
       setModalContent(modalText);
     }
-  }, [seconds, showButtons]);
+  }, [seconds, showButtons, displayText]);
+
+  // Question ID가 변경될 때 초기화
+  useEffect(() => {
+    if (currentQuestionId !== questionId) {
+      setDisplayText('');
+      setUpdateCount(0);
+      setCurrentQuestionId(questionId);
+    }
+  }, [questionId, currentQuestionId]);
 
   const handleOpen = useCallback(() => {
     setIsOpen(true);
@@ -112,7 +132,12 @@ const Chance: React.FC<ChanceProps> = ({ setIsPaused }) => {
   const handleConfirm = useCallback(() => {
     setSeconds(2);
     setShowButtons(false);
-  }, []);
+    if (updateCount < questionText.length) {
+      updateHintUsageCount(questionId); // 힌트 사용 횟수 업데이트
+      setDisplayText(questionText.slice(0, updateCount + 1));
+      setUpdateCount((prevCount) => prevCount + 1);
+    }
+  }, [questionText, updateCount, updateHintUsageCount, questionId]);
 
   return (
     <>

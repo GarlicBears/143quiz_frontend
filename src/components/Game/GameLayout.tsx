@@ -5,6 +5,8 @@ import GameStop from './GameStop';
 import xImage from '../../asset/images/blackX.png';
 import Add from '../Common/Add';
 import Footer from '../Common/Footer';
+import { titleState } from '../../recoil/atom';
+import { useRecoilValue } from 'recoil';
 
 const Layout: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,7 +20,7 @@ const Layout: React.FC = () => {
   };
 
   // TODO : 해당 게임의 topic명 넣기
-  const topic = '동물';
+  const topic = useRecoilValue(titleState);
 
   return (
     <Box

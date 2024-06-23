@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Flex, Text, Grid, GridItem, useDisclosure } from '@chakra-ui/react';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import blackboard from '../../asset/images/blackboard.png';
 import Chance from '../../components/Game/Chance';
 import Pass from '../../components/Game/Pass';
@@ -9,8 +9,15 @@ import AnswerWrite from '../../components/Game/AnswerWrite';
 import Correct from '../../components/Game/Correct';
 import Incorrect from '../../components/Game/Incorrect';
 import Timeout from '../../components/Game/Timeout';
-import { answerSubmitCountState } from '../../recoil/atom';
-import { useLocation } from 'react-router-dom';
+import {
+  answerSubmitCountState,
+  answersState,
+  topicIdState,
+  titleState,
+  questionsState,
+} from '../../recoil/atom';
+import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../../api/axiosInstance';
 
 interface AnswerType {
   questionId: number;
@@ -29,23 +36,33 @@ const Game = () => {
   const [answerSubmitCount, setAnswerSubmitCount] = useRecoilState(
     answerSubmitCountState,
   );
+  const [answers, setAnswers] = useRecoilState(answersState);
   const [fontSize, setFontSize] = useState('4rem');
+  const navigate = useNavigate();
 
-  const location = useLocation();
-  const { topicId, title, questions = [] } = location.state || {};
+  const topicId = useRecoilValue(topicIdState);
+  const title = useRecoilValue(titleState);
+  const questions = useRecoilValue(questionsState);
   const [heartsCount, setHeartsCount] = useState(0);
-  const [answers, setAnswers] = useState<AnswerType[]>([]);
 
+  // 디버깅 용 콘솔로그 : 데이터 수신 확인
   useEffect(() => {
     console.log('Received data:', { topicId, title, questions });
   }, [topicId, title, questions]);
 
   useEffect(() => {
-    if (questions && questions.length > 0) {
+    console.log('heartsCount:', heartsCount);
+    console.log('answers:', answers);
+  }, [heartsCount, answers]);
+
+  // 문제 설정
+  useEffect(() => {
+    if (questions && questions.length > 0 && questionIndex < questions.length) {
       setQuestion(questions[questionIndex].answerText);
     }
   }, [questions, questionIndex]);
 
+  // 모달 상태 설정
   const {
     isOpen: isCorrectOpen,
     onOpen: onCorrectOpen,
@@ -62,6 +79,7 @@ const Game = () => {
     onClose: onTimeoutClose,
   } = useDisclosure();
 
+  // 타이머 설정
   useEffect(() => {
     let timerId: ReturnType<typeof setInterval>;
     if (!isPaused && seconds > 0) {
@@ -74,6 +92,7 @@ const Game = () => {
     return () => clearInterval(timerId);
   }, [isPaused, seconds]);
 
+  // 타임아웃 처리
   const handleTimeout = () => {
     onTimeoutOpen();
     setIsPaused(true);
@@ -84,38 +103,87 @@ const Game = () => {
     }, 2000);
   };
 
+  // 문제 폰트 사이즈 설정
   useEffect(() => {
     const fontSize =
       question?.length > 6 ? '2rem' : question?.length > 4 ? '3rem' : '4rem';
     setFontSize(fontSize);
   }, [question]);
 
+  // 다음 문제 불러오기
   const fetchNextQuestion = () => {
-    if (questions.length > 0) {
+    if (questions.length > 0 && questionIndex < questions.length - 1) {
       const nextIndex = (questionIndex + 1) % questions.length;
       setQuestionIndex(nextIndex);
       setQuestion(questions[nextIndex].questionText);
       setSeconds(30);
       setAnswerSubmitCount(0);
+    } else {
+      // 모든 문제가 끝났을 때 처리
+      endGame();
     }
   };
 
+  // 정답제출 일시 날짜 포맷팅
+  const formatDate = (date: Date): string => {
+    return date.toLocaleString('sv-SE').slice(0, 19);
+  };
+
+  // hintUsageCount 및 answerSubmitCount 업데이트 함수
+  const updateHintUsageCount = (questionId: number) => {
+    setAnswers((prevAnswers) => {
+      const updatedAnswers = prevAnswers.map((answer) => {
+        if (answer.questionId === questionId) {
+          return { ...answer, hintUsageCount: answer.hintUsageCount + 1 };
+        }
+        return answer;
+      });
+
+      // 만약 해당 questionId가 기존 answers에 없다면 새로 추가합니다.
+      if (!updatedAnswers.find((answer) => answer.questionId === questionId)) {
+        updatedAnswers.push({
+          questionId,
+          answerText: '',
+          answerStatus: '',
+          hintUsageCount: 1,
+          answerTimeTaken: 0,
+          answerAt: formatDate(new Date()),
+        });
+      }
+
+      return updatedAnswers;
+    });
+  };
+
+  // 정답 확인 함수
   const checkAnswer = (inputAnswer: string) => {
+    if (!questions[questionIndex]) return; // 질문이 없는 경우 반환
+
     setIsPaused(true);
-    const correctAnswer = questions[questionIndex]?.questionText;
+    const correctAnswer = questions[questionIndex].questionText;
     const currentQuestion = questions[questionIndex];
 
     console.log('currentQuestion:', currentQuestion);
     console.log('correctAnswer:', correctAnswer);
 
+    const existingAnswer = answers.find(
+      (answer) => answer.questionId === currentQuestion.questionId,
+    );
+
     const newAnswer: AnswerType = {
       questionId: currentQuestion.questionId,
       answerText: inputAnswer,
-      answerStatus: inputAnswer === correctAnswer ? 'correct' : 'incorrect',
-      hintUsageCount: 0,
+      answerStatus: inputAnswer === correctAnswer ? 'Y' : 'N',
+      hintUsageCount: existingAnswer ? existingAnswer.hintUsageCount : 0,
       answerTimeTaken: 30 - seconds,
-      answerAt: new Date().toISOString(),
+      answerAt: formatDate(new Date()),
     };
+
+    setAnswers((prevAnswers) =>
+      prevAnswers.filter(
+        (answer) => answer.questionId !== currentQuestion.questionId,
+      ),
+    );
 
     setAnswers((prevAnswers) => [...prevAnswers, newAnswer]);
 
@@ -145,6 +213,36 @@ const Game = () => {
       setIsPaused(false);
       setSeconds(30);
     }, 2000);
+  };
+
+  // 게임 종료 처리
+  const endGame = async () => {
+    console.log('endGame called');
+
+    const gameResult = {
+      topicId,
+      sessionId: 0, // sessionId를 적절히 설정해야 한다면 이 부분을 수정하세요.
+      heartsCount,
+      answers,
+    };
+
+    try {
+      const res = await axiosInstance.post('/game/answer', gameResult);
+      const { badgeAcquired, totalHearts } = res.data;
+      if (badgeAcquired) {
+        navigate('/game/earnbadge');
+      } else {
+        navigate('/game/complete', { state: { totalHearts } });
+      }
+    } catch (error) {
+      console.error('Error ending game:', error);
+    } finally {
+      // 게임 리셋
+      setHeartsCount(0);
+      setAnswers([]);
+      setAnswerSubmitCount(0);
+      setQuestionIndex(0);
+    }
   };
 
   return (
@@ -185,7 +283,12 @@ const Game = () => {
         alignItems="center"
       >
         <GridItem colSpan={1}>
-          <Chance setIsPaused={setIsPaused} />
+          <Chance
+            setIsPaused={setIsPaused}
+            updateHintUsageCount={updateHintUsageCount}
+            questionId={questions[questionIndex]?.questionId}
+            questionText={questions[questionIndex]?.questionText}
+          />
         </GridItem>
         <GridItem colSpan={1}>
           <Pass
