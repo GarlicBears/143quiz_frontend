@@ -15,8 +15,7 @@ import {
 import UserAgreement from './UserAgreement';
 import UserAccountDelete from './UserAccountDelete';
 import UserLogout from './UserLogout';
-// 이메일, 별명 변경 불가
-// 생년월일 거주지, 젠더 변경 가능
+
 function UserInfoUpdate() {
   const generateYearOption = () => {
     const startYear = 1940;

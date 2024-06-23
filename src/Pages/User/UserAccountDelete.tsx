@@ -77,15 +77,13 @@ import {
 
 function UserAccountDelete() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [showConfirm, setShowConfirm] = useState(true); // 추가된 상태로 초기값을 true로 설정
+  const [showConfirm, setShowConfirm] = useState(true);
 
   const handleDelete = () => {
-    // '예' 버튼 클릭 시 실행되는 함수, 입력 폼을 보여주기 위해 상태를 false로 변경
     setShowConfirm(false);
   };
 
   const handleCancel = () => {
-    // 모달을 닫을 때 초기 상태로 리셋
     setShowConfirm(true);
     onClose();
   };

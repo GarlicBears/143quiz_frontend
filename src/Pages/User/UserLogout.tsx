@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 
 function UserLogout() {
-  const { isOpen, onOpen, onClose } = useDisclosure(); // 모달의 초기 상태를 닫힌 상태로 설정
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       <Flex onClick={onOpen}>
