@@ -21,7 +21,6 @@ const TopicCard: React.FC<TopicCardProps> = ({
 }) => {
   return (
     <GridItem onClick={onClick}>
-      {' '}
       {/* onClick 핸들러 추가 */}
       <Flex
         flexDirection="column"
