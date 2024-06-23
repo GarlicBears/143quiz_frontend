@@ -1,13 +1,8 @@
 import React from 'react';
 import {
-  Box,
   Button,
   Flex,
-  Grid,
-  GridItem,
-  Image,
   Modal,
-  ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalFooter,
@@ -21,7 +16,7 @@ function UserLogout() {
   const { isOpen, onOpen, onClose } = useDisclosure(); // 모달의 초기 상태를 닫힌 상태로 설정
   return (
     <>
-      <Flex onClick={onOpen} alignItems="center" justifyContent="center">
+      <Flex onClick={onOpen}>
         <Text>로그아웃</Text>
       </Flex>
 
@@ -35,13 +30,7 @@ function UserLogout() {
           </ModalHeader>
           <ModalCloseButton />
           <ModalFooter justifyContent="center" w="100%">
-            <Button
-              flex="1"
-              variant="outline"
-              // colorScheme="#FF711A"
-              mr={3}
-              onClick={onClose}
-            >
+            <Button flex="1" variant="outline" mr={3} onClick={onClose}>
               취소
             </Button>
             <Button

@@ -77,18 +77,17 @@ function UserInfo() {
               gap="1"
               color="blackAlpha.700"
               fontWeight="bold"
-              border="0px solid red"
-              _hover={{ borderWidth: '2px' }}
+              _hover={{ borderWidth: '1px' }}
             >
               <GridItem
                 display="flex"
-                border="0px solid blue"
+                border="1px solid gray"
                 justifyContent="center"
                 alignItems="center"
                 pl="2"
                 area={'nav'}
               >
-                <Box border="1px solid black" borderRadius="full">
+                <Box border="1px solid gray" borderRadius="full">
                   {userInfo.image ? (
                     <Image
                       src={userInfo.image}
@@ -101,10 +100,10 @@ function UserInfo() {
                   )}
                 </Box>
               </GridItem>
-              <GridItem pl="2" border="1px solid black" area={'main'}>
+              <GridItem pl="2" border="1px solid gray" area={'main'}>
                 Nickname: {userInfo.nickname}
               </GridItem>
-              <GridItem pl="2" border="1px solid black" area={'footer'}>
+              <GridItem pl="2" border="1px solid gray" area={'footer'}>
                 Gender: {userInfo.gender}
                 <br />
                 Location: {userInfo.location}
@@ -116,10 +115,10 @@ function UserInfo() {
             alignItems="center"
             fontSize="xl"
             justifyContent="center"
-            border="0px solid red"
             _hover={{ borderWidth: '2px' }}
             display="flex"
           >
+            {/*내가 모은 뱃지*/}
             <UserBadge />
           </Box>
           <Text textAlign="center" mt={5} fontSize="xl">
@@ -140,12 +139,11 @@ function UserInfo() {
           <UserAgreement />
           <Text
             textAlign="center"
-            border="0px solid black"
             mt={5}
-            fontSize="xl"
             onClick={handleLogout}
-            _hover={{ borderWidth: '2px' }}
+            _hover={{ borderWidth: '1px' }}
           >
+            {/*로그아웃 모달*/}
             <UserLogout />
           </Text>
         </Card>

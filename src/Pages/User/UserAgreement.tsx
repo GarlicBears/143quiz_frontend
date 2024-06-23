@@ -72,7 +72,11 @@ function UserAgreement() {
   `;
   return (
     <Box>
-      <Text onClick={onPrivacyOpen} textDecoration="underline">
+      <Text
+        onClick={onPrivacyOpen}
+        textDecoration="underline"
+        _hover={{ borderWidth: '1px' }}
+      >
         개인정보 수집 및 이용약관 (상세)
       </Text>
       <Modal size="3xl" isOpen={isPrivacyOpen} onClose={onPrivacyClose}>
