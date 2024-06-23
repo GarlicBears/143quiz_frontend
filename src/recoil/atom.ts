@@ -24,6 +24,10 @@ export const questionsState = atom<QuestionType[]>({
   key: 'questionsState',
   default: [],
 });
+export const sessionIdState = atom<number | 0>({
+  key: 'sessionIdState',
+  default: 0,
+});
 
 // 서버에 보낼 답변 리스트
 interface AnswerType {

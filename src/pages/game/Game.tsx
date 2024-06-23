@@ -18,6 +18,7 @@ import {
 } from '../../recoil/atom';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/axiosInstance';
+import { sessionIdState } from '../../recoil/atom';
 
 interface AnswerType {
   questionId: number;
@@ -44,6 +45,7 @@ const Game = () => {
   const title = useRecoilValue(titleState);
   const questions = useRecoilValue(questionsState);
   const [heartsCount, setHeartsCount] = useState(0);
+  const sessionId = useRecoilValue(sessionIdState);
 
   // 디버깅 용 콘솔로그 : 데이터 수신 확인
   useEffect(() => {
@@ -221,7 +223,7 @@ const Game = () => {
 
     const gameResult = {
       topicId,
-      sessionId: 0, // sessionId를 적절히 설정해야 한다면 이 부분을 수정하세요.
+      sessionId,
       heartsCount,
       answers,
     };

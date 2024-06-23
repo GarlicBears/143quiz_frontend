@@ -5,7 +5,12 @@ import CustomButton from '../../components/Common/CustomButton';
 import TopicCard from '../../components/Common/TopicCard';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { topicIdState, titleState, questionsState } from '../../recoil/atom';
+import {
+  topicIdState,
+  titleState,
+  questionsState,
+  sessionIdState,
+} from '../../recoil/atom';
 import axiosInstance from '../../api/axiosInstance';
 // TODO : 로컬에 저장된 이미지를 서버에 저장하기
 import topicListLocal from '../../asset/topicList';
@@ -31,6 +36,7 @@ const Topic = () => {
   const [, setTopicId] = useRecoilState(topicIdState);
   const [, setTitle] = useRecoilState(titleState);
   const [, setQuestions] = useRecoilState(questionsState);
+  const [, setSessionId] = useRecoilState<number>(sessionIdState);
 
   console.log('=====API URL:', process.env.REACT_APP_API_URL);
   // TODO : 지금까지 모은 뱃지 리스트 배열 불러오기(/game/badges), 획득한 뱃지가 없을 경우 기본 뱃지 이미지만 보여주기
@@ -65,10 +71,10 @@ const Topic = () => {
     if (selectedTopic) {
       try {
         const res = await axiosInstance.get(`/game/start/${selectedTopic.id}`);
-        console.log(`${selectedTopic.id} : ${selectedTopic.title} 문제 리스트`);
-
+        console.log(`${res.data.topicId} : ${res.data.sessionId} 문제 리스트`);
         // 순차적으로 상태를 업데이트
-        setTopicId(selectedTopic.id);
+        setTopicId(res.data.topicId);
+        setSessionId(res.data.sessionId);
         setTitle(selectedTopic.title);
         setQuestions(res.data.game);
 
