@@ -18,6 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
+//로그인 화면
 function UserLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

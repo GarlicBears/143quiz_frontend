@@ -7,6 +7,7 @@ import {
   CardFooter,
   CardHeader,
   Center,
+  Divider,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -24,6 +25,8 @@ import {
   faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import UserAgreement from './UserAgreement';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 //회원 가입 화면
 
@@ -33,6 +36,7 @@ function UserSignup() {
   const [domain, setDomain] = useState('');
   const [customDomain, setCustomDomain] = useState('');
   const toast = useToast();
+  const navigate = useNavigate();
 
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
@@ -45,12 +49,18 @@ function UserSignup() {
   const [birthYear, setBirthYear] = useState('');
   // 이메일 비밀번호, 비번확인, 별명, 별명확인, 성별, 거주지, 출생연도 (1940-2022)
 
-  let submitAvailable = true;
+  let submitAvailable =
+    emailAvailable &&
+    nickNameAvailable &&
+    password &&
+    password === passwordCheck &&
+    gender &&
+    birthYear &&
+    location;
 
   if (!emailAvailable) {
     submitAvailable = false;
   }
-  // 논의 : 이메일 확인
   const handleDomainChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
     if (value === 'custom') {
@@ -66,23 +76,136 @@ function UserSignup() {
     setCustomDomain('');
   };
 
-  // 유저가 '직접 입력하기'를 선택했을 때 사용자가 이전에 입력했던 도메인을 유지하지 않고 입력필드를 비워둠
-  // 사용자가 리스트에서 다른 도메인을 선택했을 때 '직접 입력하기' 필드를 사용하지 않으므로 빈 문자열로 설정.
+  function checkEmailExists() {
+    axios
+      .post('/api/user/checkEmail', { email })
+      .then((response) => {
+        setEmailAvailable(!response.data.exists);
+        toast({
+          title: response.data.exists ? '중복된 이메일' : '사용 가능한 이메일',
+          description: response.data.exists
+            ? '이미 사용 중인 이메일입니다.'
+            : '사용 가능한 이메일입니다.',
+          status: response.data.exists ? 'error' : 'success',
+          duration: 2000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            display: 'flex',
+            justifyContent: 'center',
+          },
+        });
+      })
+      .catch((error) => {
+        toast({
+          title: '오류발생',
+          description:
+            '이메일 확인 중 오류가 발생했습니다. 다시 시도해 주세요.',
+          status: 'error',
+          duration: 2000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            display: 'flex',
+            justifyContent: 'center',
+          },
+        });
+      });
+  }
 
-  const handleSubmit = () => {
-    const fullEmail =
-      domain === 'custom' ? `${email}@${customDomain}` : `${email}@${domain}`;
-    toast({
-      title: '이메일 확인',
-      description: `입력한 이메일 주소는 ${fullEmail} 입니다.`,
-      status: 'info',
-      duration: 5000,
-      isClosable: true,
-    });
-  };
+  function checkNicknameExists() {
+    axios
+      .post('/api/user/checkNickname', { nickname: nickName }) // "nickName" 변수를 "nickname" 키로 사용
+      .then((response) => {
+        setNickNameAvailable(!response.data.exists);
+        toast({
+          title: response.data.exists ? '중복된 별명' : '사용 가능한 별명',
+          description: response.data.exists
+            ? '이미 사용 중인 별명입니다.'
+            : '사용 가능한 별명입니다.',
+          status: response.data.exists ? 'error' : 'success',
+          duration: 2000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            display: 'flex',
+            justifyContent: 'center',
+          },
+        });
+      })
+      .catch((error) => {
+        toast({
+          title: '오류발생',
+          description: '별명 확인 중 오류가 발생했습니다. 다시 시도해 주세요.',
+          status: 'error',
+          duration: 2000,
+          isClosable: true,
+          position: 'top',
+          containerStyle: {
+            display: 'flex',
+            justifyContent: 'center',
+          },
+        });
+        console.error('Request failed:', error.response || error); // 오류 로그 추가
+      });
+  }
+
   const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedYear = event.target.value;
     setBirthYear(selectedYear);
+  };
+  const handleSubmit = () => {
+    const fullEmail = `${email}@${customDomain || domain}`;
+    if (submitAvailable) {
+      axios
+        .post('/api/user/signup', {
+          email: fullEmail,
+          password: password,
+          nickname: nickName,
+          gender: gender,
+          birthYear: birthYear,
+          location: location,
+        })
+        .then((response) => {
+          // 성공적으로 저장되었을 때의 처리
+          toast({
+            title: '가입 성공',
+            description: '회원가입이 성공적으로 완료되었습니다.',
+            status: 'success',
+            duration: 2000,
+            isClosable: true,
+            position: 'top',
+            containerStyle: {
+              display: 'flex',
+              justifyContent: 'center',
+            },
+          });
+          navigate('/');
+        })
+        .catch((error) => {
+          // 오류 발생시 처리
+          toast({
+            title: '가입 실패',
+            description: '오류가 발생했습니다. 다시 시도해 주세요.',
+            status: 'error',
+            duration: 2000,
+            isClosable: true,
+            position: 'top',
+            containerStyle: {
+              display: 'flex',
+              justifyContent: 'center',
+            },
+          });
+        });
+    } else {
+      toast({
+        title: '오류',
+        description: '입력한 정보를 다시 확인해주세요.',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
@@ -94,7 +217,6 @@ function UserSignup() {
           </CardHeader>
           <CardBody>
             <FormControl mb={5}>
-              {/*<FormControl mb={5} isInvalid={!EmailAvailable}>*/}
               <FormLabel>이메일</FormLabel>
               <Flex gap={2}>
                 <Input
@@ -106,7 +228,7 @@ function UserSignup() {
                 />
                 @
                 {domain === 'custom' ? (
-                  <InputGroup size="md" w={40}>
+                  <InputGroup w={40}>
                     <Input
                       placeholder="직접입력"
                       value={customDomain}
@@ -131,7 +253,9 @@ function UserSignup() {
                     <option value="custom">직접 입력</option>
                   </Select>
                 )}
-                <Button variant="outline">중복확인</Button>
+                <Button variant="outline" onClick={checkEmailExists}>
+                  중복확인
+                </Button>
                 {/*<Button onClick={handleEmailCheck}>중복확인</Button>*/}
               </Flex>
               <FormErrorMessage>이메일 중복체크를 해주세요.</FormErrorMessage>
@@ -178,8 +302,9 @@ function UserSignup() {
                     style={{ color: '#ff711a' }}
                   />
                 </Button>
-                <Button variant="outline">중복확인</Button>
-                {/*<Button onClick={handleNickNameCheck}>중복확인</Button>*/}
+                <Button variant="outline" onClick={checkNicknameExists}>
+                  중복확인
+                </Button>
               </Flex>
               <FormErrorMessage>별명 중복 확인을 해주세요.</FormErrorMessage>
             </FormControl>
@@ -215,11 +340,11 @@ function UserSignup() {
               </Select>
             </FormControl>
             {/*  -------거주지 입력---------*/}
-            <FormControl>
+            <FormControl mb={5}>
               <FormLabel>거주지</FormLabel>
               <Select
                 placeholder={'거주 지역 선택'}
-                // onChange={(e) => setLocation(e.target.value)}
+                onChange={(e) => setLocation(e.target.value)}
               >
                 {[
                   '서울',
@@ -237,12 +362,15 @@ function UserSignup() {
                 ))}
               </Select>
             </FormControl>
+            <FormControl>
+              <FormLabel>이용약관</FormLabel>
+              <UserAgreement />
+            </FormControl>
           </CardBody>
-          <UserAgreement />
-          {/*약관동의*/}
           <CardFooter>
             <Button
               w="100%"
+              colorScheme={submitAvailable ? 'orange' : 'gray'}
               isDisabled={!submitAvailable}
               onClick={handleSubmit}
             >
