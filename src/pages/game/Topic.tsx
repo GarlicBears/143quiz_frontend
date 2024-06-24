@@ -37,6 +37,7 @@ const Topic = () => {
   const [, setTitle] = useRecoilState(titleState);
   const [, setQuestions] = useRecoilState(questionsState);
   const [, setSessionId] = useRecoilState<number>(sessionIdState);
+  const [isLoading, setIsLoading] = useState(true);
 
   // TODO : 지금까지 모은 뱃지 리스트 배열 불러오기(/game/badges), 획득한 뱃지가 없을 경우 기본 뱃지 이미지만 보여주기
 
@@ -49,6 +50,7 @@ const Topic = () => {
         console.log(res.data.topics); // [{ "topicId": 0, "title": "string"}, { "topicId": 0, "title": "string"}, ...]
         setEarnedBadgeList(res.data.topics);
       }
+      setIsLoading(false);
     });
 
     // 뱃지 미획득 주제 리스트 불러오기
@@ -57,6 +59,7 @@ const Topic = () => {
       setTopicList(res.data.topics);
       console.log('`뱃지 미획득 주제 리스트');
       console.log(res.data.topics);
+      setIsLoading(false);
     });
   }, []);
 
@@ -112,24 +115,34 @@ const Topic = () => {
             mt={4}
             width="100%"
           >
-            {[...Array(5)].map((_, index) => (
-              <Box
-                key={index}
-                boxSize="72px"
-                bg="red.500"
-                mr={2}
-                flexShrink="0"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                borderRadius="md"
-                boxShadow="sm"
-                color="white"
-                fontWeight="bold"
-              >
-                모은 뱃지
-              </Box>
-            ))}
+            {earnedBadgeList.map((earnedBadge, index) => {
+              const imgSrc =
+                topicListLocal.find(
+                  (topic) => topic.topicId === earnedBadge.topicId,
+                )?.imgSrc || '';
+              return (
+                <Box
+                  key={index}
+                  boxSize="72px"
+                  backgroundImage={imgSrc}
+                  bgColor={imgSrc ? 'customOrange.100' : 'gray.300'}
+                  backgroundSize="cover"
+                  backgroundPosition="center"
+                  backgroundRepeat="no-repeat"
+                  mr={2}
+                  flexShrink="0"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  borderRadius="md"
+                  boxShadow="sm"
+                  color="white"
+                  fontWeight="bold"
+                >
+                  {earnedBadge.title}
+                </Box>
+              );
+            })}
           </Flex>
         ) : (
           <Text>
@@ -151,6 +164,7 @@ const Topic = () => {
             handleTopicSelect(topicListLocal[0].topicId, topicListLocal[0].name)
           }
           selected={selectedTopic?.id === topicListLocal[0].topicId}
+          isLoading={isLoading}
         />
         {topicList.map((topic, index) => (
           <TopicCard
@@ -162,6 +176,7 @@ const Topic = () => {
             }
             onClick={() => handleTopicSelect(topic.topicId, topic.title)}
             selected={selectedTopic?.id === topic.topicId}
+            isLoading={isLoading}
           />
         ))}
       </Grid>
