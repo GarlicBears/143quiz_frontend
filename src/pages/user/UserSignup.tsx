@@ -319,9 +319,9 @@ function UserSignup() {
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
               >
-                <option value="male">남자</option>
-                <option value="female">여자</option>
-                <option value="other">기타</option>
+                <option value="남자">남자</option>
+                <option value="여자">여자</option>
+                <option value="기타">기타</option>
               </Select>
             </FormControl>
             {/*출생연도 입력 1940_2022까지*/}
