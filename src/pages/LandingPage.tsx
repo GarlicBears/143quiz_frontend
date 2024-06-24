@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Button, Container, Flex } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import gamelanding from '../Asset/images/gamelanding.png';
+import gamelanding from '../asset/images/gamelanding.png';
 //게임의 첫 화면
 const LandingPage = () => {
   const navigate = useNavigate();
