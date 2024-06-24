@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Flex, Grid, VStack, Box, Image, Text } from '@chakra-ui/react';
 import badgeImg96 from '../../asset/images/badge96.png';
 import CustomButton from '../../components/common/CustomButton';
-import TopicCard from '../../components/common/TopicCard';
+import TopicCard from '../../components/game/TopicCard';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import {
@@ -38,9 +38,8 @@ const Topic = () => {
   const [, setQuestions] = useRecoilState(questionsState);
   const [, setSessionId] = useRecoilState<number>(sessionIdState);
 
-  console.log('=====API URL:', process.env.REACT_APP_API_URL);
   // TODO : 지금까지 모은 뱃지 리스트 배열 불러오기(/game/badges), 획득한 뱃지가 없을 경우 기본 뱃지 이미지만 보여주기
-  // - 이미 뱃지를 획득한 주제는 보여주지 않기(상단 안내문 밑에 이미 획득한 뱃지 이미지(/game/badges)를 보여주는 것으로 대체)
+
   useEffect(() => {
     axiosInstance.get('/game/badges').then((res) => {
       console.log(`획득뱃지수 : ${res.data.topics.length}`);
@@ -52,7 +51,8 @@ const Topic = () => {
       }
     });
 
-    // TODO : 뱃지 미획득 주제 리스트를 불러오기
+    // 뱃지 미획득 주제 리스트 불러오기
+    // - 이미 뱃지를 획득한 주제는 보여주지 않기(상단 안내문 밑에 이미 획득한 뱃지 이미지(/game/badges)를 보여주는 것으로 대체)
     axiosInstance.get('/game/topics').then((res) => {
       setTopicList(res.data.topics);
       console.log('`뱃지 미획득 주제 리스트');
@@ -60,10 +60,9 @@ const Topic = () => {
     });
   }, []);
 
-  // TODO : 주제를 선택한 후 게임 시작 버튼을 누르면 해당 topicID 의 게임으로 이동하기(/game/start/{topicId})
   // 주제를 선택하면 선택한 주제를 저장한 후,
   const handleTopicSelect = (topicId: number, title: string) => {
-    console.log(topicId);
+    console.log(topicId, title);
     setSelectedTopic({ id: topicId, title });
   };
   // 게임 시작 버튼을 누르면 해당 게임의 데이터를 받아와서 게임 컴포넌트로 이동하기
@@ -144,6 +143,15 @@ const Topic = () => {
         gap={4}
         width={{ base: '100%', md: '720px' }}
       >
+        <TopicCard
+          key={0}
+          title={topicListLocal[0].name}
+          imgSrc={topicListLocal[0].imgSrc}
+          onClick={() =>
+            handleTopicSelect(topicListLocal[0].topicId, topicListLocal[0].name)
+          }
+          selected={selectedTopic?.id === topicListLocal[0].topicId}
+        />
         {topicList.map((topic, index) => (
           <TopicCard
             key={index}
@@ -164,7 +172,7 @@ const Topic = () => {
         textAlign="center"
         onClick={startGame}
       >
-        <CustomButton />
+        <CustomButton disabled={!selectedTopic} />
       </Box>
     </VStack>
   );
