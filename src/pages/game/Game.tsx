@@ -60,7 +60,7 @@ const Game = () => {
   // 문제 설정
   useEffect(() => {
     if (questions && questions.length > 0 && questionIndex < questions.length) {
-      setQuestion(questions[questionIndex].answerText);
+      setQuestion(questions[questionIndex].questionText);
     }
   }, [questions, questionIndex]);
 
@@ -163,7 +163,7 @@ const Game = () => {
       if (!questions[questionIndex]) return resolve(); // 질문이 없는 경우 반환
 
       setIsPaused(true);
-      const correctAnswer = questions[questionIndex].questionText;
+      const correctAnswer = questions[questionIndex].answerText;
       const currentQuestion = questions[questionIndex];
       // 동일한 답변이 존재하는지 확인 후, 존재한다면 해당 답변에 hintUsageCount 업데이트
       const existingAnswer = answers.find(
@@ -296,7 +296,7 @@ const Game = () => {
             setIsPaused={setIsPaused}
             updateHintUsageCount={updateHintUsageCount}
             questionId={questions[questionIndex]?.questionId}
-            questionText={questions[questionIndex]?.questionText}
+            answerText={questions[questionIndex]?.answerText}
           />
         </GridItem>
         <GridItem colSpan={1}>
