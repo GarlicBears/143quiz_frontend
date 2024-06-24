@@ -155,10 +155,11 @@ function UserSignup() {
     setBirthYear(selectedYear);
   };
   const handleSubmit = () => {
+    const fullEmail = `${email}@${customDomain || domain}`;
     if (submitAvailable) {
       axios
         .post('/api/user/signup', {
-          email: email,
+          email: fullEmail,
           password: password,
           nickname: nickName,
           gender: gender,

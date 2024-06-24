@@ -46,7 +46,7 @@ function UserInfoUpdate() {
           </Text>
           <Image
             // src={userImage}
-            border="0px solid black"
+            border="1px solid black"
             borderRadius="full"
             boxSize="150px"
             margin="auto"
