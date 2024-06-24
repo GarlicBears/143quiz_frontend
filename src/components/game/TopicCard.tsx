@@ -10,7 +10,7 @@ interface TopicCardProps {
 }
 
 // TODO : 뱃지 미획득 주제 목록 리스트 불러오기(/game/topics), 주제별로 유저가 획득한 하트 수 불러오기
-// - 주제 별로 유저가 획득한 하트 수 표시(진행도 바 표시 -> 생략?)
+// - 주제 별로 유저가 획득한 하트 수 표시
 //   - 배지 미획득 주제 : n / 143
 
 const TopicCard: React.FC<TopicCardProps> = ({
@@ -21,7 +21,6 @@ const TopicCard: React.FC<TopicCardProps> = ({
 }) => {
   return (
     <GridItem onClick={onClick}>
-      {/* onClick 핸들러 추가 */}
       <Flex
         flexDirection="column"
         alignItems="center"
