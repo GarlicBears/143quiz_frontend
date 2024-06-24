@@ -21,7 +21,9 @@ const LandingPage = () => {
         height="720px"
         bgPosition="center"
         bgRepeat="no-repeat"
-        bgSize="cover"
+        bgSize="contain"
+        // bgSize="contain"
+        // bgSize="auto"
       >
         <Flex flexDirection="column" height="100%">
           <Box height="70%" />
