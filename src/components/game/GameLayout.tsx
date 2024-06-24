@@ -3,8 +3,8 @@ import { Box, Flex, Container, Text, Image } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 import GameStop from './GameStop';
 import xImage from '../../asset/images/blackX.png';
-import Add from '../Common/Add';
-import Footer from '../Common/Footer';
+import Add from '../common/Add';
+import Footer from '../common/Footer';
 import { titleState } from '../../recoil/atom';
 import { useRecoilValue } from 'recoil';
 

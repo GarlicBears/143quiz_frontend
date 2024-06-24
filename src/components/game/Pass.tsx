@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import CustomModal from '../Common/CustomModal';
+import CustomModal from '../common/CustomModal';
 import { Flex, Text, Image, Box } from '@chakra-ui/react';
-import CustomButton from '../Common/CustomButton';
+import CustomButton from '../common/CustomButton';
 import buttonSound from '../../asset/audios/button.mp3';
 import skipImage from '../../asset/images/skip.png';
 

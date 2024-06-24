@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import CustomModal from '../Common/CustomModal';
+import CustomModal from '../common/CustomModal';
 import { Text, Button, Flex, Image, VStack, Box } from '@chakra-ui/react';
-import CustomButton from '../Common/CustomButton';
+import CustomButton from '../common/CustomButton';
 import buttonSound from '../../asset/audios/button.mp3';
 import hintImage from '../../asset/images/hint.png';
 

@@ -13,7 +13,7 @@ import {
   keyframes,
 } from '@chakra-ui/react';
 import buttonSound from '../../asset/audios/button.mp3';
-import CustomButton from '../Common/CustomButton';
+import CustomButton from '../common/CustomButton';
 import { AnswerProps } from '../../types/common';
 
 const AnswerSpeak: React.FC<AnswerProps> = ({ setIsPaused, checkAnswer }) => {

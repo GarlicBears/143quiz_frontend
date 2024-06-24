@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
-import Layout from './components/Common/Layout';
+import Layout from './components/common/Layout';
 import Topic from './pages/game/Topic';
 import Game from './pages/game/Game';
-import GameLayout from './components/Game/GameLayout';
+import GameLayout from './components/game/GameLayout';
 import { RecoilRoot } from 'recoil';
 import GameComplete from './pages/game/GameComplete';
 import Error from './pages/Error';

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import Header from '../../components/Common/Header';
-import Footer from '../../components/Common/Footer';
-import Add from '../../components/Common/Add';
+import Header from '../../components/common/Header';
+import Footer from '../../components/common/Footer';
+import Add from '../../components/common/Add';
 import { Box, Button, Flex, Text, VStack, Image } from '@chakra-ui/react';
 import topicList from '../../asset/topicList';
 import congratulationImage from '../../asset/images/congratulation.png';

@@ -14,7 +14,7 @@ import {
   Image,
 } from '@chakra-ui/react';
 import buttonSound from '../../asset/audios/button.mp3';
-import CustomButton from '../Common/CustomButton';
+import CustomButton from '../common/CustomButton';
 import { AnswerProps } from '../../types/common';
 import writeImage from '../../asset/images/write.png';
 

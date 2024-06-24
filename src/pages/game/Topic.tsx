@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Flex, Grid, VStack, Box, Image, Text } from '@chakra-ui/react';
 import badgeImg96 from '../../asset/images/badge96.png';
-import CustomButton from '../../components/Common/CustomButton';
-import TopicCard from '../../components/Common/TopicCard';
+import CustomButton from '../../components/common/CustomButton';
+import TopicCard from '../../components/common/TopicCard';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import {

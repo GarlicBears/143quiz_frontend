@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Flex, Text, Grid, GridItem, useDisclosure } from '@chakra-ui/react';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import blackboard from '../../asset/images/blackboard.png';
-import Chance from '../../components/Game/Chance';
-import Pass from '../../components/Game/Pass';
-import AnswerSpeak from '../../components/Game/AnswerSpeak';
-import AnswerWrite from '../../components/Game/AnswerWrite';
-import Correct from '../../components/Game/Correct';
-import Incorrect from '../../components/Game/Incorrect';
-import Timeout from '../../components/Game/Timeout';
+import Chance from '../../components/game/Chance';
+import Pass from '../../components/game/Pass';
+import AnswerSpeak from '../../components/game/AnswerSpeak';
+import AnswerWrite from '../../components/game/AnswerWrite';
+import Correct from '../../components/game/Correct';
+import Incorrect from '../../components/game/Incorrect';
+import Timeout from '../../components/game/Timeout';
 import {
   answerSubmitCountState,
   answersState,

@@ -9,7 +9,7 @@ import {
   Heading,
   Text,
 } from '@chakra-ui/react';
-import CustomButton from '../components/Common/CustomButton';
+import CustomButton from '../components/common/CustomButton';
 
 function MainPage() {
   return (

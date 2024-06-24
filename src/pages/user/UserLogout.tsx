@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Box,
   Button,
   Flex,
   Modal,
@@ -12,13 +11,13 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-//회원 랭킹 조회 화면
-function UserLank() {
+
+function UserLogout() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
       <Flex onClick={onOpen}>
-        <Text>랭킹</Text>
+        <Text>로그아웃</Text>
       </Flex>
 
       <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
@@ -26,15 +25,19 @@ function UserLank() {
         <ModalContent>
           <ModalHeader>
             <Flex alignItems="center" justifyContent="center">
-              <Box>순위</Box>
-              <Box>닉네임</Box>
-              <Box>하트 수</Box>
+              <Text>로그아웃 하시겠습니까?</Text>
             </Flex>
           </ModalHeader>
           <ModalCloseButton />
           <ModalFooter justifyContent="center" w="100%">
             <Button flex="1" variant="outline" mr={3} onClick={onClose}>
-              남은 하트 채우러 가기
+              취소
+            </Button>
+            <Button
+              flex="1"
+              // onClick={handleLogout} //[TODO] 로그아웃 로직 추가
+            >
+              로그아웃
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -43,4 +46,4 @@ function UserLank() {
   );
 }
 
-export default UserLank;
+export default UserLogout;
