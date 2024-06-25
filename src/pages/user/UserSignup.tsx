@@ -38,13 +38,9 @@ function UserSignup() {
   const [customDomain, setCustomDomain] = useState('');
   const toast = useToast();
   const navigate = useNavigate();
-
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
-
   const [nickName, setNickName] = useState('');
-  // const [nickNameAvailable, setNickNameAvailable] = useState(false);
-
   const [gender, setGender] = useState('');
   const [location, setLocation] = useState('');
   const [birthYear, setBirthYear] = useState('');
@@ -52,7 +48,6 @@ function UserSignup() {
 
   let submitAvailable =
     emailAvailable &&
-    // nickNameAvailable &&
     password &&
     password === passwordCheck &&
     gender &&
@@ -118,7 +113,6 @@ function UserSignup() {
     axiosInstance
       .post('/user/checkNickname', { nickname: nickName })
       .then((response) => {
-        // setNickNameAvailable(!response.data.exists);
         toast({
           title: response.data.exists ? '중복된 별명' : '사용 가능한 별명',
           description: response.data.exists
@@ -212,7 +206,7 @@ function UserSignup() {
   return (
     <>
       <Center>
-        <Card>
+        <Card w="100%">
           <CardHeader>
             <Heading>○ 회원가입</Heading>
           </CardHeader>
@@ -303,34 +297,6 @@ function UserSignup() {
               </Flex>
               <FormErrorMessage>별명 중복 확인을 해주세요.</FormErrorMessage>
             </FormControl>
-            {/*<FormControl isInvalid={!nickNameAvailable}>*/}
-            {/*  <FormLabel>별명 입력</FormLabel>*/}
-            {/*  <Flex gap={2}>*/}
-            {/*    <Input*/}
-            {/*      type="text"*/}
-            {/*      value={nickName}*/}
-            {/*      onChange={(e) => {*/}
-            {/*        setNickName(e.target.value);*/}
-            {/*        setNickNameAvailable(false);*/}
-            {/*      }}*/}
-            {/*    ></Input>*/}
-            {/*    <Button*/}
-            {/*      size="md"*/}
-            {/*      colorScheme="beige"*/}
-            {/*      border="1px solid tomato"*/}
-            {/*      borderRadius="full"*/}
-            {/*    >*/}
-            {/*      <FontAwesomeIcon*/}
-            {/*        icon={faMicrophoneLines}*/}
-            {/*        style={{ color: '#ff711a' }}*/}
-            {/*      />*/}
-            {/*    </Button>*/}
-            {/*    <Button variant="outline" onClick={checkNicknameExists}>*/}
-            {/*      중복확인*/}
-            {/*    </Button>*/}
-            {/*  </Flex>*/}
-            {/*  <FormErrorMessage>별명 중복 확인을 해주세요.</FormErrorMessage>*/}
-            {/*</FormControl>*/}
             <FormControl mb={5}>
               <FormLabel>성별</FormLabel>
               <Select
