@@ -6,11 +6,15 @@ import { Box, Button, Flex, Text, VStack, Image } from '@chakra-ui/react';
 import topicList from '../../asset/topicList';
 import congratulationImage from '../../asset/images/congratulation.png';
 import congratulationSound from '../../asset/audios/glissando_up.mp3';
+import { Link } from 'react-router-dom';
+import { titleState } from '../../recoil/atom';
+import { useRecoilValue } from 'recoil';
 
 const EarnBadge = () => {
-  const badgeName = '나무'; // 예시 값
+  const badgeName = useRecoilValue(titleState);
 
-  // badgeName에 해당하는 topic 찾기
+  // 로컬 토픽 리스트에서 badgeName에 해당하는 topic 찾기
+  // TODO : 서버에서 주제 이미지 불러오기
   const topic = topicList.find((topic) => topic.name === badgeName);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -26,6 +30,43 @@ const EarnBadge = () => {
       .then((r) => r)
       .catch((e) => e);
   }, []);
+
+  // 카카오톡 공유하기
+  useEffect(() => {
+    const kakaoApiKey = process.env.REACT_APP_KAKAO_API_KEY;
+    console.log(kakaoApiKey);
+    if (kakaoApiKey && window.Kakao) {
+      window.Kakao.init(kakaoApiKey);
+    } else {
+      console.error('Kakao API Key is missing or invalid.');
+    }
+  }, []);
+
+  const shareOnKakao = () => {
+    if (window.Kakao) {
+      window.Kakao.Link.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: '축하합니다!',
+          description: `당신은 '${badgeName}' 박사 뱃지를 획득하셨습니다!`,
+          imageUrl: topic?.imgSrc || '',
+          link: {
+            mobileWebUrl: 'http://yourdomain.com',
+            webUrl: 'http://yourdomain.com',
+          },
+        },
+        buttons: [
+          {
+            title: '웹으로 보기',
+            link: {
+              mobileWebUrl: 'http://yourdomain.com',
+              webUrl: 'http://yourdomain.com',
+            },
+          },
+        ],
+      });
+    }
+  };
 
   return (
     <>
@@ -96,17 +137,20 @@ const EarnBadge = () => {
             variant="outline"
             mb={3}
             width={{ base: '360px', sm: '100%' }}
+            onClick={shareOnKakao}
           >
             카톡으로 자랑하기
           </Button>
-          <Button
-            colorScheme="customOrange"
-            variant="outline"
-            mb={3}
-            width={{ base: '100%', sm: '360px' }}
-          >
-            내가 모은 뱃지 확인
-          </Button>
+          <Link to="/userInfo/badge">
+            <Button
+              colorScheme="customOrange"
+              variant="outline"
+              mb={3}
+              width={{ base: '100%', sm: '360px' }}
+            >
+              내가 모은 뱃지 확인
+            </Button>
+          </Link>
           <Button
             colorScheme="customOrange"
             variant="outline"
