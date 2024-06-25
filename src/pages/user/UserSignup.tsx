@@ -43,7 +43,7 @@ function UserSignup() {
   const [passwordCheck, setPasswordCheck] = useState('');
 
   const [nickName, setNickName] = useState('');
-  const [nickNameAvailable, setNickNameAvailable] = useState(false);
+  // const [nickNameAvailable, setNickNameAvailable] = useState(false);
 
   const [gender, setGender] = useState('');
   const [location, setLocation] = useState('');
@@ -52,7 +52,7 @@ function UserSignup() {
 
   let submitAvailable =
     emailAvailable &&
-    nickNameAvailable &&
+    // nickNameAvailable &&
     password &&
     password === passwordCheck &&
     gender &&
@@ -116,9 +116,9 @@ function UserSignup() {
 
   function checkNicknameExists() {
     axiosInstance
-      .post('/user/checkNickname', { nickname: nickName }) // "nickName" 변수를 "nickname" 키로 사용
+      .post('/user/checkNickname', { nickname: nickName })
       .then((response) => {
-        setNickNameAvailable(!response.data.exists);
+        // setNickNameAvailable(!response.data.exists);
         toast({
           title: response.data.exists ? '중복된 별명' : '사용 가능한 별명',
           description: response.data.exists
@@ -147,7 +147,7 @@ function UserSignup() {
             justifyContent: 'center',
           },
         });
-        console.error('Request failed:', error.response || error); // 오류 로그 추가
+        console.error('Request failed:', error.response || error);
       });
   }
 
@@ -283,24 +283,15 @@ function UserSignup() {
               />
               <FormErrorMessage>암호가 다릅니다.</FormErrorMessage>
             </FormControl>
-
-            <FormControl isInvalid={!nickNameAvailable}>
+            <FormControl mb={5}>
               <FormLabel>별명 입력</FormLabel>
               <Flex gap={2}>
                 <Input
                   type="text"
                   value={nickName}
-                  onChange={(e) => {
-                    setNickName(e.target.value);
-                    setNickNameAvailable(false);
-                  }}
+                  onChange={(e) => setNickName(e.target.value)}
                 ></Input>
-                <Button
-                  size="md"
-                  colorScheme="beige"
-                  border="1px solid tomato"
-                  borderRadius="full"
-                >
+                <Button size="md" borderRadius="full">
                   <FontAwesomeIcon
                     icon={faMicrophoneLines}
                     style={{ color: '#ff711a' }}
@@ -312,6 +303,34 @@ function UserSignup() {
               </Flex>
               <FormErrorMessage>별명 중복 확인을 해주세요.</FormErrorMessage>
             </FormControl>
+            {/*<FormControl isInvalid={!nickNameAvailable}>*/}
+            {/*  <FormLabel>별명 입력</FormLabel>*/}
+            {/*  <Flex gap={2}>*/}
+            {/*    <Input*/}
+            {/*      type="text"*/}
+            {/*      value={nickName}*/}
+            {/*      onChange={(e) => {*/}
+            {/*        setNickName(e.target.value);*/}
+            {/*        setNickNameAvailable(false);*/}
+            {/*      }}*/}
+            {/*    ></Input>*/}
+            {/*    <Button*/}
+            {/*      size="md"*/}
+            {/*      colorScheme="beige"*/}
+            {/*      border="1px solid tomato"*/}
+            {/*      borderRadius="full"*/}
+            {/*    >*/}
+            {/*      <FontAwesomeIcon*/}
+            {/*        icon={faMicrophoneLines}*/}
+            {/*        style={{ color: '#ff711a' }}*/}
+            {/*      />*/}
+            {/*    </Button>*/}
+            {/*    <Button variant="outline" onClick={checkNicknameExists}>*/}
+            {/*      중복확인*/}
+            {/*    </Button>*/}
+            {/*  </Flex>*/}
+            {/*  <FormErrorMessage>별명 중복 확인을 해주세요.</FormErrorMessage>*/}
+            {/*</FormControl>*/}
             <FormControl mb={5}>
               <FormLabel>성별</FormLabel>
               <Select

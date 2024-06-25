@@ -35,7 +35,7 @@ function UserLogin() {
 
   return (
     <Center>
-      <Box>
+      <Box border="0px solid" w="100%">
         <Card>
           <CardHeader>
             <Heading>○ 로그인</Heading>
