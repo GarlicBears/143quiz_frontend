@@ -15,10 +15,10 @@ import {
   topicIdState,
   titleState,
   questionsState,
+  sessionIdState,
 } from '../../recoil/atom';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/axiosInstance';
-import { sessionIdState } from '../../recoil/atom';
 
 interface AnswerType {
   questionId: number;

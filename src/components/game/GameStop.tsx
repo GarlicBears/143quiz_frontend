@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import CustomModal from '../common/CustomModal';
 import { Flex, Text, Box, Image } from '@chakra-ui/react';
 import stopImage from '../../asset/images/colorX.png';
+import axiosInstance from '../../api/axiosInstance';
+import { sessionIdState } from '../../recoil/atom';
+import { useRecoilValue } from 'recoil';
 
 interface GameStopProps {
   isOpen: boolean;
@@ -11,8 +14,18 @@ interface GameStopProps {
 
 const GameStop: React.FC<GameStopProps> = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
+  const sessionId = useRecoilValue(sessionIdState);
 
   const handleConfirm = () => {
+    axiosInstance
+      .get(`/game/answerDrop/${sessionId}`)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
     navigate('/topic');
   };
 
