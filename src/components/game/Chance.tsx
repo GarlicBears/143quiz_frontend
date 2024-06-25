@@ -9,14 +9,14 @@ interface ChanceProps {
   setIsPaused: React.Dispatch<React.SetStateAction<boolean>>; // 타이머 일시정지 상태 변경 함수
   updateHintUsageCount: (questionId: number) => void; // 힌트 사용 횟수 업데이트 함수
   questionId: number; // 현재 질문의 ID
-  questionText: string; // 현재 질문의 텍스트
+  answerText: string; // 현재 질문의 답안
 }
 
 const Chance: React.FC<ChanceProps> = ({
   setIsPaused,
   updateHintUsageCount,
   questionId,
-  questionText,
+  answerText,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [seconds, setSeconds] = useState(2);
@@ -132,12 +132,12 @@ const Chance: React.FC<ChanceProps> = ({
   const handleConfirm = useCallback(() => {
     setSeconds(2);
     setShowButtons(false);
-    if (updateCount < questionText.length) {
+    if (updateCount < answerText.length) {
       updateHintUsageCount(questionId); // 힌트 사용 횟수 업데이트
-      setDisplayText(questionText.slice(0, updateCount + 1));
+      setDisplayText(answerText.slice(0, updateCount + 1));
       setUpdateCount((prevCount) => prevCount + 1);
     }
-  }, [questionText, updateCount, updateHintUsageCount, questionId]);
+  }, [answerText, updateCount, updateHintUsageCount, questionId]);
 
   return (
     <>

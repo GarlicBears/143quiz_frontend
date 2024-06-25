@@ -11,7 +11,7 @@ export interface CustomButtonProps {
   onClick?: () => void;
   colorScheme?: string;
   soundSrc?: string;
-  isDisabled?: boolean;
+  disabled?: boolean;
 }
 
 // Components/Common/CustomModal.tsx

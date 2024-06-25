@@ -10,6 +10,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   onClick,
   colorScheme = 'customOrange',
   soundSrc,
+  disabled,
 }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -29,12 +30,14 @@ const CustomButton: React.FC<CustomButtonProps> = ({
 
   return (
     <Button
+      disabled={disabled}
       colorScheme={colorScheme}
       fontSize="1.5rem"
       variant={variant}
       width={{ base: '160px', md: `${width}px` }}
       height={`${height}px`}
       onClick={handleClick}
+      cursor={disabled ? 'not-allowed' : 'pointer'}
     >
       {text}
     </Button>

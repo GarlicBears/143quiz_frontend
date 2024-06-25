@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Flex, Grid, VStack, Box, Image, Text } from '@chakra-ui/react';
 import badgeImg96 from '../../asset/images/badge96.png';
 import CustomButton from '../../components/common/CustomButton';
-import TopicCard from '../../components/common/TopicCard';
+import TopicCard from '../../components/game/TopicCard';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import {
@@ -37,10 +37,10 @@ const Topic = () => {
   const [, setTitle] = useRecoilState(titleState);
   const [, setQuestions] = useRecoilState(questionsState);
   const [, setSessionId] = useRecoilState<number>(sessionIdState);
+  const [isLoading, setIsLoading] = useState(true);
 
-  console.log('=====API URL:', process.env.REACT_APP_API_URL);
   // TODO : 지금까지 모은 뱃지 리스트 배열 불러오기(/game/badges), 획득한 뱃지가 없을 경우 기본 뱃지 이미지만 보여주기
-  // - 이미 뱃지를 획득한 주제는 보여주지 않기(상단 안내문 밑에 이미 획득한 뱃지 이미지(/game/badges)를 보여주는 것으로 대체)
+
   useEffect(() => {
     axiosInstance.get('/game/badges').then((res) => {
       console.log(`획득뱃지수 : ${res.data.topics.length}`);
@@ -50,20 +50,22 @@ const Topic = () => {
         console.log(res.data.topics); // [{ "topicId": 0, "title": "string"}, { "topicId": 0, "title": "string"}, ...]
         setEarnedBadgeList(res.data.topics);
       }
+      setIsLoading(false);
     });
 
-    // TODO : 뱃지 미획득 주제 리스트를 불러오기
+    // 뱃지 미획득 주제 리스트 불러오기
+    // - 이미 뱃지를 획득한 주제는 보여주지 않기(상단 안내문 밑에 이미 획득한 뱃지 이미지(/game/badges)를 보여주는 것으로 대체)
     axiosInstance.get('/game/topics').then((res) => {
       setTopicList(res.data.topics);
       console.log('`뱃지 미획득 주제 리스트');
       console.log(res.data.topics);
+      setIsLoading(false);
     });
   }, []);
 
-  // TODO : 주제를 선택한 후 게임 시작 버튼을 누르면 해당 topicID 의 게임으로 이동하기(/game/start/{topicId})
   // 주제를 선택하면 선택한 주제를 저장한 후,
   const handleTopicSelect = (topicId: number, title: string) => {
-    console.log(topicId);
+    console.log(topicId, title);
     setSelectedTopic({ id: topicId, title });
   };
   // 게임 시작 버튼을 누르면 해당 게임의 데이터를 받아와서 게임 컴포넌트로 이동하기
@@ -113,24 +115,34 @@ const Topic = () => {
             mt={4}
             width="100%"
           >
-            {[...Array(5)].map((_, index) => (
-              <Box
-                key={index}
-                boxSize="72px"
-                bg="red.500"
-                mr={2}
-                flexShrink="0"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                borderRadius="md"
-                boxShadow="sm"
-                color="white"
-                fontWeight="bold"
-              >
-                모은 뱃지
-              </Box>
-            ))}
+            {earnedBadgeList.map((earnedBadge, index) => {
+              const imgSrc =
+                topicListLocal.find(
+                  (topic) => topic.topicId === earnedBadge.topicId,
+                )?.imgSrc || '';
+              return (
+                <Box
+                  key={index}
+                  boxSize="72px"
+                  backgroundImage={imgSrc}
+                  bgColor={imgSrc ? 'customOrange.100' : 'gray.300'}
+                  backgroundSize="cover"
+                  backgroundPosition="center"
+                  backgroundRepeat="no-repeat"
+                  mr={2}
+                  flexShrink="0"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  borderRadius="md"
+                  boxShadow="sm"
+                  color="white"
+                  fontWeight="bold"
+                >
+                  {earnedBadge.title}
+                </Box>
+              );
+            })}
           </Flex>
         ) : (
           <Text>
@@ -144,6 +156,16 @@ const Topic = () => {
         gap={4}
         width={{ base: '100%', md: '720px' }}
       >
+        <TopicCard
+          key={0}
+          title={topicListLocal[0].name}
+          imgSrc={topicListLocal[0].imgSrc}
+          onClick={() =>
+            handleTopicSelect(topicListLocal[0].topicId, topicListLocal[0].name)
+          }
+          selected={selectedTopic?.id === topicListLocal[0].topicId}
+          isLoading={isLoading}
+        />
         {topicList.map((topic, index) => (
           <TopicCard
             key={index}
@@ -154,6 +176,7 @@ const Topic = () => {
             }
             onClick={() => handleTopicSelect(topic.topicId, topic.title)}
             selected={selectedTopic?.id === topic.topicId}
+            isLoading={isLoading}
           />
         ))}
       </Grid>
@@ -164,7 +187,7 @@ const Topic = () => {
         textAlign="center"
         onClick={startGame}
       >
-        <CustomButton />
+        <CustomButton disabled={!selectedTopic} />
       </Box>
     </VStack>
   );
