@@ -5,16 +5,14 @@ import {
   Center,
   Grid,
   GridItem,
-  Text,
-  Image,
   Heading,
-  Flex,
+  Image,
+  Text,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import UserAgreement from './UserAgreement';
-import badgeIcon from '../../Asset/images/badge48.png';
 import UserBadge from './UserBadge';
+import UserAgreement from './UserAgreement';
 import UserLogout from './UserLogout';
 
 function UserInfo() {
@@ -27,7 +25,7 @@ function UserInfo() {
   });
   useEffect(() => {
     axios
-      .get('/api/user/')
+      .get('/user/')
       .then((response) => {
         const { data } = response;
         if (data.success && data.user) {

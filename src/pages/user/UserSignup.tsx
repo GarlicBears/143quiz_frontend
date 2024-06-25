@@ -27,6 +27,7 @@ import {
 import UserAgreement from './UserAgreement';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../../api/axiosInstance';
 
 //회원 가입 화면
 
@@ -77,8 +78,8 @@ function UserSignup() {
   };
 
   function checkEmailExists() {
-    axios
-      .post('/api/user/checkEmail', { email })
+    axiosInstance
+      .post('/user/checkEmail', { email })
       .then((response) => {
         setEmailAvailable(!response.data.exists);
         toast({
@@ -114,8 +115,8 @@ function UserSignup() {
   }
 
   function checkNicknameExists() {
-    axios
-      .post('/api/user/checkNickname', { nickname: nickName }) // "nickName" 변수를 "nickname" 키로 사용
+    axiosInstance
+      .post('/user/checkNickname', { nickname: nickName }) // "nickName" 변수를 "nickname" 키로 사용
       .then((response) => {
         setNickNameAvailable(!response.data.exists);
         toast({
@@ -157,8 +158,8 @@ function UserSignup() {
   const handleSubmit = () => {
     const fullEmail = `${email}@${customDomain || domain}`;
     if (submitAvailable) {
-      axios
-        .post('/api/user/signup', {
+      axiosInstance
+        .post('/user/signup', {
           email: fullEmail,
           password: password,
           nickname: nickName,
@@ -222,7 +223,10 @@ function UserSignup() {
                 <Input
                   placeholder="이메일"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setEmailAvailable(false); // 이메일을 변경할 때마다 emailAvailable을 false로 설정
+                  }}
                   mr={2}
                   w={40}
                 />
@@ -315,9 +319,9 @@ function UserSignup() {
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
               >
-                <option value="male">남자</option>
-                <option value="female">여자</option>
-                <option value="other">기타</option>
+                <option value="남자">남자</option>
+                <option value="여자">여자</option>
+                <option value="기타">기타</option>
               </Select>
             </FormControl>
             {/*출생연도 입력 1940_2022까지*/}
