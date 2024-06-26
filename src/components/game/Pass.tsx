@@ -29,11 +29,10 @@ const Pass: React.FC<PassProps> = ({
   };
 
   const handleConfirm = async () => {
-    console.log('Pass confirmed');
-    await checkAnswer('', true); // 오답 처리 및 패스 플래그 전달
     setIsOpen(false);
-    fetchNextQuestion(); // 다음 문제 가져오기
     setIsPaused(false); // 타이머 재개
+    await checkAnswer('', true); // 오답 처리 및 패스 플래그 전달
+    fetchNextQuestion(); // 다음 문제 가져오기
   };
 
   return (
