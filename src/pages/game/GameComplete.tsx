@@ -1,21 +1,21 @@
 import React, { useEffect, useRef } from 'react';
 import { Button, Text, Image, Flex, keyframes } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import completedSound from '../../asset/audios/correct2.mp3';
 import heartImage from '../../asset/images/heart32.png';
 import Footer from '../../components/common/Footer';
 import Header from '../../components/common/Header';
 import Add from '../../components/common/Add';
+import { useRecoilValue } from 'recoil';
+import { titleState } from '../../recoil/atom';
 
 const GameComplete: React.FC = () => {
-  const hearts = 20; // 예시 하트 수
-  const maxHearts = 143;
-  const badgeName = '동물';
-  const userHasBadge = false; // 예시 값
-  const heartCount = 6; // 예시 값
+  const title = useRecoilValue(titleState);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { userHeartsCount, totalQuestions } = location.state || {};
 
   useEffect(() => {
     // 완료 효과음 재생
@@ -66,7 +66,7 @@ const GameComplete: React.FC = () => {
             mx={2}
             animation={`${pulse} 1.5s infinite`}
           />
-          <Text> X {heartCount}</Text>
+          <Text> X {userHeartsCount}</Text>
         </Flex>
         <Text fontSize="2xl" mb={4}>
           축하합니다!
@@ -74,18 +74,18 @@ const GameComplete: React.FC = () => {
         <Text mb={4}>
           지금까지{' '}
           <Text color="customOrange.500" display="inline">
-            {hearts}개
+            {userHeartsCount}개
           </Text>
           의 하트를 받았어요.
         </Text>
-        {!userHasBadge ? (
+        {totalQuestions - userHeartsCount > 0 ? (
           <Text mb={6} textAlign="center">
             <Text color="customOrange.500" display="inline">
-              {maxHearts - hearts}개
+              {totalQuestions - userHeartsCount}개
             </Text>
             를 더 얻으면{' '}
             <Text color="customOrange.500" display="inline">
-              &apos;{badgeName}&apos; 박사
+              &apos;{title}&apos; 박사
             </Text>{' '}
             뱃지를 얻을 수 있어요.
           </Text>
@@ -93,7 +93,7 @@ const GameComplete: React.FC = () => {
           <Text mb={6}>
             이미{' '}
             <Text color="customOrange.500" display="inline">
-              &apos;{badgeName}&apos; 박사
+              &apos;{title}&apos; 박사
             </Text>
             뱃지를 획득하셨어요.
           </Text>

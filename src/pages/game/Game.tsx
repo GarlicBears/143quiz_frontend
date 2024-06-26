@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Flex, Text, Grid, GridItem, useDisclosure } from '@chakra-ui/react';
+import {
+  Flex,
+  Text,
+  Grid,
+  GridItem,
+  useDisclosure,
+  Image,
+} from '@chakra-ui/react';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import blackboard from '../../asset/images/blackboard.png';
 import Chance from '../../components/game/Chance';
@@ -19,6 +26,8 @@ import {
 } from '../../recoil/atom';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/axiosInstance';
+import heartImage from '../../asset/images/heart64.png';
+import whiteHeartImage from '../../asset/images/heartwhite.png';
 
 interface AnswerType {
   questionId: number;
@@ -237,21 +246,50 @@ const Game = () => {
 
     try {
       const res = await axiosInstance.post('/game/answer', gameResult);
-      const { badgeAcquired, totalHearts } = res.data;
-      if (badgeAcquired) {
+      const { getBadge, totalQuestions, userHeartsCount } = res.data;
+      console.log(res.data);
+      if (getBadge) {
         navigate('/game/earnbadge');
       } else {
-        navigate('/game/complete', { state: { totalHearts } });
+        navigate('/game/complete', {
+          state: { userHeartsCount, totalQuestions },
+        });
       }
     } catch (error) {
       console.error('Error ending game:', error);
     } finally {
-      // 게임 리셋
+      // 게임 리셋, 새로운 게임세션 불러오기
       setHeartsCount(0);
       setAnswers([]);
       setAnswerSubmitCount(0);
       setQuestionIndex(0);
     }
+  };
+
+  // 하트 수에 따른 하트 이미지 렌더링
+  const heartImageRender = () => {
+    const totalHearts = 10; // 총 하트 수, 예시로 3개로 설정
+    const hearts = [];
+
+    for (let i = 0; i < totalHearts; i++) {
+      if (i < heartsCount) {
+        hearts.push(
+          <Image key={i} src={heartImage} alt="Heart" boxSize="24px" mx={1} />,
+        );
+      } else {
+        hearts.push(
+          <Image
+            key={i}
+            src={whiteHeartImage}
+            alt="Heart"
+            boxSize="24px"
+            mx={1}
+          />,
+        );
+      }
+    }
+
+    return <Flex>{hearts}</Flex>;
   };
 
   return (
@@ -282,6 +320,7 @@ const Game = () => {
       <Text margin={4} fontSize="2xl" color="red">
         남은 시간: {seconds}초
       </Text>
+      <Flex justifyContent="center">{heartImageRender()}</Flex>
       <Text margin={4}>{3 - answerSubmitCount}번의 기회가 남았어요!</Text>
       <Grid
         templateColumns="repeat(2, 1fr)"

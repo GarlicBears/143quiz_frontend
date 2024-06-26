@@ -18,6 +18,8 @@ import topicListLocal from '../../asset/topicList';
 interface TopicType {
   topicId: number;
   title: string;
+  heartsCount: number;
+  totalQuestionsCount: number;
 }
 
 interface BadgeType {
@@ -39,28 +41,24 @@ const Topic = () => {
   const [, setSessionId] = useRecoilState<number>(sessionIdState);
   const [isLoading, setIsLoading] = useState(true);
 
-  // TODO : 지금까지 모은 뱃지 리스트 배열 불러오기(/game/badges), 획득한 뱃지가 없을 경우 기본 뱃지 이미지만 보여주기
-
   useEffect(() => {
-    axiosInstance.get('/game/badges').then((res) => {
-      console.log(`획득뱃지수 : ${res.data.topics.length}`);
-      if (res.data.topics.length === 0) {
-        console.log('아직 획득한 뱃지가 없습니다.');
-      } else {
-        console.log(res.data.topics); // [{ "topicId": 0, "title": "string"}, { "topicId": 0, "title": "string"}, ...]
-        setEarnedBadgeList(res.data.topics);
-      }
-      setIsLoading(false);
-    });
+    const fetchData = async () => {
+      try {
+        const [badgesRes, topicsRes] = await Promise.all([
+          axiosInstance.get('/game/badges'),
+          axiosInstance.get('/game/topics'),
+        ]);
 
-    // 뱃지 미획득 주제 리스트 불러오기
-    // - 이미 뱃지를 획득한 주제는 보여주지 않기(상단 안내문 밑에 이미 획득한 뱃지 이미지(/game/badges)를 보여주는 것으로 대체)
-    axiosInstance.get('/game/topics').then((res) => {
-      setTopicList(res.data.topics);
-      console.log('`뱃지 미획득 주제 리스트');
-      console.log(res.data.topics);
-      setIsLoading(false);
-    });
+        setEarnedBadgeList(badgesRes.data.topics || []);
+        setTopicList(topicsRes.data.topics || []);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setIsLoading(false); // 데이터가 모두 로드된 후 로딩 상태 해제
+      }
+    };
+
+    fetchData();
   }, []);
 
   // 주제를 선택하면 선택한 주제를 저장한 후,
@@ -177,6 +175,8 @@ const Topic = () => {
             onClick={() => handleTopicSelect(topic.topicId, topic.title)}
             selected={selectedTopic?.id === topic.topicId}
             isLoading={isLoading}
+            heartsCount={topic.heartsCount}
+            totalQuestion={topic.totalQuestionsCount}
           />
         ))}
       </Grid>
