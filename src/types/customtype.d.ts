@@ -29,3 +29,8 @@ declare module '*.mp3' {
   const src: string;
   export default src;
 }
+
+// 글로벌 카카오 타입 추가(공유하기 기능 용)
+interface Window {
+  Kakao: any;
+}

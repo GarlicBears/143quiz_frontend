@@ -16,6 +16,8 @@ interface TopicCardProps {
   onClick?: () => void;
   selected: boolean;
   isLoading: boolean;
+  heartsCount?: number;
+  totalQuestion?: number;
 }
 
 const TopicCard: React.FC<TopicCardProps> = ({
@@ -24,6 +26,8 @@ const TopicCard: React.FC<TopicCardProps> = ({
   onClick,
   selected,
   isLoading,
+  heartsCount,
+  totalQuestion,
 }) => {
   return (
     <GridItem onClick={onClick}>
@@ -66,7 +70,9 @@ const TopicCard: React.FC<TopicCardProps> = ({
             </Text>
             <HStack mt={2}>
               <Image src={heartImg} alt="heart" boxSize="16px" />
-              <Text>99 / 143</Text>
+              <Text>
+                {totalQuestion ? `${heartsCount} / ${totalQuestion}` : ''}
+              </Text>
             </HStack>
           </>
         )}
