@@ -6,6 +6,14 @@ import heartImage from '../../asset/images/heart32.png';
 import Footer from '../../components/common/Footer';
 import Header from '../../components/common/Header';
 import Add from '../../components/common/Add';
+import {
+  topicIdState,
+  titleState,
+  questionsState,
+  sessionIdState,
+} from '../../recoil/atom';
+import axiosInstance from '../../api/axiosInstance';
+import { useRecoilState } from 'recoil';
 
 const GameComplete: React.FC = () => {
   const hearts = 20; // 예시 하트 수
@@ -13,6 +21,11 @@ const GameComplete: React.FC = () => {
   const badgeName = '동물';
   const userHasBadge = false; // 예시 값
   const heartCount = 6; // 예시 값
+
+  const [currentTopicId, setCurrentopicId] = useRecoilState(topicIdState);
+  const [newTitle, setNewTitle] = useRecoilState(titleState);
+  const [newQuestions, setNewQuestions] = useRecoilState(questionsState);
+  const [newSessionId, setNewSessionId] = useRecoilState(sessionIdState);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const navigate = useNavigate();
@@ -34,9 +47,30 @@ const GameComplete: React.FC = () => {
     navigate('/topic');
   };
 
-  const handleContinue = () => {
-    navigate('/game');
+  const handleContinue = async () => {
+    console.log('게임 계속하기');
+    // 게임 시작 버튼을 누르면 해당 게임의 데이터를 받아와서 게임 컴포넌트로 이동하기
+    if (currentTopicId) {
+      try {
+        const res = await axiosInstance.get(`/game/start/${currentTopicId}`);
+        console.log(`${res.data.topicId} : ${res.data.sessionId} 문제 리스트`);
+
+        // 순차적으로 상태를 업데이트
+        setCurrentopicId(res.data.topicId);
+        setNewSessionId(res.data.sessionId);
+        setNewTitle(res.data.title);
+        setNewQuestions(res.data.game);
+
+        // navigate는 상태 업데이트 후에 호출
+        console.log('navigate to /game');
+        // navigate('/game');
+      } catch (error) {
+        console.error('Error starting game:', error);
+      }
+    }
   };
+
+  // heart pulse animation
   const pulse = keyframes`
     0% {
       transform: scale(1);
@@ -48,6 +82,7 @@ const GameComplete: React.FC = () => {
       transform: scale(1);
     }
   `;
+
   return (
     <>
       <Header preventBack={true} />

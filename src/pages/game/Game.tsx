@@ -45,7 +45,7 @@ const Game = () => {
   const title = useRecoilValue(titleState);
   const questions = useRecoilValue(questionsState);
   const [heartsCount, setHeartsCount] = useState(0);
-  const sessionId = useRecoilValue(sessionIdState);
+  const [sessionId, setSessionId] = useRecoilState(sessionIdState);
 
   // 디버깅 용 콘솔로그 : 데이터 수신 확인
   useEffect(() => {
@@ -56,13 +56,6 @@ const Game = () => {
     console.log('heartsCount:', heartsCount);
     console.log('answers:', answers);
   }, [heartsCount, answers]);
-
-  // 문제 설정
-  useEffect(() => {
-    if (questions && questions.length > 0 && questionIndex < questions.length) {
-      setQuestion(questions[questionIndex].questionText);
-    }
-  }, [questions, questionIndex]);
 
   // 모달 상태 설정
   const {
@@ -104,6 +97,13 @@ const Game = () => {
       setIsPaused(false);
     }, 2000);
   };
+
+  // 문제 설정
+  useEffect(() => {
+    if (questions && questions.length > 0 && questionIndex < questions.length) {
+      setQuestion(questions[questionIndex].questionText);
+    }
+  }, [questions, questionIndex]);
 
   // 문제 폰트 사이즈 설정
   useEffect(() => {
@@ -251,6 +251,7 @@ const Game = () => {
       setAnswers([]);
       setAnswerSubmitCount(0);
       setQuestionIndex(0);
+      setSessionId(0);
     }
   };
 
