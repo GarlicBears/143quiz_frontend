@@ -118,13 +118,13 @@ const Chance: React.FC<ChanceProps> = ({
 
   const handleOpen = useCallback(() => {
     setIsOpen(true);
-    setIsPaused(true); // 모달이 열릴 때 타이머 일시정지
+    setIsPaused(true);
     setShowButtons(true);
   }, [setIsPaused]);
 
   const handleClose = useCallback(() => {
     setIsOpen(false);
-    setIsPaused(false); // 모달이 닫힐 때 타이머 재개
+    setIsPaused(false);
     setShowButtons(true);
   }, [setIsPaused]);
 
