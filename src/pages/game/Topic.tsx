@@ -67,6 +67,7 @@ const Topic = () => {
     setSelectedTopic({ id: topicId, title });
   };
   // 게임 시작 버튼을 누르면 해당 게임의 데이터를 받아와서 게임 컴포넌트로 이동하기
+  // todo : GameComplete 에서 같은 topicId 로 새 게임(새로운 세션) 불러오기
   const startGame = async () => {
     if (selectedTopic) {
       try {
