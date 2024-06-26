@@ -100,6 +100,33 @@ const Game = () => {
   const handleTimeout = () => {
     onTimeoutOpen();
     setIsPaused(true);
+
+    if (questions[questionIndex]) {
+      const currentQuestion = questions[questionIndex];
+
+      // 동일한 답변이 존재하는지 확인
+      const existingAnswer = answers.find(
+        (answer) => answer.questionId === currentQuestion.questionId,
+      );
+
+      const newAnswer: AnswerType = {
+        questionId: currentQuestion.questionId,
+        answerText: '',
+        answerStatus: 'N',
+        hintUsageCount: existingAnswer ? existingAnswer.hintUsageCount : 0,
+        answerTimeTaken: 30,
+        answerAt: formatDate(new Date()),
+      };
+
+      // 답변 중복 송부 방지 (questionId 로 구분, 맨 마지막 답변 송부)
+      setAnswers((prevAnswers) =>
+        prevAnswers.filter(
+          (answer) => answer.questionId !== currentQuestion.questionId,
+        ),
+      );
+
+      setAnswers((prevAnswers) => [...prevAnswers, newAnswer]);
+    }
     setTimeout(() => {
       onTimeoutClose();
       fetchNextQuestion();
