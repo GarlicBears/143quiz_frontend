@@ -19,6 +19,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/axiosInstance';
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 //로그인 화면
 function UserLogin() {
@@ -34,8 +35,12 @@ function UserLogin() {
         userPassword: password,
       })
       .then((response) => {
-        const { token } = response.data; // 토큰 추출
-        Cookies.set('token', token); //토큰을 쿠키에 저장
+        // const token = response.headers.authorization;
+        const token = response.headers['authorization'];
+        // const accessToken = token.split(' ')[1].replace(/%/g, '');
+        console.log(response.headers);
+        console.log(token);
+        Cookies.set('accessToken', token); //토큰을 쿠키에 저장
         navigate('/topic'); //토픽 화면으로 이동
       })
       .catch((error) => {
@@ -49,6 +54,13 @@ function UserLogin() {
       });
   }
 
+  // const token = response.headers.entries(
+  // const token = response.headers.entries('Authorization');
+  // const token = response.headers.get('Authorization');
+  // console.log(response.header.get('Authorization'));
+  // 바디로 받는 것: const { token } = response.data; // 토큰 추출
+  // 바디로 받을 수 있음 :
+  // 헤더에서  토큰 추출
   function handleClickSignup() {
     navigate('/signup');
   }
