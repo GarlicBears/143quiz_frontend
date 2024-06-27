@@ -54,7 +54,7 @@ const Game = () => {
   const title = useRecoilValue(titleState);
   const questions = useRecoilValue(questionsState);
   const [heartsCount, setHeartsCount] = useState(0);
-  const sessionId = useRecoilValue(sessionIdState);
+  const [sessionId, setSessionId] = useRecoilState(sessionIdState);
 
   // 디버깅 용 콘솔로그 : 데이터 수신 확인
   useEffect(() => {
@@ -62,16 +62,8 @@ const Game = () => {
   }, [topicId, title, questions]);
 
   useEffect(() => {
-    console.log('heartsCount:', heartsCount);
     console.log('answers:', answers);
-  }, [heartsCount, answers]);
-
-  // 문제 설정
-  useEffect(() => {
-    if (questions && questions.length > 0 && questionIndex < questions.length) {
-      setQuestion(questions[questionIndex].questionText);
-    }
-  }, [questions, questionIndex]);
+  }, [answers]);
 
   // 모달 상태 설정
   const {
@@ -107,12 +99,46 @@ const Game = () => {
   const handleTimeout = () => {
     onTimeoutOpen();
     setIsPaused(true);
+
+    if (questions[questionIndex]) {
+      const currentQuestion = questions[questionIndex];
+
+      // 동일한 답변이 존재하는지 확인
+      const existingAnswer = answers.find(
+        (answer) => answer.questionId === currentQuestion.questionId,
+      );
+
+      const newAnswer: AnswerType = {
+        questionId: currentQuestion.questionId,
+        answerText: '',
+        answerStatus: 'N',
+        hintUsageCount: existingAnswer ? existingAnswer.hintUsageCount : 0,
+        answerTimeTaken: 30,
+        answerAt: formatDate(new Date()),
+      };
+
+      // 답변 중복 송부 방지 (questionId 로 구분, 맨 마지막 답변 송부)
+      setAnswers((prevAnswers) =>
+        prevAnswers.filter(
+          (answer) => answer.questionId !== currentQuestion.questionId,
+        ),
+      );
+
+      setAnswers((prevAnswers) => [...prevAnswers, newAnswer]);
+    }
     setTimeout(() => {
       onTimeoutClose();
       fetchNextQuestion();
       setIsPaused(false);
     }, 2000);
   };
+
+  // 문제 설정
+  useEffect(() => {
+    if (questions && questions.length > 0 && questionIndex < questions.length) {
+      setQuestion(questions[questionIndex].questionText);
+    }
+  }, [questions, questionIndex]);
 
   // 문제 폰트 사이즈 설정
   useEffect(() => {
@@ -263,12 +289,13 @@ const Game = () => {
       setAnswers([]);
       setAnswerSubmitCount(0);
       setQuestionIndex(0);
+      setSessionId(0);
     }
   };
 
   // 하트 수에 따른 하트 이미지 렌더링
   const heartImageRender = () => {
-    const totalHearts = 10; // 총 하트 수, 예시로 3개로 설정
+    const totalHearts = 10;
     const hearts = [];
 
     for (let i = 0; i < totalHearts; i++) {
