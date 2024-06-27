@@ -26,18 +26,20 @@ const LandingPage = () => {
         // bgSize="auto"
       >
         <Flex flexDirection="column" height="100%">
-          <Box height="70%" />
-          <Flex height="30%" flexDirection="column" gap={2} alignItems="center">
+          <Box height="65%" />
+          <Flex height="35%" flexDirection="column" gap={2} alignItems="center">
             <Button
               onClick={handleClickLogin}
-              w="80%"
+              w="65%"
+              h="15%"
               colorScheme="customOrange"
             >
               로그인
             </Button>
             <Button
               onClick={hadleClickSignup}
-              w="80%"
+              w="65%"
+              h="15%"
               colorScheme="customOrange"
             >
               회원가입
