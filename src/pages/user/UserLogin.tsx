@@ -18,6 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/axiosInstance';
+import Cookies from 'js-cookie';
 
 //로그인 화면
 function UserLogin() {
@@ -34,6 +35,17 @@ function UserLogin() {
       })
       .then((response) => {
         const { token } = response.data; // 토큰 추출
+        Cookies.set('token', token); //토큰을 쿠키에 저장
+        navigate('/topic'); //토픽 화면으로 이동
+      })
+      .catch((error) => {
+        toast({
+          title: '로그인에 실패했습니다.',
+          description: error.response?.data?.message || 'An error occurred.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
       });
   }
 
@@ -83,7 +95,6 @@ function UserLogin() {
             <Button w="100%" onClick={handleLogin}>
               로그인하기
             </Button>
-            {/* Click the button to go to the topic selection screen :'로그인 버튼' 하면 주제 선택 화면으로 이동 */}
           </CardFooter>
         </Card>
       </Box>
