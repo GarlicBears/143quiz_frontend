@@ -19,7 +19,6 @@ import {
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/axiosInstance';
 import Cookies from 'js-cookie';
-import axios from 'axios';
 
 //로그인 화면
 function UserLogin() {
@@ -35,15 +34,35 @@ function UserLogin() {
         userPassword: password,
       })
       .then((response) => {
-        // const token = response.headers.authorization;
+        // 'authorization' 헤더에서 토큰 값을 추출
         const token = response.headers['authorization'];
-        // const accessToken = token.split(' ')[1].replace(/%/g, '');
-        console.log(response.headers);
-        console.log(token);
-        Cookies.set('accessToken', token); //토큰을 쿠키에 저장
-        navigate('/topic'); //토픽 화면으로 이동
+        if (token) {
+          // console.log('Authorization 헤더:', token); 필요없음
+          console.log('전체 헤더:', response.headers);
+          // Bearer 부분을 제거하고 토큰만 추출, % 기호 제거
+          const accessToken = token.split(' ')[1].replace(/%/g, '');
+          console.log('추출된 토큰:', accessToken);
+          // 토큰을 쿠키에 저장
+          Cookies.set('accessToken', accessToken, {
+            expires: 1,
+            secure: true,
+            sameSite: 'Strict',
+          });
+          // 페이지 이동
+          navigate('/topic');
+        } else {
+          // 토큰이 없는 경우의 에러 처리
+          toast({
+            title: '로그인 실패',
+            description: '인증 토큰을 받지 못했습니다.',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          });
+        }
       })
       .catch((error) => {
+        // 네트워크 오류 또는 다른 이유로 인한 실패 처리
         toast({
           title: '로그인에 실패했습니다.',
           description: error.response?.data?.message || 'An error occurred.',
@@ -53,7 +72,6 @@ function UserLogin() {
         });
       });
   }
-
   // const token = response.headers.entries(
   // const token = response.headers.entries('Authorization');
   // const token = response.headers.get('Authorization');
