@@ -4,6 +4,7 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from 'axios';
+import Cookies from 'js-cookie';
 
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL || 'http://localhost:8080/api',
@@ -48,7 +49,7 @@ axiosInstance.interceptors.request.use(
 //   (error: AxiosError): Promise<AxiosError> => {
 //     return Promise.reject(error);
 //   },
-// );
+// ); 06-27오류,
 // 사용자 브라우저 쿠키에서 직접 토큰을 읽음
 // 사용자 로그인 > 서버로부터 받은 토큰을 쿠키에 저장한 경우
 // 사용자 세션관리시 일반적으로
