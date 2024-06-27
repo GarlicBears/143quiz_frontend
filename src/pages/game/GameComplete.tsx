@@ -6,11 +6,20 @@ import heartImage from '../../asset/images/heart32.png';
 import Footer from '../../components/common/Footer';
 import Header from '../../components/common/Header';
 import Add from '../../components/common/Add';
-import { useRecoilValue } from 'recoil';
-import { titleState } from '../../recoil/atom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import {
+  questionsState,
+  sessionIdState,
+  titleState,
+  topicIdState,
+} from '../../recoil/atom';
+import axiosInstance from '../../api/axiosInstance';
 
 const GameComplete: React.FC = () => {
   const title = useRecoilValue(titleState);
+  const currentTopicID = useRecoilValue(topicIdState);
+  const [, setSessionId] = useRecoilState<number>(sessionIdState);
+  const [, setQuestions] = useRecoilState(questionsState);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const navigate = useNavigate();
@@ -34,8 +43,19 @@ const GameComplete: React.FC = () => {
     navigate('/topic');
   };
 
-  const handleContinue = () => {
-    navigate('/game');
+  const handleContinue = async () => {
+    console.log('currentTopicID', currentTopicID);
+
+    try {
+      const res = await axiosInstance.get(`/game/start/${currentTopicID}`);
+      console.log(res.data);
+      // 순차적으로 상태를 업데이트
+      setSessionId(res.data.sessionId);
+      setQuestions(res.data.game);
+      navigate('/game');
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   };
   const pulse = keyframes`
     0% {
