@@ -41,12 +41,13 @@ const Topic = () => {
   const [, setSessionId] = useRecoilState<number>(sessionIdState);
   const [isLoading, setIsLoading] = useState(true);
 
+  // 주제 리스트 불러오기
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [badgesRes, topicsRes] = await Promise.all([
-          axiosInstance.get('/game/badges'),
-          axiosInstance.get('/game/topics'),
+          axiosInstance.get('/game/badges'), // 뱃지를 이미 얻은 주제 리스트
+          axiosInstance.get('/game/topics'), // 뱃지 미획득 주제 리스트
         ]);
 
         setEarnedBadgeList(badgesRes.data.topics || []);
@@ -67,7 +68,6 @@ const Topic = () => {
     setSelectedTopic({ id: topicId, title });
   };
   // 게임 시작 버튼을 누르면 해당 게임의 데이터를 받아와서 게임 컴포넌트로 이동하기
-  // todo : GameComplete 에서 같은 topicId 로 새 게임(새로운 세션) 불러오기
   const startGame = async () => {
     if (selectedTopic) {
       try {

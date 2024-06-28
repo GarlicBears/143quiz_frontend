@@ -218,16 +218,13 @@ const Game = () => {
         }
       }
 
-      setTimeout(() => {
-        if (inputAnswer === correctAnswer) {
-          fetchNextQuestion();
-        }
-        onCorrectClose();
-        onIncorrectClose();
-        setIsPaused(false);
-        setSeconds(30);
-        resolve();
-      }, 2000);
+      if (inputAnswer === correctAnswer) {
+        fetchNextQuestion();
+      }
+      onCorrectClose();
+      onIncorrectClose();
+      setIsPaused(false);
+      setSeconds(30);
     });
   };
 
