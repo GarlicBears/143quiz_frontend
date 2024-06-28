@@ -43,6 +43,7 @@ const GameComplete: React.FC = () => {
     navigate('/topic');
   };
 
+  // '계속하기' 버튼 클릭 시 현재 topicId 로 새 게임(새로운 세션) 불러오기
   const handleContinue = async () => {
     console.log('currentTopicID', currentTopicID);
 
@@ -57,6 +58,8 @@ const GameComplete: React.FC = () => {
       console.error('Error fetching data:', error);
     }
   };
+
+  // 하트 pulse 애니메이션
   const pulse = keyframes`
     0% {
       transform: scale(1);
