@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -11,7 +11,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
-  useDisclosure,
+  Image,
 } from '@chakra-ui/react';
 import Topic from '../game/Topic';
 //회원 랭킹 조회 화면
@@ -26,6 +26,7 @@ type UserRankProps = {
   onClose: () => void;
   topicName: string | null;
   topic: Topic | null;
+  currentUserNickname: string;
 };
 
 const dummyRankingData = [
@@ -33,8 +34,27 @@ const dummyRankingData = [
   { rank: 2, nickname: 'User2', hearts: 90 },
   { rank: 3, nickname: 'User3', hearts: 80 },
 ];
-function UserRank({ isOpen, onClose, topicName }: UserRankProps) {
-  const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
+function UserRank({
+  isOpen,
+  onClose,
+  topic,
+  currentUserNickname,
+}: UserRankProps) {
+  const [selectedTopic, setSelectedTopic] = useState<Topic | null>(topic);
+  const [filteredRankingData, setFilteredRankingData] =
+    useState(dummyRankingData);
+  useEffect(() => {
+    setSelectedTopic(topic);
+  }, [topic]);
+
+  useEffect(() => {
+    // 현재 유저를 제외한 랭킹 데이터를 필터링
+    const filteredData = dummyRankingData.filter(
+      (user) => user.nickname !== currentUserNickname,
+    );
+    setFilteredRankingData(filteredData);
+  }, [currentUserNickname]);
+
   return (
     <>
       <Modal size="xl" isOpen={isOpen} onClose={onClose} isCentered>
@@ -45,21 +65,18 @@ function UserRank({ isOpen, onClose, topicName }: UserRankProps) {
             {/*  <Text>{selectedTopic?.name} 게임 랭킹</Text>*/}
             {/*</Flex>*/}
             <Flex alignItems="center" justifyContent="center">
-              {Topic && (
+              {selectedTopic ? (
                 <>
-                  {/*<Image src={Topic.imgSrc} boxSize="30px" mr={2} />*/}
-                  <Text>{Topic.name} 게임 랭킹</Text>
+                  <Text>{selectedTopic.name} 게임 랭킹</Text>
+                  <Image src={selectedTopic.imgSrc} boxSize="30px" ml={2} />
                 </>
+              ) : (
+                <Text>주제가 선택되지 않았습니다</Text>
               )}
             </Flex>
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody border="1px solid" borderRadius="full">
-            {/*<Flex alignItems="center" justifyContent="center">*/}
-            {/*  <Box>순위</Box>*/}
-            {/*  <Box>닉네임</Box>*/}
-            {/*  <Box>하트 수</Box>*/}
-            {/*</Flex>*/}
+          <ModalBody>
             <Box border="1px solid" borderRadius="md" p={4}>
               <Flex justifyContent="space-around">
                 <Text>순위</Text>
