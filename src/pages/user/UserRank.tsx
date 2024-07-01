@@ -28,12 +28,13 @@ type UserRankProps = {
   topic: Topic | null;
   currentUserNickname: string;
 };
-
+// [TODO]: 게임 유저 외  다른 유저의 정보 가져와서 순위 조회
 const dummyRankingData = [
   { rank: 1, nickname: 'User1', hearts: 100 },
   { rank: 2, nickname: 'User2', hearts: 90 },
   { rank: 3, nickname: 'User3', hearts: 80 },
 ];
+
 function UserRank({
   isOpen,
   onClose,
@@ -61,23 +62,42 @@ function UserRank({
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            {/*<Flex>*/}
-            {/*  <Text>{selectedTopic?.name} 게임 랭킹</Text>*/}
-            {/*</Flex>*/}
-            <Flex alignItems="center" justifyContent="center">
+            <Box alignItems="center" justifyContent="center">
               {selectedTopic ? (
                 <>
-                  <Text>{selectedTopic.name} 게임 랭킹</Text>
-                  <Image src={selectedTopic.imgSrc} boxSize="30px" ml={2} />
+                  <Text textAlign="center">{selectedTopic.name} 게임 랭킹</Text>
+                  <Box
+                    overflow="hidden"
+                    textAlign="center"
+                    w="100%"
+                    p={3}
+                    mt={3}
+                  >
+                    <Box
+                      border="3px solid orange"
+                      borderRadius="full"
+                      bg="orange.100"
+                      boxSize="30%" // 랭킹 주제 뱃지 크기 설정
+                      m="auto"
+                    >
+                      <Image
+                        src={selectedTopic.imgSrc}
+                        borderRadius="full"
+                        boxSize="70%"
+                        m="auto"
+                        mt={4}
+                      />
+                    </Box>
+                  </Box>
                 </>
               ) : (
                 <Text>주제가 선택되지 않았습니다</Text>
               )}
-            </Flex>
+            </Box>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Box border="1px solid" borderRadius="md" p={4}>
+            <Box border="1px solid orange" borderRadius="md" p={4}>
               <Flex justifyContent="space-around">
                 <Text>순위</Text>
                 <Text>닉네임</Text>
