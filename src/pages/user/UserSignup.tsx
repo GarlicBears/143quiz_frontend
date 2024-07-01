@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Box,
   Button,
@@ -45,6 +45,61 @@ function UserSignup() {
   const [location, setLocation] = useState('');
   const [birthYear, setBirthYear] = useState('');
   // 이메일 비밀번호, 비번확인, 별명, 별명확인, 성별, 거주지, 출생연도 (1940-2022)
+
+  const [listening, setListening] = useState(false);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
+
+  useEffect(() => {
+    if (!('webkitSpeechRecognition' in window)) {
+      alert('Web Speech API is not supported in this browser.');
+      return;
+    }
+
+    const recognition = new window.webkitSpeechRecognition();
+    recognitionRef.current = recognition;
+    recognition.lang = 'ko-KR';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => {
+      setListening(true);
+    };
+
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      const transcript = event.results[0][0].transcript;
+      setNickName(transcript);
+      setListening(false);
+    };
+
+    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+      console.error('Speech recognition error', event.error);
+      alert('음성 인식 중 오류가 발생했습니다.');
+      setListening(false);
+    };
+
+    recognition.onend = () => {
+      setListening(false);
+    };
+
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
+  }, []);
+
+  const startListening = () => {
+    if (recognitionRef.current) {
+      setNickName('...');
+      recognitionRef.current.start();
+    }
+  };
+
+  const stopListening = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+    }
+  };
 
   let submitAvailable =
     emailAvailable &&
@@ -285,7 +340,12 @@ function UserSignup() {
                   value={nickName}
                   onChange={(e) => setNickName(e.target.value)}
                 ></Input>
-                <Button size="md" borderRadius="full">
+                <Button
+                  size="md"
+                  borderRadius="full"
+                  onClick={startListening}
+                  disabled={listening}
+                >
                   <FontAwesomeIcon
                     icon={faMicrophoneLines}
                     style={{ color: '#ff711a' }}
