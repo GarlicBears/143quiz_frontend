@@ -62,8 +62,8 @@ function UserInfo() {
   return (
     <>
       <Center>
-        <Card border="0px solid black" w="100%">
-          <Box border="0px solid blue">
+        <Card w="100%">
+          <Box>
             <Heading textAlign="center">○ 회원 정보</Heading>
             <Grid
               onClick={handleChangeUserInfo}
