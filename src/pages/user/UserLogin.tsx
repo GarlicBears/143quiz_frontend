@@ -49,7 +49,7 @@ function UserLogin() {
             sameSite: 'Strict',
           });
           // 페이지 이동
-          navigate('/topic');
+          navigate('/main');
         } else {
           // 토큰이 없는 경우의 에러 처리
           toast({
