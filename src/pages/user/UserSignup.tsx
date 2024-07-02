@@ -73,8 +73,9 @@ function UserSignup() {
   };
 
   function checkEmailExists() {
+    const AllEmail = `${email}@${customDomain || domain}`;
     axiosInstance
-      .post('/user/checkEmail', { email })
+      .post('/user/checkEmail', { email: AllEmail })
       .then((response) => {
         setEmailAvailable(!response.data.exists);
         toast({
