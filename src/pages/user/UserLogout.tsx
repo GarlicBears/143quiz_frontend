@@ -10,10 +10,41 @@ import {
   ModalOverlay,
   Text,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
+import axiosInstance from '../../api/axiosInstance';
+import { useNavigate } from 'react-router-dom';
 
 function UserLogout() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const toast = useToast();
+  const navigate = useNavigate();
+
+  const handleLogout = async (): Promise<void> => {
+    try {
+      await axiosInstance.delete('/logout');
+      // 쿠키에서 엑세스 토큰과 리프레시 토큰을 삭제
+      document.cookie = 'accessToken=; Max-Age=0; path=/;';
+      document.cookie = 'refreshToken=; Max-Age=0; path=/;';
+      // 로그아웃 성공 토스트 메시지 표시
+      toast({
+        description: '성공적으로 로그아웃 되었습니다',
+        status: 'success',
+      });
+      // 랜딩 페이지로 리다이렉트
+      navigate('/');
+    } catch (error) {
+      console.error('로그아웃 실패:', error);
+      toast({
+        description: '로그아웃 도중 에러가 발생했습니다',
+        status: 'error',
+      });
+    } finally {
+      onClose();
+    }
+  };
+
   return (
     <>
       <Flex onClick={onOpen}>
@@ -33,10 +64,7 @@ function UserLogout() {
             <Button flex="1" variant="outline" mr={3} onClick={onClose}>
               취소
             </Button>
-            <Button
-              flex="1"
-              // onClick={handleLogout} //[TODO] 로그아웃 로직 추가
-            >
+            <Button flex="1" onClick={handleLogout}>
               로그아웃
             </Button>
           </ModalFooter>
