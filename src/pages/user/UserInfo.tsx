@@ -82,6 +82,7 @@ function UserInfo() {
                 border="1px solid gray"
                 justifyContent="center"
                 alignItems="center"
+                borderRadius="full"
                 pl="2"
                 area={'nav'}
               >

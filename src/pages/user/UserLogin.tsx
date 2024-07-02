@@ -30,8 +30,8 @@ function UserLogin() {
   function handleLogin() {
     axiosInstance
       .post('/user/login', {
-        userEmail: email,
-        userPassword: password,
+        email: email,
+        password: password,
       })
       .then((response) => {
         // 'authorization' 헤더에서 토큰 값을 추출
@@ -40,7 +40,7 @@ function UserLogin() {
           // console.log('Authorization 헤더:', token); 필요없음
           console.log('전체 헤더:', response.headers);
           // Bearer 부분을 제거하고 토큰만 추출, % 기호 제거
-          const accessToken = token.split(' ')[1].replace(/%/g, '');
+          const accessToken = token;
           console.log('추출된 토큰:', accessToken);
           // 토큰을 쿠키에 저장
           Cookies.set('accessToken', accessToken, {
@@ -49,7 +49,7 @@ function UserLogin() {
             sameSite: 'Strict',
           });
           // 페이지 이동
-          navigate('/topic');
+          navigate('/main');
         } else {
           // 토큰이 없는 경우의 에러 처리
           toast({
