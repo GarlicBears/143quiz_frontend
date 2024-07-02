@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import UserBadge from './UserBadge';
 import UserAgreement from './UserAgreement';
 import UserLogout from './UserLogout';
+import axiosInstance from '../../api/axiosInstance';
 
 function UserInfo() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ function UserInfo() {
     image: '',
   });
   useEffect(() => {
-    axios
+    axiosInstance
       .get('/user/')
       .then((response) => {
         const { data } = response;
@@ -48,7 +49,7 @@ function UserInfo() {
   }
 
   function handleLogout() {
-    axios
+    axiosInstance
       .post('/api/user/logout/')
       .then(() => {
         navigate('/landing');
