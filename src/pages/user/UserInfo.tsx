@@ -42,13 +42,13 @@ function UserInfo() {
         console.error('Failed to load user information', error);
       });
   }, []);
-
   //회원 정보를 수정할 수 있는 화면으로 이동
   function handleChangeUserInfo() {
     navigate('/userInfo/update');
   }
 
-  function handleLogout() {
+  {
+    /*function handleLogout() {
     axiosInstance
       .post('/api/user/logout/')
       .then(() => {
@@ -58,7 +58,8 @@ function UserInfo() {
         console.error('Failed to logout', error);
       });
   }
-
+*/
+  }
   return (
     <>
       <Center>
@@ -140,7 +141,7 @@ function UserInfo() {
           <Text
             textAlign="center"
             mt={5}
-            onClick={handleLogout}
+            //onClick={handleLogout}
             _hover={{ borderWidth: '1px' }}
           >
             {/*로그아웃 모달*/}

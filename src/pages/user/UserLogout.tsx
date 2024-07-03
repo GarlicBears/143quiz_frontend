@@ -14,35 +14,51 @@ import {
 } from '@chakra-ui/react';
 import axiosInstance from '../../api/axiosInstance';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function UserLogout() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const toast = useToast();
   const navigate = useNavigate();
+  // function handleLogout() {
+  //   console.log('logout');
+  //   axiosInstance
+  //     .delete('/user/logout')
+  //     .then((respnse) => {
+  //       console.log('로그아웃 성공', respnse.data);
+  //       navigate('landing');
+  //     })
+  //     .catch((error) => {
+  //       console.error('로그아웃에 실패했습니다.', error);
+  //     });
+  // }
 
-  const handleLogout = async (): Promise<void> => {
-    try {
-      await axiosInstance.delete('/logout');
-      // 쿠키에서 엑세스 토큰과 리프레시 토큰을 삭제
-      document.cookie = 'accessToken=; Max-Age=0; path=/;';
-      document.cookie = 'refreshToken=; Max-Age=0; path=/;';
-      // 로그아웃 성공 토스트 메시지 표시
-      toast({
-        description: '성공적으로 로그아웃 되었습니다',
-        status: 'success',
+  const handleLogout = () => {
+    const refreshToken = Cookies.get('refreshToken');
+    axiosInstance
+      .delete('/user/logout', {
+        headers: { Authorization: `Bearer ${refreshToken}` },
+      })
+      .then((response) => {
+        Cookies.remove('accessToken');
+        Cookies.remove('refreshToken');
+        toast({
+          description: '성공적으로 로그아웃 되었습니다',
+          status: 'success',
+        });
+        navigate('/');
+      })
+      .catch((error) => {
+        console.error('로그아웃에 실패했습니다.', error);
+        toast({
+          description: '로그아웃 도중 에러가 발생했습니다',
+          status: 'error',
+        });
+      })
+      .finally(() => {
+        onClose(); // 모달 닫기
       });
-      // 랜딩 페이지로 리다이렉트
-      navigate('/');
-    } catch (error) {
-      console.error('로그아웃 실패:', error);
-      toast({
-        description: '로그아웃 도중 에러가 발생했습니다',
-        status: 'error',
-      });
-    } finally {
-      onClose();
-    }
   };
 
   return (

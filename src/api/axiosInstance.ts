@@ -9,6 +9,7 @@ import Cookies from 'js-cookie';
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL || 'http://localhost:8080/api',
   timeout: 5000,
+  withCredentials: true, //cookie에 refresh토큰 조회
   headers: {
     'Content-Type': 'application/json',
   },
