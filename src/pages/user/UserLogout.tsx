@@ -21,18 +21,6 @@ function UserLogout() {
 
   const toast = useToast();
   const navigate = useNavigate();
-  // function handleLogout() {
-  //   console.log('logout');
-  //   axiosInstance
-  //     .delete('/user/logout')
-  //     .then((respnse) => {
-  //       console.log('로그아웃 성공', respnse.data);
-  //       navigate('landing');
-  //     })
-  //     .catch((error) => {
-  //       console.error('로그아웃에 실패했습니다.', error);
-  //     });
-  // }
 
   const handleLogout = () => {
     const refreshToken = Cookies.get('refreshToken');
@@ -57,7 +45,7 @@ function UserLogout() {
         });
       })
       .finally(() => {
-        onClose(); // 모달 닫기
+        onClose();
       });
   };
 
