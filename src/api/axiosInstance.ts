@@ -14,6 +14,7 @@ const axiosInstance = axios.create({
     'Content-Type': 'application/json',
   },
 });
+const excludeUrlEndings = ['/login', '/admin/reissue'];
 
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
@@ -32,7 +33,7 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error);
   },
 );
-
+//
 //response interceptor setting
 axiosInstance.interceptors.response.use(
   (response: AxiosResponse): AxiosResponse => {
@@ -70,7 +71,7 @@ axiosInstance.interceptors.response.use(
         const status = error.response.status;
         const errorMessages: { [key: number]: string } = {
           400: 'Bad Request',
-          401: 'Unauthorized',
+          // 401: 'Unauthorized',
           403: 'Forbidden',
           404: 'Not Found',
           405: 'Method Not Allowed',
