@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   Image,
@@ -16,8 +16,28 @@ import {
 } from '@chakra-ui/react';
 import topicList from '../../asset/topicList';
 import badgeIcon from '../../asset/images/badge48.png';
+import UserRank from './UserRank';
+
+type Topic = {
+  name: string;
+  imgSrc: string;
+};
+
 function UserBadge() {
-  const { isOpen, onOpen, onClose } = useDisclosure(); // 모달의 초기 상태를 닫힌 상태로 설정
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
+
+  const {
+    isOpen: isRankingOpen,
+    onOpen: onRankingOpen,
+    onClose: onRankingClose,
+  } = useDisclosure();
+
+  const handleBadgeClick = (topic: Topic) => {
+    setSelectedTopic(topic);
+    onRankingOpen();
+  };
+  const currentUserNickname = 'User1'; // 현재 유저의 닉네임
 
   return (
     <>
@@ -52,6 +72,8 @@ function UserBadge() {
                     textAlign="center"
                     w="100%"
                     p={3}
+                    cursor="pointer"
+                    onClick={() => handleBadgeClick(topic)}
                   >
                     <Box
                       border="1px solid orange"
@@ -76,6 +98,14 @@ function UserBadge() {
           </ModalBody>
         </ModalContent>
       </Modal>
+
+      <UserRank
+        isOpen={isRankingOpen}
+        onClose={onRankingClose}
+        topicName={selectedTopic?.name || ''}
+        topic={selectedTopic}
+        currentUserNickname={currentUserNickname}
+      />
     </>
   );
 }
