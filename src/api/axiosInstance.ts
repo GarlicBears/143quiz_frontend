@@ -14,13 +14,18 @@ const axiosInstance = axios.create({
     'Content-Type': 'application/json',
   },
 });
-const excludeUrlEndings = ['/login', '/admin/reissue'];
+const excludeUrlEndings = ['/login', '/user/reissue'];
 
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
     // 쿠키에서 accessToken 읽어오기
     const accessToken = Cookies.get('accessToken'); // 쿠키에서 토큰 가져오기.
-    if (accessToken) {
+
+    const isExcludedUrl = excludeUrlEndings.some((ending) =>
+      config.url?.endsWith(ending),
+    );
+
+    if (accessToken && !isExcludedUrl) {
       if (!config.headers) {
         config.headers = {} as AxiosRequestHeaders;
       }
@@ -44,7 +49,7 @@ axiosInstance.interceptors.response.use(
       try {
         // refresh token으로 accessToken 갱신
         // const response = await axiosInstance.get('user/reissue');
-        const response = await axiosInstance.get('user/reissue');
+        const response = await axiosInstance.get('/user/reissue');
         const accessToken = response.headers['authorization'];
         if (accessToken) {
           Cookies.set('accessToken', accessToken, {
@@ -63,7 +68,7 @@ axiosInstance.interceptors.response.use(
       } catch (refreshError) {
         console.error('리프레쉬 토큰 오류:', refreshError);
         Cookies.remove('accessToken');
-        // window.location.href = '/login';
+        window.location.href = '/login';
       }
     } else {
       // 401 외의 에러 처리
