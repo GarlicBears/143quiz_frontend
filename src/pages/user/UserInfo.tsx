@@ -29,12 +29,12 @@ function UserInfo() {
       .get('/user/')
       .then((response) => {
         const { data } = response;
-        if (data.success && data.user) {
+        if (response.status == 200) {
           setUserInfo({
             ...userInfo,
-            nickname: data.user.nickname,
-            gender: data.user.gender,
-            location: data.user.location,
+            nickname: data.nickname,
+            gender: data.gender,
+            location: data.location,
           });
         }
       })
@@ -42,24 +42,12 @@ function UserInfo() {
         console.error('Failed to load user information', error);
       });
   }, []);
+
   //회원 정보를 수정할 수 있는 화면으로 이동
   function handleChangeUserInfo() {
     navigate('/userInfo/update');
   }
 
-  {
-    /*function handleLogout() {
-    axiosInstance
-      .post('/api/user/logout/')
-      .then(() => {
-        navigate('/landing');
-      })
-      .catch((error) => {
-        console.error('Failed to logout', error);
-      });
-  }
-*/
-  }
   return (
     <>
       <Center>
@@ -103,6 +91,7 @@ function UserInfo() {
               </GridItem>
               <GridItem pl="2" border="1px solid gray" area={'main'}>
                 Nickname: {userInfo.nickname}
+                {/*Nickname: {userInfo.nickname}*/}
               </GridItem>
               <GridItem pl="2" border="1px solid gray" area={'footer'}>
                 Gender: {userInfo.gender}
@@ -138,12 +127,7 @@ function UserInfo() {
             이용 정책
           </Text>
           <UserAgreement />
-          <Text
-            textAlign="center"
-            mt={5}
-            //onClick={handleLogout}
-            _hover={{ borderWidth: '1px' }}
-          >
+          <Text textAlign="center" mt={5} _hover={{ borderWidth: '1px' }}>
             {/*로그아웃 모달*/}
             <UserLogout />
           </Text>

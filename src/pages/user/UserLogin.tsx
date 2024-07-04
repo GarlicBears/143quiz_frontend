@@ -72,16 +72,12 @@ function UserLogin() {
         });
       });
   }
-  // const token = response.headers.entries(
-  // const token = response.headers.entries('Authorization');
-  // const token = response.headers.get('Authorization');
-  // console.log(response.header.get('Authorization'));
-  // 바디로 받는 것: const { token } = response.data; // 토큰 추출
-  // 바디로 받을 수 있음 :
-  // 헤더에서  토큰 추출
+
   function handleClickSignup() {
     navigate('/signup');
   }
+
+  const isFormValid = email !== '' && password !== '';
 
   return (
     <Center>
@@ -122,7 +118,12 @@ function UserLogin() {
             </Flex>
           </CardBody>
           <CardFooter>
-            <Button w="100%" onClick={handleLogin}>
+            <Button
+              w="100%"
+              onClick={handleLogin}
+              isDisabled={!isFormValid}
+              colorScheme={isFormValid ? 'orange' : 'gray'}
+            >
               로그인하기
             </Button>
           </CardFooter>
