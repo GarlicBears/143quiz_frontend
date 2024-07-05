@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import UserBadge from './UserBadge';
 import UserAgreement from './UserAgreement';
 import UserLogout from './UserLogout';
+import axiosInstance from '../../api/axiosInstance';
 
 function UserInfo() {
   const navigate = useNavigate();
@@ -24,16 +25,16 @@ function UserInfo() {
     image: '',
   });
   useEffect(() => {
-    axios
+    axiosInstance
       .get('/user/')
       .then((response) => {
         const { data } = response;
-        if (data.success && data.user) {
+        if (response.status == 200) {
           setUserInfo({
             ...userInfo,
-            nickname: data.user.nickname,
-            gender: data.user.gender,
-            location: data.user.location,
+            nickname: data.nickname,
+            gender: data.gender,
+            location: data.location,
           });
         }
       })
@@ -47,22 +48,11 @@ function UserInfo() {
     navigate('/userInfo/update');
   }
 
-  function handleLogout() {
-    axios
-      .post('/api/user/logout/')
-      .then(() => {
-        navigate('/landing');
-      })
-      .catch((error) => {
-        console.error('Failed to logout', error);
-      });
-  }
-
   return (
     <>
       <Center>
-        <Card border="0px solid black" w="100%">
-          <Box border="0px solid blue">
+        <Card w="100%">
+          <Box>
             <Heading textAlign="center">○ 회원 정보</Heading>
             <Grid
               onClick={handleChangeUserInfo}
@@ -101,6 +91,7 @@ function UserInfo() {
               </GridItem>
               <GridItem pl="2" border="1px solid gray" area={'main'}>
                 Nickname: {userInfo.nickname}
+                {/*Nickname: {userInfo.nickname}*/}
               </GridItem>
               <GridItem pl="2" border="1px solid gray" area={'footer'}>
                 Gender: {userInfo.gender}
@@ -136,12 +127,7 @@ function UserInfo() {
             이용 정책
           </Text>
           <UserAgreement />
-          <Text
-            textAlign="center"
-            mt={5}
-            onClick={handleLogout}
-            _hover={{ borderWidth: '1px' }}
-          >
+          <Text textAlign="center" mt={5} _hover={{ borderWidth: '1px' }}>
             {/*로그아웃 모달*/}
             <UserLogout />
           </Text>
