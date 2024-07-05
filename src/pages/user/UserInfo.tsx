@@ -9,12 +9,43 @@ import {
   Image,
   Text,
 } from '@chakra-ui/react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import UserBadge from './UserBadge';
 import UserAgreement from './UserAgreement';
 import UserLogout from './UserLogout';
 import axiosInstance from '../../api/axiosInstance';
+
+const genderMap = {
+  male: '남성',
+  female: '여성',
+  other: '기타',
+};
+const locationMap = {
+  Seoul: '서울',
+  Gyeonggi: '경기',
+  Incheon: '인천',
+  Chungcheong: '충청',
+  Jeolla: '전라',
+  Gyeongsang: '경상',
+  Jeju: '제주',
+  Overseas: '해외',
+  Gangwon: '강원',
+};
+
+// API 응답 타입 정의
+interface UserResponse {
+  nickname: string;
+  gender: keyof typeof genderMap; // genderMap의 키를 타입으로 사용
+  location: keyof typeof locationMap; // locationMap의 키를 타입으로 사용
+  imageUrl: string;
+}
+
+interface UserInfo {
+  nickname: string;
+  gender: string;
+  location: string;
+  imageUrl: string;
+}
 
 function UserInfo() {
   const navigate = useNavigate();
@@ -24,18 +55,21 @@ function UserInfo() {
     location: '',
     image: '',
   });
+
   useEffect(() => {
     axiosInstance
-      .get('/user/')
+      .get<UserResponse>('/user/')
       .then((response) => {
         const { data } = response;
-        if (response.status == 200) {
+        if (response.status === 200) {
           setUserInfo({
-            ...userInfo,
             nickname: data.nickname,
-            gender: data.gender,
-            location: data.location,
+            gender: genderMap[data.gender] || data.gender,
+            location: locationMap[data.location] || data.location,
+            image: data.imageUrl || '',
           });
+        } else {
+          console.error('Unexpected API response format', data);
         }
       })
       .catch((error) => {
