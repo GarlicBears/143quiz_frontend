@@ -305,9 +305,9 @@ function UserSignup() {
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
               >
-                <option value="남자">남자</option>
-                <option value="여자">여자</option>
-                <option value="기타">기타</option>
+                <option value="male">남자</option>
+                <option value="female">여자</option>
+                <option value="other">기타</option>
               </Select>
             </FormControl>
             {/*출생연도 입력 1940_2022까지*/}
@@ -334,22 +334,18 @@ function UserSignup() {
               <FormLabel>거주지</FormLabel>
               <Select
                 placeholder={'거주 지역 선택'}
+                value={location}
                 onChange={(e) => setLocation(e.target.value)}
               >
-                {[
-                  '서울',
-                  '경기',
-                  '강원',
-                  '충청',
-                  '경상',
-                  '전라',
-                  '제주',
-                  '해외',
-                ].map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
+                <option value="Seoul">서울</option>
+                <option value="Gyeonggi">경기</option>
+                <option value="Incheon">인천</option>
+                <option value="Gangwon">강원</option>
+                <option value="Chungcheong">충청</option>
+                <option value="Gyeongsang">경상</option>
+                <option value="Jeolla">전라</option>
+                <option value="Jeju">제주</option>
+                <option value="Overseas">해외</option>
               </Select>
             </FormControl>
             <FormControl>
