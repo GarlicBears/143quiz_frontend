@@ -53,7 +53,7 @@ function UserInfo() {
     nickname: '',
     gender: '',
     location: '',
-    image: '',
+    imageUrl: '',
   });
 
   useEffect(() => {
@@ -61,12 +61,14 @@ function UserInfo() {
       .get<UserResponse>('/user/')
       .then((response) => {
         const { data } = response;
+        console.log(response);
+        console.log(data);
         if (response.status === 200) {
           setUserInfo({
             nickname: data.nickname,
             gender: genderMap[data.gender] || data.gender,
             location: locationMap[data.location] || data.location,
-            image: data.imageUrl || '',
+            imageUrl: data.imageUrl || '',
           });
         } else {
           console.error('Unexpected API response format', data);
@@ -111,9 +113,9 @@ function UserInfo() {
                 area={'nav'}
               >
                 <Box border="1px solid gray" borderRadius="full">
-                  {userInfo.image ? (
+                  {userInfo.imageUrl ? (
                     <Image
-                      src={userInfo.image}
+                      src={userInfo.imageUrl}
                       borderRadius="full"
                       boxSize="50px"
                       alt="Profile Image"
