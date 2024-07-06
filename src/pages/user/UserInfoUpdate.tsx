@@ -12,17 +12,18 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import UserAgreement from './UserAgreement';
 import UserAccountDelete from './UserAccountDelete';
 import UserLogout from './UserLogout';
 import axiosInstance from '../../api/axiosInstance';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 const genderMap: { [key: string]: string } = {
-  남성: 'male',
-  여성: 'female',
+  남자: 'male',
+  여자: 'female',
   기타: 'other',
 };
+
 const locationMap: { [key: string]: string } = {
   서울: 'Seoul',
   경기: 'Gyeonggi',
@@ -33,6 +34,7 @@ const locationMap: { [key: string]: string } = {
   제주: 'Jeju',
   해외: 'Overseas',
 };
+
 interface UserInfo {
   nickname: string;
   gender: string;
@@ -40,25 +42,34 @@ interface UserInfo {
   imageUrl: string;
   birthYear: number;
 }
+
 function UserInfoUpdate() {
   const location = useLocation();
   const navigate = useNavigate();
   const userInfo = location.state as UserInfo;
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  console.log('Received UserInfo:', userInfo);
+
   if (!userInfo) {
     return <div>Loading...</div>;
   }
+
   const [birthYear, setBirthYear] = useState<number | null>(userInfo.birthYear);
   const [gender, setGender] = useState<string>(userInfo.gender);
   const [locationState, setLocation] = useState<string>(userInfo.location);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [updatedUserInfo, setUpdatedUserInfo] = useState<UserInfo>(userInfo);
+  // 확인용 로그
+  console.log('Initial birthYear:', birthYear);
+  console.log('Initial gender:', gender);
+  console.log('Initial location:', locationState);
+  console.log('Initial selectedFile:', selectedFile);
+  console.log('Initial updatedUserInfo:', updatedUserInfo);
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setSelectedFile(event.target.files[0]);
     }
   };
+
   const handleFileUpload = () => {
     if (!selectedFile) {
       alert('파일을 선택해주세요.');
@@ -86,9 +97,10 @@ function UserInfoUpdate() {
       })
       .catch((error) => {
         console.error('Failed to upload image', error);
-        alert('이미지 업로드 중 오류가 발생하였습니다.');
+        alert('이미지 크기 2MB 이하로 업로드 해주세요.');
       });
   };
+
   const handleSaveChanges = () => {
     if (!birthYear || !gender || !locationState) {
       alert('모든 필드를 채워주세요.');
@@ -128,6 +140,7 @@ function UserInfoUpdate() {
       </option>
     ));
   };
+
   return (
     <Center>
       <VStack
@@ -142,9 +155,8 @@ function UserInfoUpdate() {
             회원정보 수정
           </Text>
           <Image
-            // src={userImage}
             src={updatedUserInfo.imageUrl}
-            border="1px solid black"
+            // border="1px solid black"
             borderRadius="full"
             boxSize="150px"
             margin="auto"
@@ -152,13 +164,6 @@ function UserInfoUpdate() {
           <Input
             type="file"
             accept="image/*"
-            position="absolute"
-            left="50%"
-            top="50%"
-            transform="translate(-50%, -50%)"
-            opacity={0}
-            aria-label="Update profile image"
-            size="lg"
             onChange={handleFileChange}
             ref={fileInputRef}
             style={{ display: 'none' }}
@@ -181,40 +186,34 @@ function UserInfoUpdate() {
           <FormControl>
             <FormLabel>출생연도 변경</FormLabel>
             <Select
-              value={birthYear !== null ? birthYear : ''}
+              value={userInfo.birthYear !== null ? userInfo.birthYear : ''}
               onChange={(e) => setBirthYear(Number(e.target.value))}
             >
               {generateYearOption()}
             </Select>
           </FormControl>
-
           <FormControl>
             <FormLabel>성별 변경</FormLabel>
-            <Select
-              placeholder="성별 변경 시 선택해주세요"
-              onChange={(e) => setGender(e.target.value)}
-            >
-              <option value="male">남자</option>
-              <option value="female">여자</option>
-              <option value="other">기타</option>
+            <Select value={gender} onChange={(e) => setGender(e.target.value)}>
+              <option value="남자">남자</option>
+              <option value="여자">여자</option>
+              <option value="기타">기타</option>
             </Select>
           </FormControl>
           <FormControl>
             <FormLabel>거주지 변경</FormLabel>
             <Select
               value={locationState}
-              placeholder="거주지를 변경 시 선택해주세요"
               onChange={(e) => setLocation(e.target.value)}
             >
-              <option value="Seoul">서울</option>
-              <option value="Gyeonggi">경기</option>
-              <option value="Incheon">인천</option>
-              <option value="Gangwon">강원</option>
-              <option value="Chungcheong">충청</option>
-              <option value="Gyeongsang">경상</option>
-              <option value="Jeolla">전라</option>
-              <option value="Jeju">제주</option>
-              <option value="Overseas">해외</option>
+              <option value="서울">서울</option>
+              <option value="경기">경기</option>
+              <option value="강원">강원</option>
+              <option value="전라">전라</option>
+              <option value="충청">충청</option>
+              <option value="경상">경상</option>
+              <option value="제주">제주</option>
+              <option value="해외">해외</option>
             </Select>
           </FormControl>
           <Button mt="20px" w="100%" onClick={handleSaveChanges}>
@@ -222,12 +221,10 @@ function UserInfoUpdate() {
           </Button>
         </Box>
         <Divider />
-        {/*<Text>이용 동의 및 개인정보 처리방침</Text>*/}
         <UserAgreement />
         <Divider />
         <UserLogout />
         <Divider />
-        {/*<Text>로그아웃</Text>*/}
         <UserAccountDelete />
         <Divider />
       </VStack>
