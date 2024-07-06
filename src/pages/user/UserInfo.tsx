@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Card,
+  CardBody,
   Center,
-  Grid,
-  GridItem,
+  Divider,
   Heading,
   Image,
   Text,
@@ -16,8 +16,8 @@ import UserLogout from './UserLogout';
 import axiosInstance from '../../api/axiosInstance';
 
 const genderMap = {
-  male: '남성',
-  female: '여성',
+  male: '남자',
+  female: '여자',
   other: '기타',
 };
 const locationMap = {
@@ -87,70 +87,58 @@ function UserInfo() {
   return (
     <>
       <Center>
-        <Card w="100%">
+        <Card w="100%" border="1px solid orange">
           <Box>
-            <Heading textAlign="center">○ 회원 정보</Heading>
-            <Grid
+            <Heading textAlign="center"> 회원 정보 </Heading>
+            <Card
+              mt={3}
+              _hover={{
+                color: 'orange.500',
+                transformOrigin: 'center',
+                borderWidth: '1px',
+              }}
               onClick={handleChangeUserInfo}
-              templateAreas={`"header header"
-                  "nav main"
-                  "nav footer"`}
-              gridTemplateRows={'0px 2fr 50px'}
-              gridTemplateColumns={'150px 1fr'}
-              h="200px"
-              gap="1"
-              color="blackAlpha.700"
-              fontWeight="bold"
-              _hover={{ borderWidth: '1px' }}
             >
-              <GridItem
-                display="flex"
-                border="1px solid gray"
-                justifyContent="center"
-                alignItems="center"
-                borderRadius="full"
-                pl="2"
-                area={'nav'}
-              >
-                <Box border="1px solid gray" borderRadius="full">
-                  {userInfo.imageUrl ? (
-                    <Image
-                      src={userInfo.imageUrl}
-                      borderRadius="full"
-                      boxSize="50px"
-                      alt="Profile Image"
-                    />
-                  ) : (
-                    'No image' //이미지가 없을 경우 no image로 표시
-                  )}
+              <CardBody textAlign="center">
+                {userInfo.imageUrl ? (
+                  <Image
+                    src={userInfo.imageUrl}
+                    borderRadius="full"
+                    boxSize="150px"
+                    alt="Profile Image"
+                    m="auto"
+                  />
+                ) : (
+                  'No image' // 이미지가 없을 경우 'No image'로 표시
+                )}
+                <Box textAlign="center" fontSize="lg" mt={3}>
+                  <Text>별명: {userInfo.nickname}</Text>
+                  {/*Nickname: {userInfo.nickname}*/}
+                  <Text>성별: {userInfo.gender}</Text>
+                  {/*Gender: {userInfo.gender}*/}
+                  <Text>거주지: {userInfo.location}</Text>
+                  {/*Location: {userInfo.location}*/}
                 </Box>
-              </GridItem>
-              <GridItem pl="2" border="1px solid gray" area={'main'}>
-                Nickname: {userInfo.nickname}
-                {/*Nickname: {userInfo.nickname}*/}
-              </GridItem>
-              <GridItem pl="2" border="1px solid gray" area={'footer'}>
-                Gender: {userInfo.gender}
-                <br />
-                Location: {userInfo.location}
-              </GridItem>
-            </Grid>
+              </CardBody>
+            </Card>
           </Box>
+          <Divider />
           <Box
             mt={5}
             alignItems="center"
             fontSize="xl"
             justifyContent="center"
-            _hover={{ borderWidth: '2px' }}
+            _hover={{ color: 'orange.500' }}
             display="flex"
           >
             {/*내가 모은 뱃지*/}
             <UserBadge />
           </Box>
           <Text textAlign="center" mt={5} fontSize="xl">
+            <Divider />
             게임 설정
           </Text>
-          <Box mt={2} justifyContent="center" border="0px solid red">
+          <Box mt={2} justifyContent="center">
             효과음 설정
           </Box>
           <Box mt={2} justifyContent="center" border="0px solid red">
@@ -159,14 +147,15 @@ function UserInfo() {
           <Box mt={2} justifyContent="center" border="0px solid red">
             글씨 크기 설정
           </Box>
-          <Text textAlign="center" mt={5} fontSize="xl">
+          <Text textAlign="center" mt={5} mb={3} fontSize="xl">
+            <Divider />
             이용 정책
           </Text>
           <UserAgreement />
           <Text textAlign="center" mt={5} _hover={{ borderWidth: '1px' }}>
             {/*로그아웃 모달*/}
-            <UserLogout />
           </Text>
+          <UserLogout />
         </Card>
       </Center>
     </>
