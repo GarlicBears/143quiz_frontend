@@ -20,13 +20,11 @@ interface TopicType {
   title: string;
   heartsCount: number;
   totalQuestionsCount: number;
-  topicImage: string;
 }
 
 interface BadgeType {
   topicId: number;
   title: string;
-  topicImage: string;
 }
 
 const Topic = () => {
@@ -117,7 +115,10 @@ const Topic = () => {
             width="100%"
           >
             {earnedBadgeList.map((earnedBadge, index) => {
-              const imgSrc = earnedBadge.topicImage;
+              const imgSrc =
+                topicListLocal.find(
+                  (topic) => topic.topicId === earnedBadge.topicId,
+                )?.imgSrc || '';
               return (
                 <Box
                   key={index}
@@ -168,7 +169,10 @@ const Topic = () => {
           <TopicCard
             key={index}
             title={topic.title}
-            imgSrc={topic.topicImage}
+            imgSrc={
+              topicListLocal.find((t) => t.topicId === topic.topicId)?.imgSrc ||
+              ''
+            }
             onClick={() => handleTopicSelect(topic.topicId, topic.title)}
             selected={selectedTopic?.id === topic.topicId}
             isLoading={isLoading}
