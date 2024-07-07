@@ -48,9 +48,10 @@ const Header: React.FC<HeaderProps> = ({ preventBack }) => {
         <Link to="/">
           <i className="fa-solid fa-house fa-xl"></i>
         </Link>
+
         <Flex width="120px" justifyContent="flex-end">
           <Flex width="80px" justifyContent="space-around" alignItems="center">
-            <Link to="/userbadge">
+            <Link to="/userAllRanking">
               <i className="fa-solid fa-medal fa-xl" />
             </Link>
             <Link to="/userinfo">
