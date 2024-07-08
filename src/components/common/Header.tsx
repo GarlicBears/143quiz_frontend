@@ -19,7 +19,7 @@ const Header: React.FC<HeaderProps> = ({ preventBack }) => {
       color="var(--text-color-white)"
       justifyContent="center"
       alignItems="center"
-      position="sticky" 
+      position="sticky"
       top="0"
       zIndex="1000"
       boxShadow="md"

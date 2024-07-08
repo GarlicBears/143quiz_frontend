@@ -25,7 +25,6 @@ type UserRankProps = {
   onClose: () => void;
   topicName: string | null;
   topic: TopicType | null;
-  currentUserNickname: string;
   rankingData: {
     userId: number;
     nickname: string;
@@ -38,7 +37,6 @@ const UserRank: React.FC<UserRankProps> = ({
   onClose,
   topicName,
   topic,
-  currentUserNickname,
   rankingData,
 }) => {
   return (
