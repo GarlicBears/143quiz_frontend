@@ -5,7 +5,7 @@ import GameStop from './GameStop';
 import xImage from '../../asset/images/blackX.png';
 import Add from '../common/Add';
 import Footer from '../common/Footer';
-import { titleState } from '../../recoil/atom';
+import { titleState } from '../../recoil/atoms';
 import { useRecoilValue } from 'recoil';
 
 const Layout: React.FC = () => {

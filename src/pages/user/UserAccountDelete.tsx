@@ -61,7 +61,7 @@ function UserAccountDelete() {
               <Text textAlign="center" mt={4} fontWeight="bold">
                 정말 143 초성게임을 탈퇴하시겠습니까?
                 <br />
-                '예' 선택 시 첫 화면으로 돌아갑니다.
+                &apos;예&apos; 선택 시 첫 화면으로 돌아갑니다.
               </Text>
             </Box>
           </ModalBody>
