@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import {
-  Box,
   Button,
   Card,
   CardBody,
   CardFooter,
   CardHeader,
   Center,
-  Divider,
   Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Heading,
+  IconButton,
   Input,
   InputGroup,
   InputRightElement,
@@ -25,9 +24,9 @@ import {
   faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import UserAgreement from './UserAgreement';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/axiosInstance';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
 //회원 가입 화면
 
@@ -36,15 +35,29 @@ function UserSignup() {
   const [emailAvailable, setEmailAvailable] = useState(false);
   const [domain, setDomain] = useState('');
   const [customDomain, setCustomDomain] = useState('');
+  const [emailError, setEmailError] = useState('');
+
   const toast = useToast();
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
   const [nickName, setNickName] = useState('');
+  const [nickNameError, setNickNameError] = useState('');
   const [gender, setGender] = useState('');
   const [location, setLocation] = useState('');
   const [birthYear, setBirthYear] = useState('');
+  const [nickNameAvailable, setNickNameAvailable] = useState(false);
+
   // 이메일 비밀번호, 비번확인, 별명, 별명확인, 성별, 거주지, 출생연도 (1940-2022)
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%?&])[a-z\d@$!%*?&]{8,}$/;
+  const nickNameRegex =
+    /^(?!.*\s)[a-zA-Z0-9가-힣\uD83C-\uDBFF\uDC00-\uDFFF]{3,20}$/u;
+
+  const handleTogglePasswordVisibility = () => setShowPassword(!showPassword);
 
   let submitAvailable =
     emailAvailable &&
@@ -73,9 +86,13 @@ function UserSignup() {
   };
 
   function checkEmailExists() {
-    const AllEmail = `${email}@${customDomain || domain}`;
+    const fullEmail = `${email}@${customDomain || domain}`;
+    if (!emailRegex.test(fullEmail)) {
+      setEmailError('유효하지 않은 이메일 형식입니다.');
+      return;
+    }
     axiosInstance
-      .post('/user/checkEmail', { email: AllEmail })
+      .post('/user/checkEmail', { email: fullEmail })
       .then((response) => {
         setEmailAvailable(!response.data.exists);
         toast({
@@ -111,6 +128,10 @@ function UserSignup() {
   }
 
   function checkNicknameExists() {
+    if (!nickNameRegex.test(nickName)) {
+      setNickNameError('유효하지 않은 별명 형식입니다.');
+      return;
+    }
     axiosInstance
       .post('/user/checkNickname', { nickname: nickName })
       .then((response) => {
@@ -150,6 +171,7 @@ function UserSignup() {
     const selectedYear = event.target.value;
     setBirthYear(selectedYear);
   };
+
   const handleSubmit = () => {
     const fullEmail = `${email}@${customDomain || domain}`;
     if (submitAvailable) {
@@ -166,7 +188,8 @@ function UserSignup() {
           // 성공적으로 저장되었을 때의 처리
           toast({
             title: '가입 성공',
-            description: '회원가입이 성공적으로 완료되었습니다.',
+            description:
+              '회원가입이 성공적으로 완료되었습니다.로그인을 이용해 주세요',
             status: 'success',
             duration: 2000,
             isClosable: true,
@@ -255,27 +278,38 @@ function UserSignup() {
                 <Button variant="outline" onClick={checkEmailExists}>
                   중복확인
                 </Button>
-                {/*<Button onClick={handleEmailCheck}>중복확인</Button>*/}
               </Flex>
               <FormErrorMessage>이메일 중복체크를 해주세요.</FormErrorMessage>
             </FormControl>
             <FormControl mb={5}>
               {/*<FormControl mb={5} isInvalid={password.length === 0}>*/}
               <FormLabel>비밀번호</FormLabel>
-              <Input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <FormErrorMessage>암호를 입력해 주세요.</FormErrorMessage>
-            </FormControl>
-            <FormControl mb={5} isInvalid={password != passwordCheck}>
-              <FormLabel>비밀번호 확인</FormLabel>
-              <Input
-                type="password"
-                value={passwordCheck}
-                onChange={(e) => setPasswordCheck(e.target.value)}
-              />
+              <InputGroup>
+                <Input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  placeholder="최소 8자 이상, 소문자, 숫자, 특수문자를 사용해 주세요"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <InputRightElement>
+                  <IconButton
+                    aria-label={
+                      showPassword ? 'Hide password' : 'Show password'
+                    }
+                    icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                    onClick={handleTogglePasswordVisibility}
+                    variant="ghost"
+                  />
+                </InputRightElement>
+              </InputGroup>
+              <FormControl mb={5} isInvalid={password != passwordCheck}>
+                <FormLabel>비밀번호 확인</FormLabel>
+                <Input
+                  type="password"
+                  value={passwordCheck}
+                  onChange={(e) => setPasswordCheck(e.target.value)}
+                />
+              </FormControl>
               <FormErrorMessage>암호가 다릅니다.</FormErrorMessage>
             </FormControl>
             <FormControl mb={5}>
@@ -284,6 +318,7 @@ function UserSignup() {
                 <Input
                   type="text"
                   value={nickName}
+                  placeholder="3-20자 이내, 한글,영어대소문자,숫자,이모지 사용가능합니다."
                   onChange={(e) => setNickName(e.target.value)}
                 ></Input>
                 <Button size="md" borderRadius="full">
@@ -305,9 +340,9 @@ function UserSignup() {
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
               >
-                <option value="남자">남자</option>
-                <option value="여자">여자</option>
-                <option value="기타">기타</option>
+                <option value="male">남자</option>
+                <option value="female">여자</option>
+                <option value="other">기타</option>
               </Select>
             </FormControl>
             {/*출생연도 입력 1940_2022까지*/}
@@ -334,22 +369,18 @@ function UserSignup() {
               <FormLabel>거주지</FormLabel>
               <Select
                 placeholder={'거주 지역 선택'}
+                value={location}
                 onChange={(e) => setLocation(e.target.value)}
               >
-                {[
-                  '서울',
-                  '경기',
-                  '강원',
-                  '충청',
-                  '경상',
-                  '전라',
-                  '제주',
-                  '해외',
-                ].map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
+                <option value="Seoul">서울</option>
+                <option value="Gyeonggi">경기</option>
+                <option value="Incheon">인천</option>
+                <option value="Gangwon">강원</option>
+                <option value="Chungcheong">충청</option>
+                <option value="Gyeongsang">경상</option>
+                <option value="Jeolla">전라</option>
+                <option value="Jeju">제주</option>
+                <option value="Overseas">해외</option>
               </Select>
             </FormControl>
             <FormControl>

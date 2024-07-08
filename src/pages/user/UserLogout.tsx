@@ -51,7 +51,7 @@ function UserLogout() {
 
   return (
     <>
-      <Flex onClick={onOpen}>
+      <Flex _hover={{ color: 'orange.500' }} onClick={onOpen}>
         <Text>로그아웃</Text>
       </Flex>
 
