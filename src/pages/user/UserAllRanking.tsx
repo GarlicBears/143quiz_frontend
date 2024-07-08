@@ -30,7 +30,7 @@ const UserAllRanking = () => {
               onChange={(index) => setSelectedTab(index)}
             >
               <TabList mb="1em">
-                <Tab _selected={{ color: 'white', bg: 'blue.500' }}>
+                <Tab _selected={{ color: 'white', bg: '#e66119' }}>
                   {selectedTab === 0 && (
                     <FontAwesomeIcon
                       icon={faTrophy}
@@ -39,7 +39,7 @@ const UserAllRanking = () => {
                   )}
                   주제별 게임 랭킹
                 </Tab>
-                <Tab _selected={{ color: 'white', bg: 'green.400' }}>
+                <Tab _selected={{ color: 'white', bg: '#e66119' }}>
                   {selectedTab === 1 && (
                     <FontAwesomeIcon
                       icon={faTrophy}

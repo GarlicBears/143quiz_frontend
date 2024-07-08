@@ -45,7 +45,7 @@ const Header: React.FC<HeaderProps> = ({ preventBack }) => {
             <Box marginLeft={4}>이전으로</Box>
           </Button>
         )}
-        <Link to="/">
+        <Link to="/topic">
           <i className="fa-solid fa-house fa-xl"></i>
         </Link>
 

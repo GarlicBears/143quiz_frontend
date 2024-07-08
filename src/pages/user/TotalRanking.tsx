@@ -41,34 +41,32 @@ function TotalRanking() {
       });
   }, []);
   return (
-    <Box border="1px solid" h="50%" overflowY="auto">
-      <TableContainer m={10} border="1px solid blue">
-        <Table
-          overflowY="auto"
-          variant="simple"
-          sx={{ 'th, td': { textAlign: 'center', fontSize: 'lg' } }}
-        >
-          <Thead>
-            <Tr bg="#ffb691">
-              <Th>순위</Th>
-              <Th>별명</Th>
-              <Th>전체 뱃지 수</Th>
-              <Th>전체 하트 수</Th>
+    <TableContainer border="1px solid gray" borderRadius="lg">
+      <Table
+        overflowY="auto"
+        variant="simple"
+        sx={{ 'th, td': { textAlign: 'center' } }}
+      >
+        <Thead>
+          <Tr bg="#ffb691">
+            <Th>순위</Th>
+            <Th>별명</Th>
+            <Th>전체 뱃지 수</Th>
+            <Th>전체 하트 수</Th>
+          </Tr>
+        </Thead>
+        <Tbody h={10} overflowY="auto">
+          {rankingData.map((user) => (
+            <Tr key={user.userId}>
+              <Td>{user.rank}</Td>
+              <Td>{user.nickname}</Td>
+              <Td>{user.totalBadges}</Td>
+              <Td>{user.totalHearts}</Td>
             </Tr>
-          </Thead>
-          <Tbody h={10} overflowY="auto">
-            {rankingData.map((user) => (
-              <Tr key={user.userId}>
-                <Td>{user.rank}</Td>
-                <Td>{user.nickname}</Td>
-                <Td>{user.totalBadges}</Td>
-                <Td>{user.totalHearts}</Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
-    </Box>
+          ))}
+        </Tbody>
+      </Table>
+    </TableContainer>
   );
 }
 
