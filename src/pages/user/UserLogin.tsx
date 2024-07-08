@@ -11,7 +11,10 @@ import {
   FormControl,
   FormLabel,
   Heading,
+  IconButton,
   Input,
+  InputGroup,
+  InputRightElement,
   Link,
   Text,
   useToast,
@@ -19,11 +22,13 @@ import {
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/axiosInstance';
 import Cookies from 'js-cookie';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
 //로그인 화면
 function UserLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -77,6 +82,9 @@ function UserLogin() {
     navigate('/signup');
   }
 
+  function handleTogglePasswordVisibility() {
+    setShowPassword(!showPassword);
+  }
   const isFormValid = email !== '' && password !== '';
 
   return (
@@ -97,11 +105,23 @@ function UserLogin() {
             </FormControl>
             <FormControl mb={5}>
               <FormLabel>비밀번호</FormLabel>
-              <Input
-                type="password" //cover the password ***
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <InputGroup>
+                <Input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <InputRightElement>
+                  <IconButton
+                    aria-label={
+                      showPassword ? 'Hide password' : 'Show password'
+                    }
+                    icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                    onClick={handleTogglePasswordVisibility}
+                    variant="ghost"
+                  />
+                </InputRightElement>
+              </InputGroup>
             </FormControl>
             <br />
             <Link style={{ textDecoration: 'underline', color: '#e66119' }}>

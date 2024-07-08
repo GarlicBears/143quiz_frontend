@@ -75,7 +75,7 @@ function UserAgreement() {
       <Text
         onClick={onPrivacyOpen}
         textDecoration="underline"
-        _hover={{ borderWidth: '1px' }}
+        _hover={{ color: 'orange.500' }}
       >
         개인정보 수집 및 이용약관 (상세)
       </Text>
