@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Text,
   Image,
   Box,
-  Grid,
-  GridItem,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -14,30 +12,88 @@ import {
   useDisclosure,
   Flex,
 } from '@chakra-ui/react';
-import topicList from '../../asset/topicList';
+import axiosInstance from '../../api/axiosInstance';
 import badgeIcon from '../../asset/images/badge48.png';
 import UserRank from './UserRank';
+import topicListLocal from '../../asset/topicList';
 
-type Topic = {
-  name: string;
+interface BadgeType {
+  topicId: number;
+  title: string;
+  heartsCount: number;
+  totalQuestionsCount: number;
+}
+
+interface Topic {
+  topicId: number;
+  title: string;
   imgSrc: string;
-};
+  name: string;
+}
 
-function UserBadge() {
+interface UserInfo {
+  nickname: string;
+  gender: string;
+  location: string;
+  imageUrl: string;
+  birthYear: number;
+}
+
+interface UserBadgeProps {
+  userInfo: UserInfo;
+}
+
+function UserBadge({ userInfo }: UserBadgeProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
-
+  const [earnedBadgeList, setEarnedBadgeList] = useState<BadgeType[]>([]);
   const {
     isOpen: isRankingOpen,
     onOpen: onRankingOpen,
     onClose: onRankingClose,
   } = useDisclosure();
+  const [rankingData, setRankingData] = useState([]);
+  const [totalQuestionsCount, setTotalQuestionsCount] = useState(0);
 
-  const handleBadgeClick = (topic: Topic) => {
+  useEffect(() => {
+    console.log('userInfo:', userInfo);
+    const fetchBadges = async () => {
+      try {
+        const response = await axiosInstance.get('/game/badges');
+        setEarnedBadgeList(response.data.topics || []);
+      } catch (error) {
+        console.error('Error fetching badges:', error);
+      }
+    };
+
+    fetchBadges();
+  }, [userInfo]);
+
+  const handleBadgeClick = async (topic: Topic) => {
     setSelectedTopic(topic);
     onRankingOpen();
+
+    try {
+      const response = await axiosInstance.get(
+        `/game/rankings/${topic.topicId}`,
+        {
+          params: {
+            pageNumber: 0, // 필요한 경우 페이지 번호를 변경하세요
+            pageSize: 10, // 필요한 경우 페이지 크기를 변경하세요
+          },
+        },
+      );
+      setRankingData(response.data);
+      const selectedBadge = earnedBadgeList.find(
+        (badge) => badge.topicId === topic.topicId,
+      );
+      if (selectedBadge) {
+        setTotalQuestionsCount(selectedBadge.totalQuestionsCount);
+      }
+    } catch (error) {
+      console.error('Error fetching ranking data:', error);
+    }
   };
-  const currentUserNickname = 'User1'; // 현재 유저의 닉네임
 
   return (
     <>
@@ -51,7 +107,7 @@ function UserBadge() {
         <Text>내가 모은 뱃지</Text>
       </Flex>
 
-      <Modal size="2xl" isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
@@ -62,50 +118,69 @@ function UserBadge() {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody maxHeight="calc(100vh - 210px)" overflowY="auto">
-            <Grid templateColumns="repeat(2, 1fr)" gap={5}>
-              {topicList.map((topic, index) => (
-                <GridItem key={index} w="100%">
-                  <Box
-                    borderRadius="2xl"
-                    border="1px solid orange"
-                    overflow="hidden"
-                    textAlign="center"
-                    w="100%"
-                    p={3}
-                    cursor="pointer"
-                    onClick={() => handleBadgeClick(topic)}
-                  >
+            {earnedBadgeList.length ? (
+              <Flex
+                justifyContent="center"
+                alignItems="center"
+                mt={4}
+                width="100%"
+                flexWrap="wrap"
+              >
+                {earnedBadgeList.map((earnedBadge, index) => {
+                  const imgSrc =
+                    topicListLocal.find(
+                      (topic) => topic.topicId === earnedBadge.topicId,
+                    )?.imgSrc || '';
+                  return (
                     <Box
-                      border="1px solid orange"
-                      borderRadius="full"
-                      bg="orange.100"
-                      boxSize="80px"
-                      m="auto"
+                      key={index}
+                      boxSize="72px"
+                      backgroundImage={imgSrc}
+                      bgColor={imgSrc ? 'customOrange.100' : 'gray.300'}
+                      backgroundSize="cover"
+                      backgroundPosition="center"
+                      backgroundRepeat="no-repeat"
+                      m={2}
+                      flexShrink="0"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      borderRadius="md"
+                      boxShadow="sm"
+                      color="white"
+                      fontWeight="bold"
+                      onClick={() =>
+                        handleBadgeClick({
+                          topicId: earnedBadge.topicId,
+                          title: earnedBadge.title,
+                          imgSrc,
+                          name: earnedBadge.title,
+                        })
+                      }
                     >
-                      <Image
-                        src={topic.imgSrc}
-                        borderRadius="full"
-                        boxSize="50px"
-                        m="auto"
-                        mt={4}
-                      />
+                      {earnedBadge.title}
                     </Box>
-                    <Text mt={2}>{topic.name}</Text>
-                  </Box>
-                </GridItem>
-              ))}
-            </Grid>
+                  );
+                })}
+              </Flex>
+            ) : (
+              <Text textAlign="center">
+                아직 획득한 뱃지가 없어요. 게임을 통해 하트와 뱃지를 모아보세요!
+              </Text>
+            )}
           </ModalBody>
         </ModalContent>
       </Modal>
 
-      <UserRank
+      {/* <UserRank
         isOpen={isRankingOpen}
         onClose={onRankingClose}
         topicName={selectedTopic?.name || ''}
         topic={selectedTopic}
-        currentUserNickname={currentUserNickname}
-      />
+        currentUserNickname={userInfo.nickname}
+        rankingData={rankingData}
+        totalQuestionsCount={totalQuestionsCount}
+      /> */}
     </>
   );
 }
