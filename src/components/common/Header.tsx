@@ -19,7 +19,7 @@ const Header: React.FC<HeaderProps> = ({ preventBack }) => {
       color="var(--text-color-white)"
       justifyContent="center"
       alignItems="center"
-      position="sticky"
+      position="sticky" 
       top="0"
       zIndex="1000"
       boxShadow="md"
@@ -45,12 +45,13 @@ const Header: React.FC<HeaderProps> = ({ preventBack }) => {
             <Box marginLeft={4}>이전으로</Box>
           </Button>
         )}
-        <Link to="/">
+        <Link to="/topic">
           <i className="fa-solid fa-house fa-xl"></i>
         </Link>
+
         <Flex width="120px" justifyContent="flex-end">
           <Flex width="80px" justifyContent="space-around" alignItems="center">
-            <Link to="/userbadge">
+            <Link to="/userAllRanking">
               <i className="fa-solid fa-medal fa-xl" />
             </Link>
             <Link to="/userinfo">

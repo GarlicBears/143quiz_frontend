@@ -15,7 +15,7 @@ import UserSignup from './pages/user/UserSignup';
 import UserLogin from './pages/user/UserLogin';
 import UserInfoUpdate from './pages/user/UserInfoUpdate';
 import UserAccountDelete from './pages/user/UserAccountDelete';
-import UserBadge from './pages/user/UserBadge';
+import UserAllRanking from './pages/user/UserAllRanking';
 
 function App() {
   return (
@@ -29,8 +29,7 @@ function App() {
             <Route path="/signup" element={<UserSignup />} />
             <Route path="/login" element={<UserLogin />} />
             <Route path="/userInfo" element={<UserInfo />} />
-            <Route path="/userbadge" element={<UserBadge />} />
-            <Route path="/userInfo/badge" element={<UserBadge />} />
+            <Route path="/userAllRanking" element={<UserAllRanking />} />
             <Route path="/userInfo/update" element={<UserInfoUpdate />} />
             <Route
               path="/userInfo/update/delete"
