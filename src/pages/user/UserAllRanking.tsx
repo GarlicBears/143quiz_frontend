@@ -12,7 +12,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrophy } from '@fortawesome/free-solid-svg-icons';
 import TotalRanking from './TotalRanking';
-import UserRankInfo from './UserRank';
+import UserRankInfo from './UserRankInfo';
 
 // 전체 뱃지 수 하트 수를 기준으로 랭킹 정보 조회
 // 토글로 뱃지 랭킹 주제 랭킹 조회
@@ -50,7 +50,9 @@ const UserAllRanking = () => {
                 </Tab>
               </TabList>
               <TabPanels>
-                <TabPanel>{/*<UserRankInfo />*/}</TabPanel>
+                <TabPanel>
+                  <UserRankInfo />
+                </TabPanel>
                 <TabPanel>
                   <TotalRanking />
                 </TabPanel>
