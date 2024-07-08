@@ -29,8 +29,6 @@ function App() {
             <Route path="/signup" element={<UserSignup />} />
             <Route path="/login" element={<UserLogin />} />
             <Route path="/userInfo" element={<UserInfo />} />
-            <Route path="/userbadge" element={<UserBadge />} />
-            <Route path="/userInfo/badge" element={<UserBadge />} />
             <Route path="/userInfo/update" element={<UserInfoUpdate />} />
             <Route
               path="/userInfo/update/delete"

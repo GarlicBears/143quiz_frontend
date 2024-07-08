@@ -38,6 +38,7 @@ interface UserResponse {
   gender: keyof typeof genderMap; // genderMap의 키를 타입으로 사용
   location: keyof typeof locationMap; // locationMap의 키를 타입으로 사용
   imageUrl: string;
+  birthYear: number;
 }
 
 interface UserInfo {
@@ -45,6 +46,7 @@ interface UserInfo {
   gender: string;
   location: string;
   imageUrl: string;
+  birthYear: number;
 }
 
 function UserInfo() {
@@ -54,6 +56,7 @@ function UserInfo() {
     gender: '',
     location: '',
     imageUrl: '',
+    birthYear: 0,
   });
 
   useEffect(() => {
@@ -69,6 +72,7 @@ function UserInfo() {
             gender: genderMap[data.gender] || data.gender,
             location: locationMap[data.location] || data.location,
             imageUrl: data.imageUrl || '',
+            birthYear: data.birthYear,
           });
         } else {
           console.error('Unexpected API response format', data);
@@ -132,7 +136,7 @@ function UserInfo() {
             display="flex"
           >
             {/*내가 모은 뱃지*/}
-            <UserBadge />
+            <UserBadge userInfo={userInfo} />
           </Box>
           <Text textAlign="center" mt={5} fontSize="xl">
             <Divider />

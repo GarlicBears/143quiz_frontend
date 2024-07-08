@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Button,
   Flex,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Text,
   Image,
 } from '@chakra-ui/react';
-import Topic from '../game/Topic';
-//회원 랭킹 조회 화면
 
 type Topic = {
   name: string;
@@ -27,34 +23,40 @@ type UserRankProps = {
   topicName: string | null;
   topic: Topic | null;
   currentUserNickname: string;
+  rankingData: {
+    userId: number;
+    nickname: string;
+    totalBadges: number;
+    totalHearts: number;
+    rank: number;
+  }[];
+  totalQuestionsCount: number; // totalQuestionsCount 추가
 };
-// [TODO]: 게임 유저 외  다른 유저의 정보 가져와서 순위 조회
-const dummyRankingData = [
-  { rank: 1, nickname: 'User1', hearts: 100 },
-  { rank: 2, nickname: 'User2', hearts: 90 },
-  { rank: 3, nickname: 'User3', hearts: 80 },
-];
 
 function UserRank({
   isOpen,
   onClose,
   topic,
+  topicName,
   currentUserNickname,
+  rankingData,
+  totalQuestionsCount,
 }: UserRankProps) {
   const [selectedTopic, setSelectedTopic] = useState<Topic | null>(topic);
-  const [filteredRankingData, setFilteredRankingData] =
-    useState(dummyRankingData);
+  const [filteredRankingData, setFilteredRankingData] = useState(rankingData);
+
   useEffect(() => {
     setSelectedTopic(topic);
   }, [topic]);
 
   useEffect(() => {
-    // 현재 유저를 제외한 랭킹 데이터를 필터링
-    const filteredData = dummyRankingData.filter(
-      (user) => user.nickname !== currentUserNickname,
+    const filteredData = rankingData.filter(
+      (user) =>
+        user.nickname !== currentUserNickname &&
+        user.totalHearts !== totalQuestionsCount,
     );
     setFilteredRankingData(filteredData);
-  }, [currentUserNickname]);
+  }, [rankingData, currentUserNickname, totalQuestionsCount]);
 
   return (
     <>
@@ -65,7 +67,7 @@ function UserRank({
             <Box alignItems="center" justifyContent="center">
               {selectedTopic ? (
                 <>
-                  <Text textAlign="center">{selectedTopic.name} 게임 랭킹</Text>
+                  <Text textAlign="center">{topicName || ''} 게임 랭킹</Text>
                   <Box
                     overflow="hidden"
                     textAlign="center"
@@ -77,11 +79,12 @@ function UserRank({
                       border="3px solid orange"
                       borderRadius="full"
                       bg="orange.100"
-                      boxSize="30%" // 랭킹 주제 뱃지 크기 설정
+                      boxSize="30%"
                       m="auto"
                     >
                       <Image
                         src={selectedTopic.imgSrc}
+                        alt={topicName || ''}
                         borderRadius="full"
                         boxSize="70%"
                         m="auto"
@@ -103,20 +106,15 @@ function UserRank({
                 <Text>닉네임</Text>
                 <Text>하트 수</Text>
               </Flex>
-              {dummyRankingData.map((user) => (
-                <Flex justifyContent="space-around" mt={2} key={user.rank}>
-                  <Text>{user.rank}</Text>
+              {filteredRankingData.map((user, index) => (
+                <Flex justifyContent="space-around" mt={2} key={user.userId}>
+                  <Text>{index + 1}</Text>
                   <Text>{user.nickname}</Text>
-                  <Text>{user.hearts}</Text>
+                  <Text>{user.totalHearts}</Text>
                 </Flex>
               ))}
             </Box>
           </ModalBody>
-          <ModalFooter justifyContent="center" w="100%">
-            <Button flex="1" variant="outline" mr={3} onClick={onClose}>
-              남은 하트 채우러 가기
-            </Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </>
