@@ -35,8 +35,11 @@ const UserAllRanking = () => {
     axiosInstance
       .get('/game/rankings')
       .then((response) => {
-        if (response.data.success) {
-          setRankingData(response.data.ranking);
+        if (response.status === 200) {
+          console.log(response.data);
+          setRankingData(response.data);
+        } else {
+          console.error('Unexpected API response format', response.data);
         }
       })
       .catch((error) => {
@@ -46,7 +49,6 @@ const UserAllRanking = () => {
         setLoading(false);
       });
   }, []);
-
   return (
     <>
       <Center>
