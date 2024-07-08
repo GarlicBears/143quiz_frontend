@@ -20,11 +20,18 @@ interface TopicType {
   topicImage: string;
 }
 
+interface RankingDataType {
+  userId: number;
+  nickname: string;
+  totalHearts: number;
+  totalQuestionsCount: number;
+}
+
 const UserRankInfo: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedTopic, setSelectedTopic] = useState<TopicType | null>(null);
   const [topics, setTopics] = useState<TopicType[]>([]);
-  const [rankingData, setRankingData] = useState([]);
+  const [rankingData, setRankingData] = useState<RankingDataType[]>([]);
   const {
     isOpen: isRankingOpen,
     onOpen: onRankingOpen,
@@ -52,7 +59,11 @@ const UserRankInfo: React.FC = () => {
       const response = await axiosInstance.get(
         `/game/rankings/${topic.topicId}`,
       );
-      setRankingData(response.data);
+      const filteredData = response.data.filter(
+        (user: RankingDataType) =>
+          user.totalHearts !== topic.totalQuestionsCount,
+      );
+      setRankingData(filteredData);
     } catch (error) {
       console.error('Error fetching ranking data:', error);
     }
@@ -104,7 +115,6 @@ const UserRankInfo: React.FC = () => {
         onClose={onRankingClose}
         topicName={selectedTopic?.title || ''}
         topic={selectedTopic}
-        currentUserNickname={'User1'}
         rankingData={rankingData}
       />
     </Box>
