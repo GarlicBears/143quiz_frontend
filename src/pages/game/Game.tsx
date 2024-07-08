@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   Flex,
   Text,
@@ -23,7 +23,7 @@ import {
   titleState,
   questionsState,
   sessionIdState,
-} from '../../recoil/atom';
+} from '../../recoil/atoms';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/axiosInstance';
 import heartImage from '../../asset/images/heart64.png';
@@ -42,7 +42,6 @@ const Game = () => {
   const [seconds, setSeconds] = useState(30);
   const [isPaused, setIsPaused] = useState(false);
   const [questionIndex, setQuestionIndex] = useState(0);
-  const [question, setQuestion] = useState('');
   const [answerSubmitCount, setAnswerSubmitCount] = useRecoilState(
     answerSubmitCountState,
   );
@@ -52,9 +51,13 @@ const Game = () => {
 
   const topicId = useRecoilValue(topicIdState);
   const title = useRecoilValue(titleState);
-  const questions = useRecoilValue(questionsState);
   const [heartsCount, setHeartsCount] = useState(0);
   const sessionId = useRecoilValue(sessionIdState);
+
+  const [questions, setQuestions] = useRecoilState(questionsState);
+  const [question, setQuestion] = useState('');
+
+  const timerIdRef = useRef<NodeJS.Timeout | null>(null);
 
   // 디버깅 용 콘솔로그 : 데이터 수신 확인
   useEffect(() => {
@@ -92,19 +95,21 @@ const Game = () => {
 
   // 타이머 설정
   useEffect(() => {
-    let timerId: ReturnType<typeof setInterval>;
     if (!isPaused && seconds > 0) {
-      timerId = setInterval(() => {
+      timerIdRef.current = setInterval(() => {
         setSeconds((prevSeconds) => prevSeconds - 1);
       }, 1000);
     } else if (seconds === 0) {
       handleTimeout();
     }
-    return () => clearInterval(timerId);
+    return () => {
+      if (timerIdRef.current) clearInterval(timerIdRef.current);
+    };
   }, [isPaused, seconds]);
 
   // 타임아웃 처리
   const handleTimeout = () => {
+    if (timerIdRef.current) clearInterval(timerIdRef.current);
     onTimeoutOpen();
     setIsPaused(true);
     setTimeout(() => {
@@ -167,65 +172,63 @@ const Game = () => {
   };
 
   // 정답 확인 함수
-  const checkAnswer = (inputAnswer: string, isPass = false): Promise<void> => {
-    return new Promise((resolve) => {
-      if (!questions[questionIndex]) return resolve(); // 질문이 없는 경우 반환
+  const checkAnswer = async (
+    inputAnswer: string,
+    isPass = false,
+  ): Promise<void> => {
+    if (!questions[questionIndex]) return; // 질문이 없는 경우 반환
 
-      setIsPaused(true);
-      const correctAnswer = questions[questionIndex].answerText;
-      const currentQuestion = questions[questionIndex];
-      // 동일한 답변이 존재하는지 확인 후, 존재한다면 해당 답변에 hintUsageCount 업데이트
-      const existingAnswer = answers.find(
-        (answer) => answer.questionId === currentQuestion.questionId,
-      );
+    setIsPaused(true);
+    const correctAnswer = questions[questionIndex].answerText;
+    const currentQuestion = questions[questionIndex];
 
-      const newAnswer: AnswerType = {
-        questionId: currentQuestion.questionId,
-        answerText: inputAnswer,
-        answerStatus: isPass ? 'P' : inputAnswer === correctAnswer ? 'Y' : 'N',
-        hintUsageCount: existingAnswer ? existingAnswer.hintUsageCount : 0,
-        answerTimeTaken: 30 - seconds,
-        answerAt: formatDate(new Date()),
-      };
+    // 동일한 답변이 존재하는지 확인 후, 존재한다면 해당 답변에 오답카운트 업데이트
+    const existingAnswer = answers.find(
+      (answer) => answer.questionId === currentQuestion.questionId,
+    );
 
-      // 답변 중복 송부 방지(quetionId 로 구분, 맨 마지막 답변 송부)
-      setAnswers((prevAnswers) =>
-        prevAnswers.filter(
-          (answer) => answer.questionId !== currentQuestion.questionId,
-        ),
-      );
+    const newAnswer: AnswerType = {
+      questionId: currentQuestion.questionId,
+      answerText: inputAnswer,
+      answerStatus: isPass ? 'P' : inputAnswer === correctAnswer ? 'Y' : 'N',
+      hintUsageCount: existingAnswer ? existingAnswer.hintUsageCount : 0,
+      answerTimeTaken: 30 - seconds,
+      answerAt: formatDate(new Date()),
+    };
 
-      setAnswers((prevAnswers) => [...prevAnswers, newAnswer]);
+    // 답변 중복 송부 방지(quetionId 로 구분, 맨 마지막 답변 송부)
+    setAnswers((prevAnswers) =>
+      prevAnswers.filter(
+        (answer) => answer.questionId !== currentQuestion.questionId,
+      ),
+    );
 
-      if (inputAnswer === correctAnswer) {
-        onCorrectOpen();
-        setHeartsCount((prevCount) => prevCount + 1);
-        setAnswerSubmitCount(0);
-      } else {
-        // 패스 버튼 클릭 시에는 오답 모달 생략
-        if (!isPass) {
-          onIncorrectOpen();
-        }
-        setAnswerSubmitCount((prev) => prev + 1);
-        if (answerSubmitCount + 1 >= 3) {
-          setTimeout(() => {
-            fetchNextQuestion();
-            onIncorrectClose();
-            setIsPaused(false);
-            resolve();
-          }, 1000);
-          return;
-        }
-      }
+    setAnswers((prevAnswers) => [...prevAnswers, newAnswer]);
 
-      if (inputAnswer === correctAnswer) {
-        fetchNextQuestion();
-      }
+    if (inputAnswer === correctAnswer) {
+      onCorrectOpen();
+      setHeartsCount((prevCount) => prevCount + 1);
+      setAnswerSubmitCount(0);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       onCorrectClose();
-      onIncorrectClose();
-      setIsPaused(false);
-      setSeconds(30);
-    });
+      fetchNextQuestion();
+    } else {
+      if (!isPass) {
+        onIncorrectOpen();
+      }
+      setAnswerSubmitCount((prev) => prev + 1);
+      if (answerSubmitCount + 1 >= 3) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        fetchNextQuestion();
+        onIncorrectClose();
+      } else {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        onIncorrectClose();
+      }
+    }
+
+    setIsPaused(false);
+    setSeconds(30);
   };
 
   // 게임 종료 처리

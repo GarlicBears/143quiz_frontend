@@ -12,11 +12,11 @@ import {
   sessionIdState,
   titleState,
   topicIdState,
-} from '../../recoil/atom';
+} from '../../recoil/atoms';
 import axiosInstance from '../../api/axiosInstance';
 
 const GameComplete: React.FC = () => {
-  const title = useRecoilValue(titleState);
+  const title = useRecoilValue<string>(titleState);
   const currentTopicID = useRecoilValue(topicIdState);
   const [, setSessionId] = useRecoilState<number>(sessionIdState);
   const [, setQuestions] = useRecoilState(questionsState);
@@ -95,7 +95,7 @@ const GameComplete: React.FC = () => {
           축하합니다!
         </Text>
         <Text mb={4}>
-          지금까지{' '}
+          지금까지
           <Text color="customOrange.500" display="inline">
             {userHeartsCount}개
           </Text>
@@ -106,7 +106,7 @@ const GameComplete: React.FC = () => {
             <Text color="customOrange.500" display="inline">
               {totalQuestions - userHeartsCount}개
             </Text>
-            를 더 얻으면{' '}
+            를 더 얻으면
             <Text color="customOrange.500" display="inline">
               &apos;{title}&apos; 박사
             </Text>{' '}
@@ -114,7 +114,7 @@ const GameComplete: React.FC = () => {
           </Text>
         ) : (
           <Text mb={6}>
-            이미{' '}
+            이미
             <Text color="customOrange.500" display="inline">
               &apos;{title}&apos; 박사
             </Text>
