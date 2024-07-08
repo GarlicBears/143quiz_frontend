@@ -20,7 +20,7 @@ import UserBadge from './pages/user/UserBadge';
 function App() {
   return (
     <RecoilRoot>
-      <Router>
+      <Router basename={process.env.PUBLIC_URL}>
         <Routes>
           <Route index element={<LandingPage />} />
           <Route path="/" element={<Layout />}>
