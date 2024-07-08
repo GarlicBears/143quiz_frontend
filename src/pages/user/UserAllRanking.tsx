@@ -14,9 +14,11 @@ import {
   Spinner,
 } from '@chakra-ui/react';
 import axiosInstance from '../../api/axiosInstance';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrophy } from '@fortawesome/free-solid-svg-icons';
 
 interface Ranking {
-  // userId: number;
+  userId: number;
   nickname: string;
   totalBadges: number;
   totalHearts: number;
@@ -50,9 +52,11 @@ const UserAllRanking = () => {
       <Center>
         <Card w="100%">
           <Heading textAlign="center" mt={20}>
+            <FontAwesomeIcon icon={faTrophy} style={{ color: '#FFD43B' }} />{' '}
             Game Ranking
+            <FontAwesomeIcon icon={faTrophy} style={{ color: '#FFD43B' }} />
           </Heading>
-          <Box border="2px solid" m={20}>
+          <Box border="2px solid">
             <Accordion allowMultiple>
               <AccordionItem>
                 <h2>
@@ -70,7 +74,7 @@ const UserAllRanking = () => {
                   ) : (
                     <List spacing={3}>
                       {rankingData.map((user) => (
-                        <ListItem key={user.nickname}>
+                        <ListItem key={user.userId}>
                           {user.nickname} - Badges: {user.totalBadges}, Hearts:{' '}
                           {user.totalHearts}
                         </ListItem>
