@@ -1,103 +1,61 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
   Box,
   Card,
   Center,
-  Heading,
-  List,
-  ListItem,
-  Spinner,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
 } from '@chakra-ui/react';
-import axiosInstance from '../../api/axiosInstance';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrophy } from '@fortawesome/free-solid-svg-icons';
-
-interface Ranking {
-  userId: number;
-  nickname: string;
-  totalBadges: number;
-  totalHearts: number;
-  rank: number;
-}
+import TotalRanking from './TotalRanking';
+import UserRankInfo from './UserRank';
 
 // 전체 뱃지 수 하트 수를 기준으로 랭킹 정보 조회
 // 토글로 뱃지 랭킹 주제 랭킹 조회
 const UserAllRanking = () => {
-  const [rankingData, setRankingData] = useState<Ranking[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [selectedTab, setSelectedTab] = useState(0);
 
-  useEffect(() => {
-    axiosInstance
-      .get('/game/rankings')
-      .then((response) => {
-        if (response.status === 200) {
-          console.log(response.data);
-          setRankingData(response.data);
-        } else {
-          console.error('Unexpected API response format', response.data);
-        }
-      })
-      .catch((error) => {
-        console.error('랭킹 데이터 조회 중 오류 발생', error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
   return (
     <>
       <Center>
-        <Card w="100%">
-          <Heading textAlign="center" mt={20}>
-            <FontAwesomeIcon icon={faTrophy} style={{ color: '#FFD43B' }} />{' '}
-            Game Ranking
-            <FontAwesomeIcon icon={faTrophy} style={{ color: '#FFD43B' }} />
-          </Heading>
-          <Box border="2px solid">
-            <Accordion allowMultiple>
-              <AccordionItem>
-                <h2>
-                  <AccordionButton>
-                    <Box as="span" flex="1" textAlign="left">
-                      All Game Ranking Top 100
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                {/*<AccordionPanel pb={4}>abcd12341234</AccordionPanel>*/}
-                <AccordionPanel pb={4}>
-                  {loading ? (
-                    <Spinner />
-                  ) : (
-                    <List spacing={3}>
-                      {rankingData.map((user) => (
-                        <ListItem key={user.userId}>
-                          {user.nickname} - Badges: {user.totalBadges}, Hearts:{' '}
-                          {user.totalHearts}
-                        </ListItem>
-                      ))}
-                    </List>
+        <Card w="100%" h="100%">
+          <Box h="100%">
+            <Tabs
+              isFitted
+              variant="enclosed"
+              onChange={(index) => setSelectedTab(index)}
+            >
+              <TabList mb="1em">
+                <Tab _selected={{ color: 'white', bg: 'blue.500' }}>
+                  {selectedTab === 0 && (
+                    <FontAwesomeIcon
+                      icon={faTrophy}
+                      style={{ color: '#FFD43B', marginRight: '8px' }}
+                    />
                   )}
-                </AccordionPanel>
-              </AccordionItem>
-
-              <AccordionItem mt={20}>
-                <h2>
-                  <AccordionButton>
-                    <Box as="span" flex="1" textAlign="left">
-                      All Game Ranking Top 100
-                    </Box>
-                    <AccordionIcon />
-                  </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>abcd12341234</AccordionPanel>
-              </AccordionItem>
-            </Accordion>
+                  주제별 게임 랭킹
+                </Tab>
+                <Tab _selected={{ color: 'white', bg: 'green.400' }}>
+                  {selectedTab === 1 && (
+                    <FontAwesomeIcon
+                      icon={faTrophy}
+                      style={{ color: '#FFD43B', marginRight: '8px' }}
+                    />
+                  )}
+                  게임 전체 랭킹
+                </Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>{/*<UserRankInfo />*/}</TabPanel>
+                <TabPanel>
+                  <TotalRanking />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
           </Box>
         </Card>
       </Center>
