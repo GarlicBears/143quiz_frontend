@@ -11,7 +11,7 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { useRecoilState } from 'recoil';
-import { answerSubmitCountState } from '../../recoil/atom';
+import { answerSubmitCountState } from '../../recoil/atoms';
 import incorrectSound from '../../asset/audios/error.mp3';
 import stopImage from '../../asset/images/colorX.png';
 

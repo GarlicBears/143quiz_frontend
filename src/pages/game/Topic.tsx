@@ -10,7 +10,7 @@ import {
   titleState,
   questionsState,
   sessionIdState,
-} from '../../recoil/atom';
+} from '../../recoil/atoms';
 import axiosInstance from '../../api/axiosInstance';
 // TODO : 로컬에 저장된 이미지를 서버에 저장하기
 import topicListLocal from '../../asset/topicList';

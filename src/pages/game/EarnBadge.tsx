@@ -7,7 +7,7 @@ import topicList from '../../asset/topicList';
 import congratulationImage from '../../asset/images/congratulation.png';
 import congratulationSound from '../../asset/audios/glissando_up.mp3';
 import { Link } from 'react-router-dom';
-import { titleState } from '../../recoil/atom';
+import { titleState } from '../../recoil/atoms';
 import { useRecoilValue } from 'recoil';
 
 const EarnBadge = () => {
@@ -51,16 +51,16 @@ const EarnBadge = () => {
           description: `당신은 '${badgeName}' 박사 뱃지를 획득하셨습니다!`,
           imageUrl: topic?.imgSrc || '',
           link: {
-            mobileWebUrl: 'http://yourdomain.com',
-            webUrl: 'http://yourdomain.com',
+            mobileWebUrl: 'https://garlicbears.github.io/143quiz_frontend/',
+            webUrl: 'https://garlicbears.github.io/143quiz_frontend/',
           },
         },
         buttons: [
           {
             title: '웹으로 보기',
             link: {
-              mobileWebUrl: 'http://yourdomain.com',
-              webUrl: 'http://yourdomain.com',
+              mobileWebUrl: 'https://garlicbears.github.io/143quiz_frontend/',
+              webUrl: 'https://garlicbears.github.io/143quiz_frontend/',
             },
           },
         ],

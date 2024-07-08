@@ -4,7 +4,7 @@ import CustomModal from '../common/CustomModal';
 import { Flex, Text, Box, Image } from '@chakra-ui/react';
 import stopImage from '../../asset/images/colorX.png';
 import axiosInstance from '../../api/axiosInstance';
-import { sessionIdState } from '../../recoil/atom';
+import { sessionIdState } from '../../recoil/atoms';
 import { useRecoilValue } from 'recoil';
 
 interface GameStopProps {
