@@ -146,44 +146,44 @@ function UserInfo() {
           <Text fontSize="xl" mt={6} mb={3} color={textColor}>
             게임 설정
           </Text>
-          <Stack
-            direction="row"
-            spacing={4}
-            align="center"
-            justify="center"
-            mb={4}
-          >
-            <Text>효과음 설정</Text>
-            <Switch />
-          </Stack>
-          <Stack
-            direction="row"
-            spacing={4}
-            align="center"
-            justify="center"
-            mb={4}
-          >
-            <Text>알림 설정</Text>
-            <Switch />
-          </Stack>
-          <Stack
-            direction="row"
-            spacing={4}
-            align="center"
-            justify="center"
-            mb={4}
-          >
-            <Text>글씨 크기 설정</Text>
-            <Button size="sm" onClick={() => setFontSize('small')}>
-              작게
-            </Button>
-            <Button size="sm" onClick={() => setFontSize('medium')}>
-              보통
-            </Button>
-            <Button size="sm" onClick={() => setFontSize('large')}>
-              크게
-            </Button>
-          </Stack>
+          {/*<Stack*/}
+          {/*  direction="row"*/}
+          {/*  spacing={4}*/}
+          {/*  align="center"*/}
+          {/*  justify="center"*/}
+          {/*  mb={4}*/}
+          {/*>*/}
+          {/*  <Text>효과음 설정</Text>*/}
+          {/*  <Switch />*/}
+          {/*</Stack>*/}
+          {/*<Stack*/}
+          {/*  direction="row"*/}
+          {/*  spacing={4}*/}
+          {/*  align="center"*/}
+          {/*  justify="center"*/}
+          {/*  mb={4}*/}
+          {/*>*/}
+          {/*  <Text>알림 설정</Text>*/}
+          {/*  <Switch />*/}
+          {/*</Stack>*/}
+          {/*<Stack*/}
+          {/*  direction="row"*/}
+          {/*  spacing={4}*/}
+          {/*  align="center"*/}
+          {/*  justify="center"*/}
+          {/*  mb={4}*/}
+          {/*>*/}
+          {/*  <Text>글씨 크기 설정</Text>*/}
+          {/*  <Button size="sm" onClick={() => setFontSize('small')}>*/}
+          {/*    작게*/}
+          {/*  </Button>*/}
+          {/*  <Button size="sm" onClick={() => setFontSize('medium')}>*/}
+          {/*    보통*/}
+          {/*  </Button>*/}
+          {/*  <Button size="sm" onClick={() => setFontSize('large')}>*/}
+          {/*    크게*/}
+          {/*  </Button>*/}
+          {/*</Stack>*/}
           <Button onClick={toggleColorMode} mt={4}>
             색상 모드 변경
           </Button>
