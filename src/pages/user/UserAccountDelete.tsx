@@ -46,22 +46,27 @@ function UserAccountDelete() {
         <ModalContent>
           <ModalHeader>
             <Flex alignItems="center" justifyContent="center">
-              <Text>회원탈퇴하시겠습니까?</Text>
+              <Text fontSize="3xl">회원탈퇴</Text>
             </Flex>
           </ModalHeader>
           <ModalCloseButton />
           {/*{showConfirm ? (*/}
           <ModalBody>
-            <Box mt={5} p={5} border="1px solid black" borderRadius="lg">
-              <Text textAlign="center" fontSize="1rem">
-                획득한 뱃지와 하트 내역, 초성게임 사용 내역이 사라지며,
+            <Box borderRadius="lg" border="1px dotted gray">
+              <Text textAlign="center" fontSize="2xl">
+                획득한 뱃지와 하트 내역,
                 <br />
-                회원탈퇴 시 복구가 어렵습니다.
+                초성게임 사용 내역이 사라지며,
+                <br />
+                회원탈퇴 시{' '}
+                <Text as="span" color="red.500">
+                  복구가 어렵습니다.
+                </Text>
               </Text>
-              <Text textAlign="center" mt={4} fontWeight="bold">
+              <Text color="red.300" textAlign="center" m={4} fontWeight="bold">
                 정말 143 초성게임을 탈퇴하시겠습니까?
                 <br />
-                &apos;예&apos; 선택 시 첫 화면으로 돌아갑니다.
+                &apos;예&apos; 선택 시 회원탈퇴 후 , 첫 화면으로 돌아갑니다.
               </Text>
             </Box>
           </ModalBody>
@@ -69,7 +74,12 @@ function UserAccountDelete() {
             <Button flex="1" mr={3} onClick={handleDelete}>
               예
             </Button>
-            <Button flex="1" variant="ghost" onClick={handleCancel}>
+            <Button
+              flex="1"
+              variant="solid"
+              colorScheme="orange"
+              onClick={handleCancel}
+            >
               아니요
             </Button>
           </ModalFooter>
