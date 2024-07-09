@@ -29,7 +29,7 @@ function UserAccountDelete() {
       .delete('/user/logout', {
         headers: { Authorization: `Bearer ${refreshToken}` },
       })
-      .then((response) => {
+      .then(() => {
         Cookies.remove('accessToken');
         Cookies.remove('refreshToken');
         toast({
@@ -84,7 +84,6 @@ function UserAccountDelete() {
                 정말 143 초성게임을 탈퇴하시겠습니까?
                 <br />
                 &apos;예&apos; 선택 시 회원탈퇴 후, 첫 화면으로 돌아갑니다.
-
               </Text>
             </Box>
           </ModalBody>
