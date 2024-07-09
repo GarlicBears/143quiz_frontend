@@ -8,6 +8,11 @@ import {
   Heading,
   Image,
   Text,
+  Button,
+  Switch,
+  Stack,
+  useColorMode,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import UserBadge from './UserBadge';
@@ -35,10 +40,11 @@ const locationMap = {
 // API 응답 타입 정의
 interface UserResponse {
   nickname: string;
-  gender: keyof typeof genderMap; // genderMap의 키를 타입으로 사용
-  location: keyof typeof locationMap; // locationMap의 키를 타입으로 사용
+  gender: keyof typeof genderMap;
+  location: keyof typeof locationMap;
   imageUrl: string;
   birthYear: number;
+  badges: { title: string; imageUrl: string }[];
 }
 
 interface UserInfo {
@@ -47,16 +53,18 @@ interface UserInfo {
   location: string;
   imageUrl: string;
   birthYear: number;
+  badges: { title: string; imageUrl: string }[];
 }
 
 function UserInfo() {
   const navigate = useNavigate();
-  const [userInfo, setUserInfo] = useState({
+  const [userInfo, setUserInfo] = useState<UserInfo>({
     nickname: '',
     gender: '',
     location: '',
     imageUrl: '',
     birthYear: 0,
+    badges: [],
   });
 
   useEffect(() => {
@@ -64,8 +72,6 @@ function UserInfo() {
       .get<UserResponse>('/user/')
       .then((response) => {
         const { data } = response;
-        console.log(response);
-        console.log(data);
         if (response.status === 200) {
           setUserInfo({
             nickname: data.nickname,
@@ -73,6 +79,7 @@ function UserInfo() {
             location: locationMap[data.location] || data.location,
             imageUrl: data.imageUrl || '',
             birthYear: data.birthYear,
+            badges: data.badges || [],
           });
         } else {
           console.error('Unexpected API response format', data);
@@ -83,86 +90,115 @@ function UserInfo() {
       });
   }, []);
 
-  //회원 정보를 수정할 수 있는 화면으로 이동
   function handleChangeUserInfo() {
     navigate('/userInfo/update', { state: userInfo });
   }
 
+  const { toggleColorMode } = useColorMode();
+  const bgColor = useColorModeValue('gray.50', 'gray.900');
+  const textColor = useColorModeValue('black', 'white');
+
   return (
-    <>
-      <Center>
-        <Card w="100%" border="1px solid orange">
-          <Box>
-            <Heading textAlign="center"> 회원 정보 </Heading>
-            <Card
-              mt={3}
-              _hover={{
-                color: 'orange.500',
-                transformOrigin: 'center',
-                borderWidth: '1px',
-              }}
-              onClick={handleChangeUserInfo}
-            >
-              <CardBody textAlign="center">
-                {userInfo.imageUrl ? (
-                  <Image
-                    src={userInfo.imageUrl}
-                    borderRadius="full"
-                    boxSize="150px"
-                    alt="Profile Image"
-                    m="auto"
-                  />
-                ) : (
-                  'No image' // 이미지가 없을 경우 'No image'로 표시
-                )}
-                <Box textAlign="center" fontSize="lg" mt={3}>
-                  <Text>별명: {userInfo.nickname}</Text>
-                  {/*Nickname: {userInfo.nickname}*/}
-                  <Text>성별: {userInfo.gender}</Text>
-                  {/*Gender: {userInfo.gender}*/}
-                  <Text>거주지: {userInfo.location}</Text>
-                  {/*Location: {userInfo.location}*/}
-                </Box>
-              </CardBody>
-            </Card>
-          </Box>
-          <Divider />
-          <Box
-            mt={5}
-            alignItems="center"
-            fontSize="xl"
-            justifyContent="center"
-            _hover={{ color: 'orange.500' }}
-            display="flex"
+    <Center>
+      <Card
+        w="100%"
+        maxW="3xl"
+        bg={bgColor}
+        p={6}
+        borderRadius="lg"
+        shadow="md"
+      >
+        <Box textAlign="center">
+          <Heading size="lg" mb={6} color={textColor}>
+            회원 정보
+          </Heading>
+          <CardBody
+            onClick={handleChangeUserInfo}
+            cursor="pointer"
+            _hover={{ transform: 'scale(1.02)', transition: 'transform 0.2s' }}
           >
-            {/*내가 모은 뱃지*/}
+            {userInfo.imageUrl ? (
+              <Image
+                src={userInfo.imageUrl}
+                borderRadius="full"
+                boxSize="150px"
+                alt="Profile Image"
+                m="auto"
+                mb={4}
+              />
+            ) : (
+              <Text>No image</Text>
+            )}
+            <Box textAlign="center" fontSize="lg" mt={3} color={textColor}>
+              <Text>별명: {userInfo.nickname}</Text>
+              <Text>성별: {userInfo.gender}</Text>
+              <Text>거주지: {userInfo.location}</Text>
+            </Box>
+          </CardBody>
+          <Divider mt={6} mb={6} />
+          <Box>
             <UserBadge userInfo={userInfo} />
           </Box>
-          <Text textAlign="center" mt={5} fontSize="xl">
-            <Divider />
+          <Text fontSize="xl" mt={6} mb={3} color={textColor}>
             게임 설정
           </Text>
-          <Box mt={2} justifyContent="center">
-            효과음 설정
-          </Box>
-          <Box mt={2} justifyContent="center" border="0px solid red">
-            알림 설정
-          </Box>
-          <Box mt={2} justifyContent="center" border="0px solid red">
-            글씨 크기 설정
-          </Box>
-          <Text textAlign="center" mt={5} mb={3} fontSize="xl">
-            <Divider />
-            이용 정책
-          </Text>
-          <UserAgreement />
-          <Text textAlign="center" mt={5} _hover={{ borderWidth: '1px' }}>
-            {/*로그아웃 모달*/}
-          </Text>
-          <UserLogout />
-        </Card>
-      </Center>
-    </>
+          <Stack
+            direction="row"
+            spacing={4}
+            align="center"
+            justify="center"
+            mb={4}
+          >
+            <Text>효과음 설정</Text>
+            <Switch />
+          </Stack>
+          <Stack
+            direction="row"
+            spacing={4}
+            align="center"
+            justify="center"
+            mb={4}
+          >
+            <Text>알림 설정</Text>
+            <Switch />
+          </Stack>
+          <Stack
+            direction="row"
+            spacing={4}
+            align="center"
+            justify="center"
+            mb={4}
+          >
+            <Text>글씨 크기 설정</Text>
+            <Button size="sm" onClick={() => {}}>
+              작게
+            </Button>
+            <Button size="sm" onClick={() => {}}>
+              보통
+            </Button>
+            <Button size="sm" onClick={() => {}}>
+              크게
+            </Button>
+          </Stack>
+          <Button onClick={toggleColorMode} mt={4}>
+            색상 모드 변경
+          </Button>
+          <Stack
+            direction="row"
+            align="center"
+            justify="center"
+            spacing={4}
+            mt={6}
+            mb={3}
+          >
+            <UserAgreement />
+          </Stack>
+          <Center mt={5}>
+            <UserLogout />
+          </Center>
+        </Box>
+      </Card>
+    </Center>
   );
 }
 
