@@ -11,16 +11,32 @@ import {
   Img,
   Text,
 } from '@chakra-ui/react';
-import { faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import main1 from '../asset/main01.png';
+import main2 from '../asset/main002.png';
+import main4 from '../asset/main04.png';
+import main5 from '../asset/main05.png';
+import { faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import CustomButton from '../components/common/CustomButton';
 // 회원가입 >> 로그인 >> 메인 화면 : 게임설명 화면
 const photos = [
-  'https://via.placeholder.com/600x400?text=Photo+1',
-  'https://via.placeholder.com/600x400?text=Photo+2',
-  'https://via.placeholder.com/600x400?text=Photo+3',
-  'https://via.placeholder.com/600x400?text=Photo+4',
+  {
+    src: main1,
+    text: '여러 주제 중 하나를 선택합니다.',
+  },
+  {
+    src: main2,
+    text: 'This is the second photo',
+  },
+  {
+    src: main4,
+    text: 'This is the third photo',
+  },
+  {
+    src: main5,
+    text: 'This is the fourth photo',
+  },
 ];
 
 function MainPage() {
@@ -40,49 +56,75 @@ function MainPage() {
   return (
     <>
       <Center>
-        <Card w="100%">
+        <Card w="100%" border="1px solid orange">
           <CardHeader textAlign="center">
             <Heading>143 초성게임</Heading>
           </CardHeader>
           <CardBody>
-            <Text textAlign="center" fontSize="xl">
+            <Text textAlign="center" fontSize="2xl">
               주제를 고른 후, <br />
-              주어진 자음에 맞는 단어를 맞춰보세요
+              주어진 초성에 맞는 단어를 맞춰보세요
             </Text>
             <Box
-              gap={2}
-              display="flex"
-              mt={5}
-              border="0px solid black"
-              w="100%"
+              border="1px solid orange"
+              borderRadius="xl"
+              // display="flex"
               justifyContent="center"
+              //              position="relative"
             >
               <Button
-                variant="ghost"
-                alignSelf="center"
+                position="absolute"
+                left="0"
+                top="50%"
+                transform="translateY(-50%)"
+                zIndex="1"
+                variant="line"
                 onClick={handlePreClick}
               >
                 <FontAwesomeIcon
-                  icon={faAngleUp}
+                  icon={faCaretUp}
                   rotation={270}
-                  size="xl"
-                  style={{ color: '#ef720b' }}
+                  size="5x"
+                  style={{ color: '#FF711A' }}
                 />
               </Button>
-              <Img
-                src={photos[currentIndex]}
-                alt={`Photo ${currentIndex + 1}`}
-              />
+              <Box w="100%" position="relative">
+                <Img
+                  src={photos[currentIndex].src}
+                  alt={`Photo ${currentIndex + 1}`}
+                  w="100%"
+                  objectFit="cover"
+                  borderRadius="xl"
+                />
+                <Text
+                  position="absolute"
+                  bottom="0"
+                  left="0"
+                  width="100%"
+                  bg="rgba(0, 0, 0, 0.5)"
+                  color="white"
+                  textAlign="center"
+                  fontSize="1.3rem"
+                  borderRadius="xl"
+                  p={3}
+                >
+                  {photos[currentIndex].text}
+                </Text>
+              </Box>
               <Button
-                variant="ghost"
-                alignSelf="center"
+                position="absolute"
+                right="0"
+                top="50%"
+                transform="translateY(-50%)"
+                zIndex="1"
+                variant="line"
                 onClick={handleNextClick}
               >
                 <FontAwesomeIcon
-                  icon={faAngleUp}
+                  icon={faCaretUp}
                   rotation={90}
-                  size="xl"
-                  style={{ color: '#ef720b' }}
+                  size="5x"
+                  style={{ color: '#FF711A' }}
                 />
               </Button>
             </Box>
