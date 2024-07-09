@@ -15,10 +15,12 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import UserBadge from './UserBadge';
 import UserAgreement from './UserAgreement';
 import UserLogout from './UserLogout';
 import axiosInstance from '../../api/axiosInstance';
+import { fontSizeState } from '../../recoil/atoms';
 
 const genderMap = {
   male: '남자',
@@ -66,6 +68,8 @@ function UserInfo() {
     birthYear: 0,
     badges: [],
   });
+
+  const [fontSize, setFontSize] = useRecoilState(fontSizeState);
 
   useEffect(() => {
     axiosInstance
@@ -170,13 +174,13 @@ function UserInfo() {
             mb={4}
           >
             <Text>글씨 크기 설정</Text>
-            <Button size="sm" onClick={() => {}}>
+            <Button size="sm" onClick={() => setFontSize('small')}>
               작게
             </Button>
-            <Button size="sm" onClick={() => {}}>
+            <Button size="sm" onClick={() => setFontSize('medium')}>
               보통
             </Button>
-            <Button size="sm" onClick={() => {}}>
+            <Button size="sm" onClick={() => setFontSize('large')}>
               크게
             </Button>
           </Stack>

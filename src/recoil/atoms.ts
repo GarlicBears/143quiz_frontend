@@ -43,3 +43,8 @@ export const answersState = atom<AnswerType[]>({
   key: 'answersState',
   default: [],
 });
+
+export const fontSizeState = atom<'small' | 'medium' | 'large'>({
+  key: 'fontSizeState',
+  default: 'medium',
+});
