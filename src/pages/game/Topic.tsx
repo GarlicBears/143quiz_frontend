@@ -10,9 +10,10 @@ import {
   titleState,
   questionsState,
   sessionIdState,
+  selectedTopicImgState,
 } from '../../recoil/atoms';
 import axiosInstance from '../../api/axiosInstance';
-import qustionImg from '../../asset/images/question.png';
+import qustionImg from '../../asset/images/topic/question.png';
 
 interface TopicType {
   topicId: number;
@@ -43,6 +44,9 @@ const Topic = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const randomTopic = { topicId: 0, name: '랜덤', imgSrc: qustionImg };
+  const [selectedTopicImg, setSelectedTopicImg] = useRecoilState(
+    selectedTopicImgState,
+  );
 
   // 주제 리스트 불러오기
   useEffect(() => {
@@ -66,8 +70,13 @@ const Topic = () => {
   }, []);
 
   // 주제를 선택하면 선택한 주제를 저장한 후,
-  const handleTopicSelect = (topicId: number, title: string) => {
-    console.log(topicId, title);
+  const handleTopicSelect = (
+    topicId: number,
+    title: string,
+    topicImage: string,
+  ) => {
+    console.log(topicId, title, topicImage);
+    setSelectedTopicImg(topicImage);
     setSelectedTopic({ id: topicId, title });
   };
   // 게임 시작 버튼을 누르면 해당 게임의 데이터를 받아와서 게임 컴포넌트로 이동하기
@@ -81,7 +90,7 @@ const Topic = () => {
         setSessionId(res.data.sessionId);
         setTitle(selectedTopic.title);
         setQuestions(res.data.game);
-
+        console.log(selectedTopicImg);
         // navigate는 상태 업데이트 후에 호출
         navigate('/game');
       } catch (error) {
@@ -161,7 +170,11 @@ const Topic = () => {
           title={randomTopic.name}
           imgSrc={randomTopic.imgSrc}
           onClick={() =>
-            handleTopicSelect(randomTopic.topicId, randomTopic.name)
+            handleTopicSelect(
+              randomTopic.topicId,
+              randomTopic.name,
+              randomTopic.imgSrc,
+            )
           }
           selected={selectedTopic?.id === randomTopic.topicId}
           isLoading={isLoading}
@@ -173,7 +186,13 @@ const Topic = () => {
                 key={index}
                 title={topic.title}
                 imgSrc={topic.topicImage}
-                onClick={() => handleTopicSelect(topic.topicId, topic.title)}
+                onClick={() =>
+                  handleTopicSelect(
+                    topic.topicId,
+                    topic.title,
+                    topic.topicImage,
+                  )
+                }
                 selected={selectedTopic?.id === topic.topicId}
                 isLoading={isLoading}
                 heartsCount={topic.heartsCount}
