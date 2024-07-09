@@ -12,19 +12,20 @@ import {
   sessionIdState,
 } from '../../recoil/atoms';
 import axiosInstance from '../../api/axiosInstance';
-// TODO : 로컬에 저장된 이미지를 서버에 저장하기
-import topicListLocal from '../../asset/topicList';
+import qustionImg from '../../asset/images/question.png';
 
 interface TopicType {
   topicId: number;
   title: string;
   heartsCount: number;
   totalQuestionsCount: number;
+  topicImage: string;
 }
 
 interface BadgeType {
   topicId: number;
   title: string;
+  topicImage: string;
 }
 
 const Topic = () => {
@@ -40,6 +41,8 @@ const Topic = () => {
   const [, setQuestions] = useRecoilState(questionsState);
   const [, setSessionId] = useRecoilState<number>(sessionIdState);
   const [isLoading, setIsLoading] = useState(true);
+
+  const randomTopic = { topicId: 0, name: '랜덤', imgSrc: qustionImg };
 
   // 주제 리스트 불러오기
   useEffect(() => {
@@ -103,7 +106,7 @@ const Topic = () => {
         boxShadow="md"
       >
         <Image src={badgeImg96} alt="badge" boxSize="96px" />
-        <Text mt={4} textAlign="center" fontWeight="bold">
+        <Text mt={4} textAlign="center" color="black" fontWeight="bold">
           143개의 하트를 모으면 박사 뱃지를 받을 수 있어요!
         </Text>
         {earnedBadgeList.length ? (
@@ -115,10 +118,7 @@ const Topic = () => {
             width="100%"
           >
             {earnedBadgeList.map((earnedBadge, index) => {
-              const imgSrc =
-                topicListLocal.find(
-                  (topic) => topic.topicId === earnedBadge.topicId,
-                )?.imgSrc || '';
+              const imgSrc = earnedBadge.topicImage;
               return (
                 <Box
                   key={index}
@@ -151,35 +151,36 @@ const Topic = () => {
       </Flex>
 
       <Grid
+        color="black"
         templateColumns="repeat(auto-fill, minmax(120px, 1fr))"
         gap={4}
         width={{ base: '100%', md: '720px' }}
       >
         <TopicCard
           key={0}
-          title={topicListLocal[0].name}
-          imgSrc={topicListLocal[0].imgSrc}
+          title={randomTopic.name}
+          imgSrc={randomTopic.imgSrc}
           onClick={() =>
-            handleTopicSelect(topicListLocal[0].topicId, topicListLocal[0].name)
+            handleTopicSelect(randomTopic.topicId, randomTopic.name)
           }
-          selected={selectedTopic?.id === topicListLocal[0].topicId}
+          selected={selectedTopic?.id === randomTopic.topicId}
           isLoading={isLoading}
         />
-        {topicList.map((topic, index) => (
-          <TopicCard
-            key={index}
-            title={topic.title}
-            imgSrc={
-              topicListLocal.find((t) => t.topicId === topic.topicId)?.imgSrc ||
-              ''
-            }
-            onClick={() => handleTopicSelect(topic.topicId, topic.title)}
-            selected={selectedTopic?.id === topic.topicId}
-            isLoading={isLoading}
-            heartsCount={topic.heartsCount}
-            totalQuestion={topic.totalQuestionsCount}
-          />
-        ))}
+        {topicList.map(
+          (topic, index) =>
+            topic.totalQuestionsCount > 0 && (
+              <TopicCard
+                key={index}
+                title={topic.title}
+                imgSrc={topic.topicImage}
+                onClick={() => handleTopicSelect(topic.topicId, topic.title)}
+                selected={selectedTopic?.id === topic.topicId}
+                isLoading={isLoading}
+                heartsCount={topic.heartsCount}
+                totalQuestion={topic.totalQuestionsCount} // Ensure this matches your data structure
+              />
+            ),
+        )}
       </Grid>
       <Box
         position="fixed"

@@ -14,7 +14,7 @@ import soyImg from './/images/topic/soy.png';
 import geographyImg from './/images/topic/geography.png';
 import globeImg from './/images/topic/globe.png';
 import riceBowlImg from './/images/topic/rice-bowl.png';
-import qustionImg from './/images/topic/question.png';
+import qustionImg from './images/question.png';
 import furnitureImg from './/images/topic/armchair.png';
 import paletteImg from './/images/topic/palette.png';
 import cleanImg from './/images/topic/clean.png';

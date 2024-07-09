@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Button,
@@ -12,26 +12,44 @@ import {
   ModalOverlay,
   Text,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
 import axiosInstance from '../../api/axiosInstance';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function UserAccountDelete() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
+  const toast = useToast();
+  //userController (delete) userlogout 시에만 RT삭제 .api 변경 탈퇴 시에도 RT삭제로 변경
   const handleDelete = () => {
+    const refreshToken = Cookies.get('refreshToken');
     axiosInstance
-      .delete('/user/')
+      .delete('/user/logout', {
+        headers: { Authorization: `Bearer ${refreshToken}` },
+      })
       .then((response) => {
-        console.log('회원탈퇴가 완료되었습니다.', response.status);
-        if (response.status === 200) {
-          navigate('/');
-        }
+        Cookies.remove('accessToken');
+        Cookies.remove('refreshToken');
+        toast({
+          description: '성공적으로 로그아웃 되었습니다',
+          status: 'success',
+        });
+        navigate('/');
       })
       .catch((error) => {
-        console.error('회원탈퇴 중 오류가 발생했습니다.', error);
+        console.error('로그아웃에 실패했습니다.', error);
+        toast({
+          description: '로그아웃 도중 에러가 발생했습니다',
+          status: 'error',
+        });
+      })
+      .finally(() => {
+        onClose();
       });
   };
+
   const handleCancel = () => {
     onClose();
   };
@@ -50,7 +68,6 @@ function UserAccountDelete() {
             </Flex>
           </ModalHeader>
           <ModalCloseButton />
-          {/*{showConfirm ? (*/}
           <ModalBody>
             <Box borderRadius="lg" border="1px dotted gray">
               <Text textAlign="center" fontSize="2xl">
@@ -66,7 +83,8 @@ function UserAccountDelete() {
               <Text color="red.300" textAlign="center" m={4} fontWeight="bold">
                 정말 143 초성게임을 탈퇴하시겠습니까?
                 <br />
-                &apos;예&apos; 선택 시 회원탈퇴 후 , 첫 화면으로 돌아갑니다.
+                &apos;예&apos; 선택 시 회원탈퇴 후, 첫 화면으로 돌아갑니다.
+
               </Text>
             </Box>
           </ModalBody>
