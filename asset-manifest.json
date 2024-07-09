@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/143quiz_frontend/static/css/main.e9b019a1.css",
-    "main.js": "/143quiz_frontend/static/js/main.f9b1895f.js",
+    "main.js": "/143quiz_frontend/static/js/main.1f26ae45.js",
     "static/media/gamelanding.png": "/143quiz_frontend/static/media/gamelanding.a7d917d63ed305d8984e.png",
     "static/media/blackboard.png": "/143quiz_frontend/static/media/blackboard.b78d74c5f14a29a13fa8.png",
     "static/media/glissando_up.mp3": "/143quiz_frontend/static/media/glissando_up.95a3e33f530b7051ae65.mp3",
@@ -11,10 +11,10 @@
     "static/media/button.mp3": "/143quiz_frontend/static/media/button.ca3856e41b7ce870071c.mp3",
     "index.html": "/143quiz_frontend/index.html",
     "main.e9b019a1.css.map": "/143quiz_frontend/static/css/main.e9b019a1.css.map",
-    "main.f9b1895f.js.map": "/143quiz_frontend/static/js/main.f9b1895f.js.map"
+    "main.1f26ae45.js.map": "/143quiz_frontend/static/js/main.1f26ae45.js.map"
   },
   "entrypoints": [
     "static/css/main.e9b019a1.css",
-    "static/js/main.f9b1895f.js"
+    "static/js/main.1f26ae45.js"
   ]
 }
