@@ -3,20 +3,15 @@ import Header from '../../components/common/Header';
 import Footer from '../../components/common/Footer';
 import Add from '../../components/common/Add';
 import { Box, Button, Flex, Text, VStack, Image } from '@chakra-ui/react';
-import topicList from '../../asset/topicList';
 import congratulationImage from '../../asset/images/congratulation.png';
 import congratulationSound from '../../asset/audios/glissando_up.mp3';
 import { Link } from 'react-router-dom';
-import { titleState } from '../../recoil/atoms';
+import { titleState, selectedTopicImgState } from '../../recoil/atoms';
 import { useRecoilValue } from 'recoil';
 
 const EarnBadge = () => {
   const badgeName = useRecoilValue(titleState);
-
-  // 로컬 토픽 리스트에서 badgeName에 해당하는 topic 찾기
-  // TODO : 서버에서 주제 이미지 불러오기
-  const topic = topicList.find((topic) => topic.name === badgeName);
-
+  const selectedTopicImg = useRecoilValue(selectedTopicImgState);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -34,7 +29,6 @@ const EarnBadge = () => {
   // 카카오톡 공유하기
   useEffect(() => {
     const kakaoApiKey = process.env.REACT_APP_KAKAO_API_KEY;
-    console.log(kakaoApiKey);
     if (kakaoApiKey && window.Kakao) {
       window.Kakao.init(kakaoApiKey);
     } else {
@@ -49,7 +43,7 @@ const EarnBadge = () => {
         content: {
           title: '축하합니다!',
           description: `당신은 '${badgeName}' 박사 뱃지를 획득하셨습니다!`,
-          imageUrl: topic?.imgSrc || '',
+          imageUrl: selectedTopicImg,
           link: {
             mobileWebUrl: 'https://garlicbears.github.io/143quiz_frontend/',
             webUrl: 'https://garlicbears.github.io/143quiz_frontend/',
@@ -89,7 +83,7 @@ const EarnBadge = () => {
               bgPosition="right bottom"
               bgRepeat="no-repeat"
             />
-            {topic ? (
+            {selectedTopicImg ? (
               <Flex
                 justifyContent="center"
                 alignItems="center"
@@ -99,7 +93,7 @@ const EarnBadge = () => {
                 borderRadius="full"
               >
                 <Image
-                  src={topic.imgSrc}
+                  src={selectedTopicImg}
                   alt={badgeName}
                   width="100px"
                   height="100px"
