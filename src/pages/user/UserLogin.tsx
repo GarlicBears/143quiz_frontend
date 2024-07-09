@@ -24,7 +24,7 @@ import axiosInstance from '../../api/axiosInstance';
 import Cookies from 'js-cookie';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
-//로그인 화면
+// 로그인 화면
 function UserLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -85,6 +85,13 @@ function UserLogin() {
   function handleTogglePasswordVisibility() {
     setShowPassword(!showPassword);
   }
+
+  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === 'Enter' && isFormValid) {
+      handleLogin();
+    }
+  }
+
   const isFormValid = email !== '' && password !== '';
 
   return (
@@ -101,6 +108,7 @@ function UserLogin() {
                 placeholder="가입한 이메일을 입력해주세요."
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={handleKeyDown} // 여기에 onKeyDown 핸들러 추가
               />
             </FormControl>
             <FormControl mb={5}>
@@ -110,6 +118,7 @@ function UserLogin() {
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onKeyDown={handleKeyDown} // 여기에 onKeyDown 핸들러 추가
                 />
                 <InputRightElement>
                   <IconButton
