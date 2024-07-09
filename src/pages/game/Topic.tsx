@@ -14,6 +14,7 @@ import {
 import axiosInstance from '../../api/axiosInstance';
 // TODO : 로컬에 저장된 이미지를 서버에 저장하기
 import topicListLocal from '../../asset/topicList';
+import Cookies from 'js-cookie';
 
 interface TopicType {
   topicId: number;
@@ -40,6 +41,14 @@ const Topic = () => {
   const [, setQuestions] = useRecoilState(questionsState);
   const [, setSessionId] = useRecoilState<number>(sessionIdState);
   const [isLoading, setIsLoading] = useState(true);
+
+  // 토큰이 없는 경우 랜딩 페이지로 리디렉션
+  useEffect(() => {
+    const accessToken = Cookies.get('accessToken');
+    if (!accessToken) {
+      navigate('/');
+    }
+  }, []);
 
   // 주제 리스트 불러오기
   useEffect(() => {

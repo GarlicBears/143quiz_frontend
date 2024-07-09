@@ -21,6 +21,7 @@ import UserAgreement from './UserAgreement';
 import UserLogout from './UserLogout';
 import axiosInstance from '../../api/axiosInstance';
 import { fontSizeState } from '../../recoil/atoms';
+import Cookies from 'js-cookie';
 
 const genderMap = {
   male: '남자',
@@ -70,6 +71,14 @@ function UserInfo() {
   });
 
   const [fontSize, setFontSize] = useRecoilState(fontSizeState);
+
+  // 토큰이 없는 경우 랜딩 페이지로 리디렉션
+  useEffect(() => {
+    const accessToken = Cookies.get('accessToken');
+    if (!accessToken) {
+      navigate('/');
+    }
+  }, []);
 
   useEffect(() => {
     axiosInstance
@@ -148,7 +157,6 @@ function UserInfo() {
           </Box>
           <Divider mt={3} mb={3} />
           <Text fontSize="xl" mt={3} color={textColor}>
-
             게임 설정
           </Text>
           {/*<Stack*/}

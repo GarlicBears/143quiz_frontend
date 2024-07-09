@@ -25,6 +25,11 @@ axiosInstance.interceptors.request.use(
       config.url?.endsWith(ending),
     );
 
+    if (!accessToken && !isExcludedUrl) {
+      window.location.href = '/'; // 랜딩 페이지로 리디렉션
+      throw new AxiosError('No access token', '401');
+    }
+
     if (accessToken && !isExcludedUrl) {
       if (!config.headers) {
         config.headers = {} as AxiosRequestHeaders;
