@@ -103,7 +103,7 @@ const Topic = () => {
         boxShadow="md"
       >
         <Image src={badgeImg96} alt="badge" boxSize="96px" />
-        <Text mt={4} textAlign="center" fontWeight="bold">
+        <Text mt={4} textAlign="center" color="black" fontWeight="bold">
           143개의 하트를 모으면 박사 뱃지를 받을 수 있어요!
         </Text>
         {earnedBadgeList.length ? (
@@ -151,6 +151,7 @@ const Topic = () => {
       </Flex>
 
       <Grid
+        color="black"
         templateColumns="repeat(auto-fill, minmax(120px, 1fr))"
         gap={4}
         width={{ base: '100%', md: '720px' }}
