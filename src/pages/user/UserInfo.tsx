@@ -148,6 +148,7 @@ function UserInfo() {
           </Box>
           <Divider mt={3} mb={3} />
           <Text fontSize="xl" mt={3} color={textColor}>
+
             게임 설정
           </Text>
           {/*<Stack*/}
@@ -192,6 +193,7 @@ function UserInfo() {
             색상 모드 변경
           </Button>
           <Divider mt={3} mb={3} />
+
           <Stack
             direction="row"
             align="center"
