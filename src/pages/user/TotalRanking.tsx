@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import axiosInstance from '../../api/axiosInstance';
 
+// 뱃지 아이콘 선택 > tab : 전체 게임 랭킹 >
 interface Ranking {
   userId: number;
   nickname: string;
@@ -41,7 +42,7 @@ function TotalRanking() {
       });
   }, []);
   return (
-    <TableContainer border="1px solid gray" borderRadius="lg">
+    <TableContainer border="1px solid orange" borderRadius="lg">
       <Table
         overflowY="auto"
         variant="simple"

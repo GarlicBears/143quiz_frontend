@@ -70,13 +70,8 @@ const UserRankInfo: React.FC = () => {
   };
 
   return (
-    <Box p={4}>
-      {/*<Flex alignItems="center" justifyContent="center" mb={4}>*/}
-      {/*  <Image src={badgeIcon} boxSize="30px" mr={2} />*/}
-      {/*  <Text>내가 모은 뱃지</Text>*/}
-      {/*</Flex>*/}
-
-      <Grid templateColumns="repeat(auto-fit, minmax(150px, 1fr))" gap={5}>
+    <Box>
+      <Grid templateColumns="repeat(auto-fit, minmax(150px, 1fr))" gap={2}>
         {topics.map((topic, index) => (
           <GridItem key={index} w="100%">
             <Box
