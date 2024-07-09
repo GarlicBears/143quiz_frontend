@@ -107,7 +107,7 @@ function UserBadge({ userInfo }: UserBadgeProps) {
         borderRadius="lg"
       >
         <Image src={badgeIcon} boxSize="50px" mr={4} />
-        <Text fontSize="2xl" fontWeight="bold">
+        <Text color="black" fontSize="2xl" fontWeight="bold">
           내가 모은 뱃지
         </Text>
       </Flex>
