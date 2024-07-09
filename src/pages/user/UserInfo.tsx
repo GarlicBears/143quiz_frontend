@@ -9,7 +9,6 @@ import {
   Image,
   Text,
   Button,
-  Switch,
   Stack,
   useColorMode,
   useColorModeValue,
@@ -148,7 +147,6 @@ function UserInfo() {
           </Box>
           <Divider mt={3} mb={3} />
           <Text fontSize="xl" mt={3} color={textColor}>
-
             게임 설정
           </Text>
           {/*<Stack*/}
