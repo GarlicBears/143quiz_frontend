@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Text,
-  Image,
   Box,
+  Flex,
+  Image,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalOverlay,
   ModalHeader,
+  ModalOverlay,
+  Text,
   useDisclosure,
-  Flex,
 } from '@chakra-ui/react';
 import axiosInstance from '../../api/axiosInstance';
 import badgeIcon from '../../asset/images/badge48.png';
-import UserRank from './UserRank';
 import topicListLocal from '../../asset/topicList';
 
 interface BadgeType {
@@ -107,7 +106,7 @@ function UserBadge({ userInfo }: UserBadgeProps) {
         borderRadius="lg"
       >
         <Image src={badgeIcon} boxSize="50px" mr={4} />
-        <Text fontSize="2xl" fontWeight="bold">
+        <Text color="black" fontSize="2xl" fontWeight="bold">
           내가 모은 뱃지
         </Text>
       </Flex>

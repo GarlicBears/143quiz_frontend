@@ -9,7 +9,6 @@ import {
   Image,
   Text,
   Button,
-  Switch,
   Stack,
   useColorMode,
   useColorModeValue,
@@ -113,7 +112,7 @@ function UserInfo() {
         shadow="md"
       >
         <Box textAlign="center">
-          <Heading size="lg" mb={6} color={textColor}>
+          <Heading size="xl" color={textColor}>
             회원 정보
           </Heading>
           <CardBody
@@ -128,22 +127,26 @@ function UserInfo() {
                 boxSize="150px"
                 alt="Profile Image"
                 m="auto"
-                mb={4}
+                mb={3}
               />
             ) : (
               <Text>No image</Text>
             )}
-            <Box textAlign="center" fontSize="lg" mt={3} color={textColor}>
-              <Text>별명: {userInfo.nickname}</Text>
+            <Box textAlign="center" fontSize="xl" mt={3} color={textColor}>
               <Text>성별: {userInfo.gender}</Text>
               <Text>거주지: {userInfo.location}</Text>
+              <Text>별명: {userInfo.nickname}</Text>
             </Box>
+            <Text align="right" color="gray.500" fontSize="lg">
+              정보 수정
+            </Text>
           </CardBody>
-          <Divider mt={6} mb={6} />
+          <Divider mb={3} />
           <Box>
             <UserBadge userInfo={userInfo} />
           </Box>
-          <Text fontSize="xl" mt={6} mb={3} color={textColor}>
+          <Divider mt={3} mb={3} />
+          <Text fontSize="xl" mt={3} color={textColor}>
             게임 설정
           </Text>
           {/*<Stack*/}
@@ -184,9 +187,11 @@ function UserInfo() {
           {/*    크게*/}
           {/*  </Button>*/}
           {/*</Stack>*/}
-          <Button onClick={toggleColorMode} mt={4}>
+          <Button w="100%" fontSize="lg" onClick={toggleColorMode} mt={3}>
             색상 모드 변경
           </Button>
+          <Divider mt={3} mb={3} />
+
           <Stack
             direction="row"
             align="center"

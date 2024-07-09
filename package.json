@@ -2,7 +2,7 @@
   "name": "galicbears",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://garlicbears.github.io/143quiz_frontend",
+  "homepage": "https://garlicbears.github.io/143quiz_frontend/",
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",

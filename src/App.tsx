@@ -66,7 +66,7 @@ const AppContent: React.FC = () => {
       <ColorModeScript
         initialColorMode={theme.config?.initialColorMode ?? 'light'}
       />
-      <Router>
+      <Router basename={process.env.REACT_APP_WS_URL}>
         <Routes>
           <Route index element={<LandingPage />} />
           <Route path="/" element={<Layout />}>
