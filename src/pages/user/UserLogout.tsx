@@ -65,7 +65,13 @@ function UserLogout() {
           </ModalHeader>
           <ModalCloseButton />
           <ModalFooter justifyContent="center" w="100%">
-            <Button flex="1" variant="outline" mr={3} onClick={onClose}>
+            <Button
+              flex="1"
+              variant="solid"
+              colorScheme="orange"
+              mr={3}
+              onClick={onClose}
+            >
               취소
             </Button>
             <Button flex="1" onClick={handleLogout}>

@@ -102,10 +102,24 @@ function UserBadge({ userInfo }: UserBadgeProps) {
         cursor="pointer"
         alignItems="center"
         justifyContent="center"
+        p={4}
+        bg="gray.200"
+        borderRadius="lg"
+      >
+        <Image src={badgeIcon} boxSize="50px" mr={4} />
+        <Text fontSize="2xl" fontWeight="bold">
+          내가 모은 뱃지
+        </Text>
+      </Flex>
+      {/* <Flex
+        onClick={onOpen}
+        cursor="pointer"
+        alignItems="center"
+        justifyContent="center"
       >
         <Image src={badgeIcon} boxSize="30px" mr={2} />
         <Text>내가 모은 뱃지</Text>
-      </Flex>
+      </Flex> */}
 
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />

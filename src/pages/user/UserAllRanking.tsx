@@ -14,8 +14,7 @@ import { faTrophy } from '@fortawesome/free-solid-svg-icons';
 import TotalRanking from './TotalRanking';
 import UserRankInfo from './UserRankInfo';
 
-// 전체 뱃지 수 하트 수를 기준으로 랭킹 정보 조회
-// 토글로 뱃지 랭킹 주제 랭킹 조회
+// tabs로 랭킹 조회
 const UserAllRanking = () => {
   const [selectedTab, setSelectedTab] = useState(0);
 
@@ -51,9 +50,11 @@ const UserAllRanking = () => {
               </TabList>
               <TabPanels>
                 <TabPanel>
+                  {/*주제별 게임 랭킹*/}
                   <UserRankInfo />
                 </TabPanel>
                 <TabPanel>
+                  {/*전체 게임 랭킹*/}
                   <TotalRanking />
                 </TabPanel>
               </TabPanels>
