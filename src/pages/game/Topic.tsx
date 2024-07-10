@@ -13,7 +13,7 @@ import {
   selectedTopicImgState,
 } from '../../recoil/atoms';
 import axiosInstance from '../../api/axiosInstance';
-import qustionImg from '../../asset/images/topic/question.png';
+import qustionImg from '../../asset/images/question.png';
 
 interface TopicType {
   topicId: number;
