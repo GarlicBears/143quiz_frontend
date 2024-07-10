@@ -6,6 +6,22 @@ import axios, {
 } from 'axios';
 import Cookies from 'js-cookie';
 
+interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean;
+}
+
+let isRefreshing = false;
+let refreshSubscribers: ((token: string) => void)[] = [];
+
+function onRrefreshed(token: string) {
+  refreshSubscribers.map((cb) => cb(token));
+  refreshSubscribers = [];
+}
+
+function addRefreshSubscriber(cb: (token: string) => void) {
+  refreshSubscribers.push(cb);
+}
+
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   timeout: 5000,
@@ -49,39 +65,55 @@ axiosInstance.interceptors.response.use(
   (response: AxiosResponse): AxiosResponse => {
     return response;
   },
-  async (error: AxiosError): Promise<AxiosError> => {
-    if (error.response?.status === 401) {
-      try {
-        // refresh token으로 accessToken 갱신
-        // const response = await axiosInstance.get('user/reissue');
-        const response = await axiosInstance.get('/user/reissue');
-        const accessToken = response.headers['authorization'];
-        if (accessToken) {
-          Cookies.set('accessToken', accessToken, {
-            expires: 1,
-            secure: true,
-            sameSite: 'Strict',
-          });
+  async (error: AxiosError): Promise<any> => {
+    const originalRequest = error.config as CustomAxiosRequestConfig;
 
-          // 요청 다시 시도
-          if (error.config) {
-            (error.config.headers as AxiosRequestHeaders).Authorization =
-              `Bearer ${accessToken}`;
-            return axiosInstance.request(error.config);
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      if (!isRefreshing) {
+        originalRequest._retry = true;
+        isRefreshing = true;
+
+        try {
+          const response = await axiosInstance.get('/user/reissue');
+          const newAccessToken = response.headers['authorization'];
+
+          if (newAccessToken) {
+            Cookies.set('accessToken', newAccessToken, {
+              expires: 1,
+              secure: true,
+              sameSite: 'Strict',
+            });
+
+            isRefreshing = false;
+            onRrefreshed(newAccessToken);
+
+            (originalRequest.headers as AxiosRequestHeaders).Authorization =
+              `Bearer ${newAccessToken}`;
+            return axiosInstance(originalRequest);
           }
+        } catch (refreshError) {
+          isRefreshing = false;
+          refreshSubscribers = [];
+          Cookies.remove('accessToken');
+          window.location.href = '/login';
+          return Promise.reject(refreshError);
         }
-      } catch (refreshError) {
-        console.error('리프레쉬 토큰 오류:', refreshError);
-        Cookies.remove('accessToken');
-        window.location.href = '/login';
       }
-    } else {
-      // 401 외의 에러 처리
+
+      const retryOriginalRequest = new Promise((resolve) => {
+        addRefreshSubscriber((token: string) => {
+          (originalRequest.headers as AxiosRequestHeaders).Authorization =
+            `Bearer ${token}`;
+          resolve(axiosInstance(originalRequest));
+        });
+      });
+
+      return retryOriginalRequest;
+    } else if (error.response?.status !== 401) {
       if (error.response) {
         const status = error.response.status;
         const errorMessages: { [key: number]: string } = {
           400: 'Bad Request',
-          // 401: 'Unauthorized',
           403: 'Forbidden',
           404: 'Not Found',
           405: 'Method Not Allowed',

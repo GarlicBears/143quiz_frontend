@@ -9,7 +9,6 @@ import {
   Image,
   Text,
   Button,
-  Switch,
   Stack,
   useColorMode,
   useColorModeValue,

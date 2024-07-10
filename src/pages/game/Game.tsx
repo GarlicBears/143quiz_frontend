@@ -41,6 +41,7 @@ interface AnswerType {
 const Game = () => {
   const [seconds, setSeconds] = useState(30);
   const [isPaused, setIsPaused] = useState(false);
+  const [isEnded, setIsEnded] = useState(false);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answerSubmitCount, setAnswerSubmitCount] = useRecoilState(
     answerSubmitCountState,
@@ -75,6 +76,43 @@ const Game = () => {
       setQuestion(questions[questionIndex].questionText);
     }
   }, [questions, questionIndex]);
+
+  // 게임 종료 처리
+  useEffect(() => {
+    console.log('isEnded:', isEnded);
+    if (isEnded) {
+      const gameResult = {
+        topicId,
+        sessionId,
+        heartsCount,
+        answers,
+      };
+      console.log('gameResult:', gameResult);
+
+      const endGame = async () => {
+        try {
+          const res = await axiosInstance.post('/game/answer', gameResult);
+          const { getBadge, totalQuestions, userHeartsCount } = res.data;
+          if (getBadge) {
+            navigate('/game/earnbadge');
+          } else {
+            navigate('/game/complete', {
+              state: { userHeartsCount, totalQuestions },
+            });
+          }
+        } catch (error) {
+          console.error('Error ending game:', error);
+        } finally {
+          setHeartsCount(0);
+          setAnswers([]);
+          setAnswerSubmitCount(0);
+          setQuestionIndex(0);
+          setIsEnded(false);
+        }
+      };
+      endGame();
+    }
+  }, [isEnded]);
 
   // 모달 상태 설정
   const {
@@ -136,7 +174,7 @@ const Game = () => {
       setAnswerSubmitCount(0);
     } else {
       // 모든 문제가 끝났을 때 처리
-      endGame();
+      setIsEnded(true);
     }
   };
 
@@ -229,41 +267,6 @@ const Game = () => {
 
     setIsPaused(false);
     setSeconds(30);
-  };
-
-  // 게임 종료 처리
-  const endGame = async () => {
-    console.log('endGame called');
-
-    const gameResult = {
-      topicId,
-      sessionId,
-      heartsCount,
-      answers,
-    };
-
-    console.log('gameResult:', gameResult);
-
-    try {
-      const res = await axiosInstance.post('/game/answer', gameResult);
-      const { getBadge, totalQuestions, userHeartsCount } = res.data;
-      console.log(res.data);
-      if (getBadge) {
-        navigate('/game/earnbadge');
-      } else {
-        navigate('/game/complete', {
-          state: { userHeartsCount, totalQuestions },
-        });
-      }
-    } catch (error) {
-      console.error('Error ending game:', error);
-    } finally {
-      // 게임 리셋, 새로운 게임세션 불러오기
-      setHeartsCount(0);
-      setAnswers([]);
-      setAnswerSubmitCount(0);
-      setQuestionIndex(0);
-    }
   };
 
   // 하트 수에 따른 하트 이미지 렌더링

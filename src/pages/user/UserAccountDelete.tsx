@@ -29,7 +29,7 @@ function UserAccountDelete() {
       .delete('/user/logout', {
         headers: { Authorization: `Bearer ${refreshToken}` },
       })
-      .then((response) => {
+      .then(() => {
         Cookies.remove('accessToken');
         Cookies.remove('refreshToken');
         toast({
