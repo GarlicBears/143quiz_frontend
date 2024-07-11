@@ -15,22 +15,21 @@ import {
 import axiosInstance from '../../api/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { useUserContext } from './UserProvider';
 
 function UserLogout() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const toast = useToast();
   const navigate = useNavigate();
+  const { clearUserInfo } = useUserContext();
 
   const handleLogout = () => {
-    const refreshToken = Cookies.get('refreshToken');
     axiosInstance
-      .delete('/user/logout', {
-        headers: { Authorization: `Bearer ${refreshToken}` },
-      })
+      .delete('/user/logout', {})
       .then((response) => {
         Cookies.remove('accessToken');
-        Cookies.remove('refreshToken');
+        clearUserInfo();
         toast({
           description: '성공적으로 로그아웃 되었습니다',
           status: 'success',

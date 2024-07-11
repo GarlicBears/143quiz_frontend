@@ -29,6 +29,7 @@ const genderMap: { [key: string]: string } = {
 const locationMap: { [key: string]: string } = {
   서울: 'Seoul',
   경기: 'Gyeonggi',
+  인천: 'Incheon',
   강원: 'Gangwon',
   전라: 'Jeolla',
   충청: 'Chungcheong',
@@ -178,10 +179,10 @@ const UserInfoUpdate: React.FC = () => {
             mt={4}
             onClick={() => fileInputRef.current && fileInputRef.current.click()}
           >
-            이미지 업로드
+            사진 업로드
           </Button>
           <Button variant="solid" mt={4} onClick={handleFileUpload}>
-            업로드
+            저장
           </Button>
           <Text>내가 모은 뱃지로 프로필 설정하기</Text>
         </Box>
@@ -211,6 +212,7 @@ const UserInfoUpdate: React.FC = () => {
               onChange={(e) => setLocation(e.target.value)}
             >
               <option value="서울">서울</option>
+              <option value="인천">인천</option>
               <option value="경기">경기</option>
               <option value="강원">강원</option>
               <option value="전라">전라</option>
