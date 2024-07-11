@@ -43,10 +43,20 @@ const Topic = () => {
   const [, setSessionId] = useRecoilState<number>(sessionIdState);
   const [isLoading, setIsLoading] = useState(true);
 
+
+  // 토큰이 없는 경우 랜딩 페이지로 리디렉션
+  useEffect(() => {
+    const accessToken = Cookies.get('accessToken');
+    if (!accessToken) {
+      navigate('/');
+    }
+  }, []);
+
   const randomTopic = { topicId: 0, name: '랜덤', imgSrc: qustionImg };
   const [selectedTopicImg, setSelectedTopicImg] = useRecoilState(
     selectedTopicImgState,
   );
+
 
   // 주제 리스트 불러오기
   useEffect(() => {
