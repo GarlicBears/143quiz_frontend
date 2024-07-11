@@ -29,6 +29,7 @@ import UserAccountDelete from './pages/user/UserAccountDelete';
 import UserAllRanking from './pages/user/UserAllRanking';
 import customTheme from './styles/Theme/index';
 import { fontSizeState } from './recoil/atoms';
+import PrivateRoute from './components/common/PrivateRoute';
 
 interface ThemeProps {
   colorMode: ColorMode;
@@ -78,26 +79,31 @@ const AppContent: React.FC = () => {
 
       <Router basename={process.env.REACT_APP_WS_URL}>
         <Routes>
-          <Route index element={<LandingPage />} />
-          <Route path="/" element={<Layout />}>
-            <Route path="/topic" element={<Topic />} />
-            <Route path="/main" element={<MainPage />} />
-            <Route path="/signup" element={<UserSignup />} />
+          <Route element={<PrivateRoute authentication={false} />}>
+            <Route path="/" index element={<LandingPage />} />
             <Route path="/login" element={<UserLogin />} />
-            <Route path="/userInfo" element={<UserInfo />} />
-            <Route path="/userAllRanking" element={<UserAllRanking />} />
-            <Route path="/userInfo/update" element={<UserInfoUpdate />} />
-            <Route
-              path="/userInfo/update/delete"
-              element={<UserAccountDelete />}
-            />
+            <Route path="/signup" element={<UserSignup />} />
           </Route>
-          <Route path="/game" element={<GameLayout />}>
-            <Route index element={<Game />} />
+
+          <Route element={<PrivateRoute authentication={true} />}>
+            <Route path="/" element={<Layout />}>
+              <Route path="/topic" element={<Topic />} />
+              <Route path="/main" element={<MainPage />} />
+              <Route path="/userInfo" element={<UserInfo />} />
+              <Route path="/userAllRanking" element={<UserAllRanking />} />
+              <Route path="/userInfo/update" element={<UserInfoUpdate />} />
+              <Route
+                path="/userInfo/update/delete"
+                element={<UserAccountDelete />}
+              />
+            </Route>
+            <Route path="/game" element={<GameLayout />}>
+              <Route index element={<Game />} />
+            </Route>
+            <Route path="/game/complete" element={<GameComplete />} />
+            <Route path="*" element={<Error />} />
+            <Route path="/game/earnbadge" element={<EarnBadge />} />
           </Route>
-          <Route path="/game/complete" element={<GameComplete />} />
-          <Route path="*" element={<Error />} />
-          <Route path="/game/earnbadge" element={<EarnBadge />} />
         </Routes>
       </Router>
     </ChakraProvider>
