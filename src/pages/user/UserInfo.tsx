@@ -56,24 +56,54 @@ const UserInfo: React.FC = () => {
             cursor="pointer"
             _hover={{ transform: 'scale(1.02)', transition: 'transform 0.2s' }}
           >
-            {userInfo.imageUrl ? (
-              <Image
-                src={userInfo.imageUrl}
-                borderRadius="full"
-                boxSize="150px"
-                alt="Profile Image"
-                m="auto"
-                mb={3}
-              />
-            ) : (
-              <Text>No image</Text>
-            )}
-            <Box textAlign="center" fontSize="xl" mt={3} color={textColor}>
-              <Text>성별: {userInfo.gender}</Text>
-              <Text>거주지: {userInfo.location}</Text>
-              <Text>별명: {userInfo.nickname}</Text>
-            </Box>
-            <Text align="right" color="gray.500" fontSize="lg">
+            <Flex direction="column" alignItems="center">
+              {userInfo.imageUrl ? (
+                <Image
+                  src={userInfo.imageUrl}
+                  borderRadius="full"
+                  boxSize="150px"
+                  alt="Profile Image"
+                  mb={3}
+                />
+              ) : (
+                <Text>No image</Text>
+              )}
+              <Box textAlign="center" fontSize="xl" color={textColor} mb={3}>
+                <Flex justifyContent="center" mb={1}>
+                  <Box textAlign="right" mr={2}>
+                    <Text>별명:</Text>
+                  </Box>
+                  <Box textAlign="left">
+                    <Text>{userInfo.nickname}</Text>
+                  </Box>
+                </Flex>
+                <Flex justifyContent="center" mb={1}>
+                  <Box textAlign="right" mr={2}>
+                    <Text>출생연도:</Text>
+                  </Box>
+                  <Box textAlign="left">
+                    <Text>{userInfo.birthYear}년</Text>
+                  </Box>
+                </Flex>
+                <Flex justifyContent="center" mb={1}>
+                  <Box textAlign="right" mr={2}>
+                    <Text>성별:</Text>
+                  </Box>
+                  <Box textAlign="left">
+                    <Text>{userInfo.gender}</Text>
+                  </Box>
+                </Flex>
+                <Flex justifyContent="center" mb={1}>
+                  <Box textAlign="right" mr={2}>
+                    <Text>거주지:</Text>
+                  </Box>
+                  <Box textAlign="left">
+                    <Text>{userInfo.location}</Text>
+                  </Box>
+                </Flex>
+              </Box>
+            </Flex>
+            <Text align="right" color="gray.500" fontSize="lg" mt={2} mr={2}>
               정보 수정
             </Text>
           </CardBody>

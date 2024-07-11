@@ -23,7 +23,8 @@ function addRefreshSubscriber(cb: (token: string) => void) {
 }
 
 const axiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: 'http://localhost:8080/api',
+  //baseURL: process.env.REACT_APP_API_URL || 'http://localhost:8080/api',
   timeout: 5000,
   withCredentials: true, //cookie에 refresh토큰 조회
   headers: {
@@ -36,7 +37,6 @@ axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
     // 쿠키에서 accessToken 읽어오기
     const accessToken = Cookies.get('accessToken'); // 쿠키에서 토큰 가져오기.
-
     const isExcludedUrl = excludeUrlEndings.some((ending) =>
       config.url?.endsWith(ending),
     );

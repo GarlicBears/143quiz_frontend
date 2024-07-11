@@ -99,13 +99,14 @@ const AppContent: React.FC = () => {
           <Route path="/game" element={<GameLayout />}>
             <Route index element={<Game />} />
           </Route>
+          <Route path="*" element={<Error />} />
         </Routes>
       </Router>
     </ChakraProvider>
   );
 };
 
-function App() {
+const App: React.FC = () => {
   return (
     <RecoilRoot>
       <UserProvider>
@@ -113,6 +114,6 @@ function App() {
       </UserProvider>
     </RecoilRoot>
   );
-}
+};
 
 export default App;
