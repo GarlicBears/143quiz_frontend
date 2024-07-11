@@ -29,8 +29,10 @@ import { useUserContext } from './UserProvider';
 
 const emailRegex =
   /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$/;
+// const passwordRegex = /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%?&])[a-z\d@$!%*?&]{8,}$/;
 const passwordRegex =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  /^(?:(?=.*[a-z])(?=.*[A-Z])(?=.*\d)|(?=.*[a-z])(?=.*\d)(?=.*[@$!%?&])|(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])|(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%?&]))[A-Za-z\d@$!%?&]{8,}$/;
+
 const UserLogin: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -91,19 +93,12 @@ const UserLogin: React.FC = () => {
       }
     } catch (error: any) {
       if (error.response && error.response.status === 404) {
-        setErrorMessage('입력한 이메일과 비밀번호를 찾을 수 없습니다.');
+        setErrorMessage('이메일과 비밀번호를 다시 확인해주세요.');
       } else {
-        toast({
-          title: '로그인에 실패했습니다.',
-          description: error.response?.data?.message || 'An error occurred.',
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        });
+        setErrorMessage('이메일과 비밀번호를 다시 확인해주세요.');
       }
     }
   };
-
   const handleClickSignup = () => {
     navigate('/signup');
   };
