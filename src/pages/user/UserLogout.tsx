@@ -27,7 +27,7 @@ function UserLogout() {
   const handleLogout = () => {
     axiosInstance
       .delete('/user/logout', {})
-      .then((response) => {
+      .then(() => {
         Cookies.remove('accessToken');
         clearUserInfo();
         toast({
@@ -50,7 +50,10 @@ function UserLogout() {
 
   return (
     <>
-      <Flex _hover={{ color: 'orange.500' }} onClick={onOpen}>
+      <Flex
+        _hover={{ color: 'orange.500', cursor: 'pointer' }}
+        onClick={onOpen}
+      >
         <Text>로그아웃</Text>
       </Flex>
 
