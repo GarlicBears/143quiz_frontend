@@ -78,30 +78,35 @@ const AppContent: React.FC = () => {
       <ColorModeScript
         initialColorMode={theme.config?.initialColorMode ?? 'light'}
       />
+
       <Router basename={process.env.REACT_APP_WS_URL}>
         <Routes>
-          <Route index element={<LandingPage />} />
-          <Route path="/" element={<Layout />}>
-            <Route path="/topic" element={<Topic />} />
-            <Route path="/main" element={<MainPage />} />
-            <Route path="/userInfo" element={<UserInfo />} />
-            <Route path="/userAllRanking" element={<UserAllRanking />} />
-            <Route path="/userInfo/update" element={<UserInfoUpdate />} />
-            <Route
-              path="/userInfo/update/delete"
-              element={<UserAccountDelete />}
-            />
+          <Route element={<PrivateRoute authentication={false} />}>
+            <Route index element={<LandingPage />} />
+            <Route element={<UserLayout />}>
+              <Route path="/signup" element={<UserSignup />} />
+              <Route path="/login" element={<UserLogin />} />
+            </Route>
           </Route>
-          <Route element={<UserLayout />}>
-            <Route path="/signup" element={<UserSignup />} />
-            <Route path="/login" element={<UserLogin />} />
+          <Route element={<PrivateRoute authentication={true} />}>
+            <Route path="/" element={<Layout />}>
+              <Route path="/topic" element={<Topic />} />
+              <Route path="/main" element={<MainPage />} />
+              <Route path="/userInfo" element={<UserInfo />} />
+              <Route path="/userAllRanking" element={<UserAllRanking />} />
+              <Route path="/userInfo/update" element={<UserInfoUpdate />} />
+              <Route
+                path="/userInfo/update/delete"
+                element={<UserAccountDelete />}
+              />
+            </Route>
+            <Route path="/game" element={<GameLayout />}>
+              <Route index element={<Game />} />
+            </Route>
+            <Route path="/game/complete" element={<GameComplete />} />
+            <Route path="*" element={<Error />} />
+            <Route path="/game/earnbadge" element={<EarnBadge />} />
           </Route>
-          <Route path="/game" element={<GameLayout />}>
-            <Route index element={<Game />} />
-          </Route>
-          <Route path="/game/complete" element={<GameComplete />} />
-          <Route path="*" element={<Error />} />
-          <Route path="/game/earnbadge" element={<EarnBadge />} />
         </Routes>
       </Router>
     </ChakraProvider>
