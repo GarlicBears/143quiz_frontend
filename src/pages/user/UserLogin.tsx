@@ -25,10 +25,13 @@ import axiosInstance from '../../api/axiosInstance';
 import Cookies from 'js-cookie';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
-const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const passwordRegex = /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%?&])[a-z\d@$!%*?&]{8,}$/;
+import { useUserContext } from './UserProvider';
 
-function UserLogin() {
+const emailRegex =
+  /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$/;
+const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%*?&]{8,}$/;
+const UserLogin: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -37,10 +40,12 @@ function UserLogin() {
   const [errorMessage, setErrorMessage] = useState(''); // 에러 메시지 상태 추가
   const navigate = useNavigate();
   const toast = useToast();
+  const { fetchUserInfo } = useUserContext();
 
-  function handleLogin() {
+  const handleLogin = async () => {
     setEmailError('');
     setPasswordError('');
+    setErrorMessage('');
 
     let valid = true;
 
@@ -58,59 +63,60 @@ function UserLogin() {
       return;
     }
 
-    axiosInstance
-      .post('/user/login', {
+    try {
+      const response = await axiosInstance.post('/user/login', {
         email: email,
         password: password,
-      })
-      .then((response) => {
-        const token = response.headers['authorization'];
-        if (token) {
-          const accessToken = token;
-          Cookies.set('accessToken', accessToken, {
-            expires: 1,
-            secure: true,
-            sameSite: 'Strict',
-          });
-          navigate('/main');
-        } else {
-          toast({
-            title: '로그인 실패',
-            description: '인증 토큰을 받지 못했습니다.',
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
-          });
-        }
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 404) {
-          setErrorMessage('입력한 이메일과 비밀번호를 찾을 수 없습니다.');
-        } else {
-          toast({
-            title: '로그인에 실패했습니다.',
-            description: error.response?.data?.message || 'An error occurred.',
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
-          });
-        }
       });
-  }
 
-  function handleClickSignup() {
+      const token = response.headers['authorization'];
+      if (token) {
+        Cookies.set('accessToken', token, {
+          expires: 1,
+          secure: true,
+          sameSite: 'Strict',
+        });
+
+        await fetchUserInfo();
+
+        navigate('/main');
+      } else {
+        toast({
+          title: '로그인 실패',
+          description: '인증 토큰을 받지 못했습니다.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 404) {
+        setErrorMessage('입력한 이메일과 비밀번호를 찾을 수 없습니다.');
+      } else {
+        toast({
+          title: '로그인에 실패했습니다.',
+          description: error.response?.data?.message || 'An error occurred.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    }
+  };
+
+  const handleClickSignup = () => {
     navigate('/signup');
-  }
+  };
 
-  function handleTogglePasswordVisibility() {
+  const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
-  }
+  };
 
-  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && isFormValid) {
       handleLogin();
     }
-  }
+  };
 
   const isFormValid = email !== '' && password !== '';
 
@@ -156,10 +162,9 @@ function UserLogin() {
                 <FormErrorMessage>{passwordError}</FormErrorMessage>
               )}
             </FormControl>
-            <br />
-            <Link style={{ textDecoration: 'underline', color: '#e66119' }}>
+            <Text style={{ textDecoration: 'underline', color: '#e66119' }}>
               비밀번호를 잊으셨나요?
-            </Link>
+            </Text>
             <Flex alignItems="center">
               <Text>143 초성게임이 처음이신가요?</Text>
               <Link
@@ -169,6 +174,11 @@ function UserLogin() {
                 회원가입
               </Link>
             </Flex>
+            {errorMessage && (
+              <Text color="red.500" mt={2}>
+                {errorMessage}
+              </Text>
+            )}
           </CardBody>
           <CardFooter>
             <Button
@@ -184,6 +194,6 @@ function UserLogin() {
       </Box>
     </Center>
   );
-}
+};
 
 export default UserLogin;
