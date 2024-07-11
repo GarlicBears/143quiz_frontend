@@ -4,6 +4,7 @@ import {
   Image,
   Box,
   Flex,
+  Grid,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -75,17 +76,23 @@ const UserRank: React.FC<UserRankProps> = ({
         <ModalCloseButton />
         <ModalBody>
           <Box border="1px solid orange" borderRadius="md" p={4}>
-            <Flex justifyContent="space-around">
+            <Grid templateColumns="repeat(3, 1fr)" gap={6} textAlign="center">
               <Text>순위</Text>
               <Text>닉네임</Text>
               <Text>하트 수</Text>
-            </Flex>
+            </Grid>
             {rankingData.map((user, index) => (
-              <Flex justifyContent="space-around" mt={2} key={user.userId}>
+              <Grid
+                templateColumns="repeat(3, 1fr)"
+                gap={6}
+                textAlign="center"
+                mt={2}
+                key={user.userId}
+              >
                 <Text>{index + 1}</Text>
                 <Text>{user.nickname}</Text>
                 <Text>{user.totalHearts}</Text>
-              </Flex>
+              </Grid>
             ))}
           </Box>
         </ModalBody>

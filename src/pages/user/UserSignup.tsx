@@ -120,8 +120,7 @@ function UserSignup() {
       .catch((error) => {
         toast({
           title: '오류발생',
-          description:
-            '이메일 확인 중 오류가 발생했습니다. 다시 시도해 주세요.',
+          description: '사용 중인 이메일입니다. 다른 이메일을 사용해주세요',
           status: 'error',
           duration: 2000,
           isClosable: true,
