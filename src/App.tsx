@@ -99,12 +99,13 @@ const AppContent: React.FC = () => {
                 element={<UserAccountDelete />}
               />
             </Route>
-
             <Route path="/game" element={<GameLayout />}>
               <Route index element={<Game />} />
             </Route>
+            <Route path="/game/complete" element={<GameComplete />} />
+            <Route path="*" element={<Error />} />
+            <Route path="/game/earnbadge" element={<EarnBadge />} />
           </Route>
-          <Route path="*" element={<Error />} />
         </Routes>
       </Router>
     </ChakraProvider>
