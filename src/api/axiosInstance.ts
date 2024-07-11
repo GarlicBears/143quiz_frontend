@@ -40,7 +40,7 @@ axiosInstance.interceptors.request.use(
     const isExcludedUrl = excludeUrlEndings.some((ending) =>
       config.url?.endsWith(ending),
     );
-
+    
     if (accessToken && !isExcludedUrl) {
       if (!config.headers) {
         config.headers = {} as AxiosRequestHeaders;
