@@ -156,9 +156,6 @@ const UserLogin: React.FC = () => {
                 <FormErrorMessage>{passwordError}</FormErrorMessage>
               )}
             </FormControl>
-            <Text style={{ textDecoration: 'underline', color: '#e66119' }}>
-              비밀번호를 잊으셨나요?
-            </Text>
             <Flex alignItems="center">
               <Text>143 초성게임이 처음이신가요?</Text>
               <Link

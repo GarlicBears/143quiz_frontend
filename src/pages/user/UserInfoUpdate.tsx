@@ -53,7 +53,6 @@ const UserInfoUpdate: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const setUserInfo = useSetRecoilState(userInfoState);
 
-
   if (!userInfo) {
     return <div>Loading...</div>;
   }
