@@ -29,6 +29,7 @@ import UserAccountDelete from './pages/user/UserAccountDelete';
 import UserAllRanking from './pages/user/UserAllRanking';
 import customTheme from './styles/Theme/index';
 import { fontSizeState } from './recoil/atoms';
+import UserLayout from './components/common/UserLayout';
 
 interface ThemeProps {
   colorMode: ColorMode;
@@ -82,8 +83,6 @@ const AppContent: React.FC = () => {
           <Route path="/" element={<Layout />}>
             <Route path="/topic" element={<Topic />} />
             <Route path="/main" element={<MainPage />} />
-            <Route path="/signup" element={<UserSignup />} />
-            <Route path="/login" element={<UserLogin />} />
             <Route path="/userInfo" element={<UserInfo />} />
             <Route path="/userAllRanking" element={<UserAllRanking />} />
             <Route path="/userInfo/update" element={<UserInfoUpdate />} />
@@ -91,6 +90,10 @@ const AppContent: React.FC = () => {
               path="/userInfo/update/delete"
               element={<UserAccountDelete />}
             />
+          </Route>
+          <Route element={<UserLayout />}>
+            <Route path="/signup" element={<UserSignup />} />
+            <Route path="/login" element={<UserLogin />} />
           </Route>
           <Route path="/game" element={<GameLayout />}>
             <Route index element={<Game />} />
