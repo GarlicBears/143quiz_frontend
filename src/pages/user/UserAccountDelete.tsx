@@ -26,7 +26,8 @@ function UserAccountDelete() {
   const handleDelete = () => {
     const refreshToken = Cookies.get('refreshToken');
     axiosInstance
-      .delete('/user/logout', {
+      .delete('/user/', {
+        // .delete('/user/logout', {
         headers: { Authorization: `Bearer ${refreshToken}` },
       })
       .then(() => {
