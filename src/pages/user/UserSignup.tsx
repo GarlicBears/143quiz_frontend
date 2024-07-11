@@ -28,8 +28,6 @@ import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/axiosInstance';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
-//회원 가입 화면
-
 function UserSignup() {
   const [email, setEmail] = useState('');
   const [emailAvailable, setEmailAvailable] = useState(false);
@@ -42,6 +40,7 @@ function UserSignup() {
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState('');
 
   const [nickName, setNickName] = useState('');
   const [nickNameError, setNickNameError] = useState('');
@@ -50,10 +49,12 @@ function UserSignup() {
   const [birthYear, setBirthYear] = useState('');
   const [nickNameAvailable, setNickNameAvailable] = useState(false);
 
-  // 이메일 비밀번호, 비번확인, 별명, 별명확인, 성별, 거주지, 출생연도 (1940-2022)
+  const emailRegex =
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$/;
 
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  const passwordRegex = /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%?&])[a-z\d@$!%*?&]{8,}$/;
+  const passwordRegex =
+    /^(?:(?=.*[a-z])(?=.*[A-Z])(?=.*\d)|(?=.*[a-z])(?=.*\d)(?=.*[@$!%?&])|(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])|(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%?&]))[A-Za-z\d@$!%?&]{8,}$/;
+
   const nickNameRegex =
     /^(?!.*\s)[a-zA-Z0-9가-힣\uD83C-\uDBFF\uDC00-\uDFFF]{3,20}$/u;
 
@@ -70,6 +71,7 @@ function UserSignup() {
   if (!emailAvailable) {
     submitAvailable = false;
   }
+
   const handleDomainChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
     if (value === 'custom') {
@@ -80,12 +82,13 @@ function UserSignup() {
       setCustomDomain(value);
     }
   };
+
   const handleCustomDomainClear = () => {
     setDomain('');
     setCustomDomain('');
   };
 
-  function checkEmailExists() {
+  const checkEmailExists = () => {
     const fullEmail = `${email}@${customDomain || domain}`;
     if (!emailRegex.test(fullEmail)) {
       setEmailError('유효하지 않은 이메일 형식입니다.');
@@ -94,21 +97,25 @@ function UserSignup() {
     axiosInstance
       .post('/user/checkEmail', { email: fullEmail })
       .then((response) => {
-        setEmailAvailable(!response.data.exists);
-        toast({
-          title: response.data.exists ? '중복된 이메일' : '사용 가능한 이메일',
-          description: response.data.exists
-            ? '이미 사용 중인 이메일입니다.'
-            : '사용 가능한 이메일입니다.',
-          status: response.data.exists ? 'error' : 'success',
-          duration: 2000,
-          isClosable: true,
-          position: 'top',
-          containerStyle: {
-            display: 'flex',
-            justifyContent: 'center',
-          },
-        });
+        if (response.data.exists) {
+          setEmailAvailable(false);
+          setEmailError('이미 사용 중인 이메일입니다.');
+        } else {
+          setEmailAvailable(true);
+          setEmailError('');
+          toast({
+            title: '사용 가능한 이메일',
+            description: '사용 가능한 이메일입니다.',
+            status: 'success',
+            duration: 2000,
+            isClosable: true,
+            position: 'top',
+            containerStyle: {
+              display: 'flex',
+              justifyContent: 'center',
+            },
+          });
+        }
       })
       .catch((error) => {
         toast({
@@ -125,9 +132,9 @@ function UserSignup() {
           },
         });
       });
-  }
+  };
 
-  function checkNicknameExists() {
+  const checkNicknameExists = () => {
     if (!nickNameRegex.test(nickName)) {
       setNickNameError('유효하지 않은 별명 형식입니다.');
       return;
@@ -135,20 +142,25 @@ function UserSignup() {
     axiosInstance
       .post('/user/checkNickname', { nickname: nickName })
       .then((response) => {
-        toast({
-          title: response.data.exists ? '중복된 별명' : '사용 가능한 별명',
-          description: response.data.exists
-            ? '이미 사용 중인 별명입니다.'
-            : '사용 가능한 별명입니다.',
-          status: response.data.exists ? 'error' : 'success',
-          duration: 2000,
-          isClosable: true,
-          position: 'top',
-          containerStyle: {
-            display: 'flex',
-            justifyContent: 'center',
-          },
-        });
+        if (response.data.exists) {
+          setNickNameAvailable(false);
+          setNickNameError('이미 사용 중인 별명입니다.');
+        } else {
+          setNickNameAvailable(true);
+          setNickNameError('');
+          toast({
+            title: '사용 가능한 별명',
+            description: '사용 가능한 별명입니다.',
+            status: 'success',
+            duration: 2000,
+            isClosable: true,
+            position: 'top',
+            containerStyle: {
+              display: 'flex',
+              justifyContent: 'center',
+            },
+          });
+        }
       })
       .catch((error) => {
         toast({
@@ -165,11 +177,21 @@ function UserSignup() {
         });
         console.error('Request failed:', error.response || error);
       });
-  }
+  };
 
   const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedYear = event.target.value;
     setBirthYear(selectedYear);
+  };
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setPassword(value);
+    if (!passwordRegex.test(value)) {
+      setPasswordError('올바르지 않은 비밀번호 형식입니다.');
+    } else {
+      setPasswordError('');
+    }
   };
 
   const handleSubmit = () => {
@@ -185,11 +207,10 @@ function UserSignup() {
           location: location,
         })
         .then((response) => {
-          // 성공적으로 저장되었을 때의 처리
           toast({
             title: '가입 성공',
             description:
-              '회원가입이 성공적으로 완료되었습니다.로그인을 이용해 주세요',
+              '회원가입이 성공적으로 완료되었습니다. 로그인을 이용해 주세요.',
             status: 'success',
             duration: 2000,
             isClosable: true,
@@ -202,7 +223,6 @@ function UserSignup() {
           navigate('/');
         })
         .catch((error) => {
-          // 오류 발생시 처리
           toast({
             title: '가입 실패',
             description: '오류가 발생했습니다. 다시 시도해 주세요.',
@@ -272,24 +292,22 @@ function UserSignup() {
                     <option value="gmail.com">gmail.com</option>
                     <option value="naver.com">naver.com</option>
                     <option value="daum.net">daum.net</option>
-                    <option value="custom">직접 입력</option>
                   </Select>
                 )}
                 <Button variant="outline" onClick={checkEmailExists}>
                   중복확인
                 </Button>
               </Flex>
-              <FormErrorMessage>이메일 중복체크를 해주세요.</FormErrorMessage>
+              {emailError && <FormErrorMessage>{emailError}</FormErrorMessage>}
             </FormControl>
-            <FormControl mb={5}>
-              {/*<FormControl mb={5} isInvalid={password.length === 0}>*/}
+            <FormControl mb={5} isInvalid={!!passwordError}>
               <FormLabel>비밀번호</FormLabel>
               <InputGroup>
                 <Input
                   type={showPassword ? 'text' : 'password'}
                   value={password}
-                  placeholder="최소 8자 이상, 소문자, 숫자, 특수문자를 사용해 주세요"
-                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="최소 8자 이상, 영문 대문자, 소문자, 숫자, 특수문자를 사용해 주세요"
+                  onChange={handlePasswordChange}
                 />
                 <InputRightElement>
                   <IconButton
@@ -302,15 +320,18 @@ function UserSignup() {
                   />
                 </InputRightElement>
               </InputGroup>
-              <FormControl mb={5} isInvalid={password != passwordCheck}>
+              {passwordError && (
+                <FormErrorMessage>{passwordError}</FormErrorMessage>
+              )}
+              <FormControl mb={5} isInvalid={password !== passwordCheck}>
                 <FormLabel>비밀번호 확인</FormLabel>
                 <Input
                   type="password"
                   value={passwordCheck}
                   onChange={(e) => setPasswordCheck(e.target.value)}
                 />
+                <FormErrorMessage>비밀번호가 다릅니다.</FormErrorMessage>
               </FormControl>
-              <FormErrorMessage>암호가 다릅니다.</FormErrorMessage>
             </FormControl>
             <FormControl mb={5}>
               <FormLabel>별명 입력</FormLabel>
@@ -318,7 +339,7 @@ function UserSignup() {
                 <Input
                   type="text"
                   value={nickName}
-                  placeholder="3-20자 이내, 한글,영어대소문자,숫자,이모지 사용가능합니다."
+                  placeholder="3-20자 이내, 한글, 영어 대소문자, 숫자, 이모지 사용 가능합니다."
                   onChange={(e) => setNickName(e.target.value)}
                 ></Input>
                 <Button size="md" borderRadius="full">
@@ -331,7 +352,9 @@ function UserSignup() {
                   중복확인
                 </Button>
               </Flex>
-              <FormErrorMessage>별명 중복 확인을 해주세요.</FormErrorMessage>
+              {nickNameError && (
+                <FormErrorMessage>{nickNameError}</FormErrorMessage>
+              )}
             </FormControl>
             <FormControl mb={5}>
               <FormLabel>성별</FormLabel>
@@ -345,13 +368,11 @@ function UserSignup() {
                 <option value="other">기타</option>
               </Select>
             </FormControl>
-            {/*출생연도 입력 1940_2022까지*/}
             <FormControl mb={5}>
               <FormLabel>출생연도</FormLabel>
               <Select
                 placeholder="출생연도 선택"
                 value={birthYear}
-                // onChange={(e = setGender(e.target.value))}
                 onChange={handleYearChange}
               >
                 {Array.from(
@@ -364,7 +385,6 @@ function UserSignup() {
                 ))}
               </Select>
             </FormControl>
-            {/*  -------거주지 입력---------*/}
             <FormControl mb={5}>
               <FormLabel>거주지</FormLabel>
               <Select

@@ -29,10 +29,9 @@ import { useUserContext } from './UserProvider';
 
 const emailRegex =
   /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)$/;
-// const passwordRegex = /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%?&])[a-z\d@$!%*?&]{8,}$/;
 const passwordRegex =
   /^(?:(?=.*[a-z])(?=.*[A-Z])(?=.*\d)|(?=.*[a-z])(?=.*\d)(?=.*[@$!%?&])|(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])|(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%?&]))[A-Za-z\d@$!%?&]{8,}$/;
-
+//비밀번호 : 패턴이 최소8자 이상 영문 대문자, 소문자, 특수문자 중 최소3가지가 포함되어야 함
 const UserLogin: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
