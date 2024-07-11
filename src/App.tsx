@@ -30,6 +30,7 @@ import UserAllRanking from './pages/user/UserAllRanking';
 import customTheme from './styles/Theme/index';
 import { fontSizeState } from './recoil/atoms';
 import UserLayout from './components/common/UserLayout';
+import PrivateRoute from './components/common/PrivateRoute';
 
 interface ThemeProps {
   colorMode: ColorMode;
@@ -98,9 +99,6 @@ const AppContent: React.FC = () => {
           <Route path="/game" element={<GameLayout />}>
             <Route index element={<Game />} />
           </Route>
-          <Route path="/game/complete" element={<GameComplete />} />
-          <Route path="*" element={<Error />} />
-          <Route path="/game/earnbadge" element={<EarnBadge />} />
         </Routes>
       </Router>
     </ChakraProvider>
