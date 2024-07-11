@@ -21,14 +21,6 @@ const UserAllRanking = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const navigate = useNavigate();
 
-  // 토큰이 없는 경우 랜딩 페이지로 리디렉션
-  useEffect(() => {
-    const accessToken = Cookies.get('accessToken');
-    if (!accessToken) {
-      navigate('/');
-    }
-  }, []);
-
   return (
     <>
       <Center>

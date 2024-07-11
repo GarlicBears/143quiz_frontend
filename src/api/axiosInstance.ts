@@ -13,7 +13,7 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 let isRefreshing = false;
 let refreshSubscribers: ((token: string) => void)[] = [];
 
-function onRrefreshed(token: string) {
+function onRefreshed(token: string) {
   refreshSubscribers.map((cb) => cb(token));
   refreshSubscribers = [];
 }
@@ -40,12 +40,7 @@ axiosInstance.interceptors.request.use(
     const isExcludedUrl = excludeUrlEndings.some((ending) =>
       config.url?.endsWith(ending),
     );
-
-    if (!accessToken && !isExcludedUrl) {
-      window.location.href = '/'; // 랜딩 페이지로 리디렉션
-      throw new AxiosError('No access token', '401');
-    }
-
+    
     if (accessToken && !isExcludedUrl) {
       if (!config.headers) {
         config.headers = {} as AxiosRequestHeaders;
@@ -85,7 +80,7 @@ axiosInstance.interceptors.response.use(
             });
 
             isRefreshing = false;
-            onRrefreshed(newAccessToken);
+            onRefreshed(newAccessToken);
 
             (originalRequest.headers as AxiosRequestHeaders).Authorization =
               `Bearer ${newAccessToken}`;

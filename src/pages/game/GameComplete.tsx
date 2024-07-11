@@ -14,6 +14,7 @@ import {
   topicIdState,
 } from '../../recoil/atoms';
 import axiosInstance from '../../api/axiosInstance';
+import useGameBlock from '../../hooks/useGameBlock';
 
 const GameComplete: React.FC = () => {
   const title = useRecoilValue<string>(titleState);
@@ -25,6 +26,9 @@ const GameComplete: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { userHeartsCount, totalQuestions } = location.state || {};
+
+  // 뒤로가기 버튼 클릭 시 이전 페이지가 game 페이지인 경우 뒤로가지 않는 기능
+  useGameBlock();
 
   useEffect(() => {
     // 완료 효과음 재생
