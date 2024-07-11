@@ -72,6 +72,7 @@ const AppContent: React.FC = () => {
       };
     });
   }
+
   return (
     <ChakraProvider theme={customTheme}>
       <ColorModeScript
