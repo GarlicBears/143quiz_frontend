@@ -8,6 +8,7 @@ import {
   ModalOverlay,
   Text,
   useDisclosure,
+  VStack,
 } from '@chakra-ui/react';
 
 function UserAgreement() {

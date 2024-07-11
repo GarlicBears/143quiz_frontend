@@ -36,6 +36,7 @@ axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
     // 쿠키에서 accessToken 읽어오기
     const accessToken = Cookies.get('accessToken'); // 쿠키에서 토큰 가져오기.
+
     const isExcludedUrl = excludeUrlEndings.some((ending) =>
       config.url?.endsWith(ending),
     );
@@ -79,6 +80,7 @@ axiosInstance.interceptors.response.use(
             });
 
             isRefreshing = false;
+
             onRefreshed(newAccessToken);
 
             (originalRequest.headers as AxiosRequestHeaders).Authorization =

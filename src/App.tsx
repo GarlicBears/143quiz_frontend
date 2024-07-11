@@ -72,12 +72,12 @@ const AppContent: React.FC = () => {
       };
     });
   }
+
   return (
     <ChakraProvider theme={customTheme}>
       <ColorModeScript
         initialColorMode={theme.config?.initialColorMode ?? 'light'}
       />
-
       <Router basename={process.env.REACT_APP_WS_URL}>
         <Routes>
           <Route index element={<LandingPage />} />
@@ -119,3 +119,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+/* eslint-enable react/prop-types */
