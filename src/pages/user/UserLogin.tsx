@@ -43,10 +43,10 @@ function UserLogin() {
         const token = response.headers['authorization'];
         if (token) {
           // console.log('Authorization 헤더:', token); 필요없음
-          console.log('전체 헤더:', response.headers);
+          // console.log('전체 헤더:', response.headers);
           // Bearer 부분을 제거하고 토큰만 추출, % 기호 제거
           const accessToken = token;
-          console.log('추출된 토큰:', accessToken);
+          // console.log('추출된 토큰:', accessToken);
           // 토큰을 쿠키에 저장
           Cookies.set('accessToken', accessToken, {
             expires: 1,

@@ -48,3 +48,8 @@ export const fontSizeState = atom<'small' | 'medium' | 'large'>({
   key: 'fontSizeState',
   default: 'medium',
 });
+
+export const selectedTopicImgState = atom<string | undefined>({
+  key: 'topicImage',
+  default: undefined,
+});
