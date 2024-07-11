@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Box,
   Card,
@@ -12,95 +12,22 @@ import {
   Stack,
   useColorMode,
   useColorModeValue,
+  useDisclosure,
+  Flex,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { userInfoState, fontSizeState } from '../../recoil/atoms';
 import UserBadge from './UserBadge';
 import UserAgreement from './UserAgreement';
 import UserLogout from './UserLogout';
-import axiosInstance from '../../api/axiosInstance';
-import { fontSizeState } from '../../recoil/atoms';
-import Cookies from 'js-cookie';
+import badgeIcon from '../../asset/images/badge48.png';
 
-const genderMap = {
-  male: '남자',
-  female: '여자',
-  other: '기타',
-};
-const locationMap = {
-  Seoul: '서울',
-  Gyeonggi: '경기',
-  Incheon: '인천',
-  Chungcheong: '충청',
-  Jeolla: '전라',
-  Gyeongsang: '경상',
-  Jeju: '제주',
-  Overseas: '해외',
-  Gangwon: '강원',
-};
-
-// API 응답 타입 정의
-interface UserResponse {
-  nickname: string;
-  gender: keyof typeof genderMap;
-  location: keyof typeof locationMap;
-  imageUrl: string;
-  birthYear: number;
-  badges: { title: string; imageUrl: string }[];
-}
-
-interface UserInfo {
-  nickname: string;
-  gender: string;
-  location: string;
-  imageUrl: string;
-  birthYear: number;
-  badges: { title: string; imageUrl: string }[];
-}
-
-function UserInfo() {
+const UserInfo: React.FC = () => {
   const navigate = useNavigate();
-  const [userInfo, setUserInfo] = useState<UserInfo>({
-    nickname: '',
-    gender: '',
-    location: '',
-    imageUrl: '',
-    birthYear: 0,
-    badges: [],
-  });
-
+  const userInfo = useRecoilValue(userInfoState);
   const [fontSize, setFontSize] = useRecoilState(fontSizeState);
-
-  // 토큰이 없는 경우 랜딩 페이지로 리디렉션
-  useEffect(() => {
-    const accessToken = Cookies.get('accessToken');
-    if (!accessToken) {
-      navigate('/');
-    }
-  }, []);
-
-  useEffect(() => {
-    axiosInstance
-      .get<UserResponse>('/user/')
-      .then((response) => {
-        const { data } = response;
-        if (response.status === 200) {
-          setUserInfo({
-            nickname: data.nickname,
-            gender: genderMap[data.gender] || data.gender,
-            location: locationMap[data.location] || data.location,
-            imageUrl: data.imageUrl || '',
-            birthYear: data.birthYear,
-            badges: data.badges || [],
-          });
-        } else {
-          console.error('Unexpected API response format', data);
-        }
-      })
-      .catch((error) => {
-        console.error('Failed to load user information', error);
-      });
-  }, []);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   function handleChangeUserInfo() {
     navigate('/userInfo/update', { state: userInfo });
@@ -152,55 +79,30 @@ function UserInfo() {
           </CardBody>
           <Divider mb={3} />
           <Box>
-            <UserBadge userInfo={userInfo} />
+            <Flex
+              onClick={onOpen}
+              cursor="pointer"
+              alignItems="center"
+              justifyContent="center"
+              p={4}
+              bg="gray.200"
+              borderRadius="lg"
+            >
+              <Image src={badgeIcon} boxSize="50px" mr={4} />
+              <Text color="black" fontSize="2xl" fontWeight="bold">
+                내가 모은 뱃지
+              </Text>
+            </Flex>
+            <UserBadge userInfo={userInfo} isOpen={isOpen} onClose={onClose} />
           </Box>
           <Divider mt={3} mb={3} />
           <Text fontSize="xl" mt={3} color={textColor}>
             게임 설정
           </Text>
-          {/*<Stack*/}
-          {/*  direction="row"*/}
-          {/*  spacing={4}*/}
-          {/*  align="center"*/}
-          {/*  justify="center"*/}
-          {/*  mb={4}*/}
-          {/*>*/}
-          {/*  <Text>효과음 설정</Text>*/}
-          {/*  <Switch />*/}
-          {/*</Stack>*/}
-          {/*<Stack*/}
-          {/*  direction="row"*/}
-          {/*  spacing={4}*/}
-          {/*  align="center"*/}
-          {/*  justify="center"*/}
-          {/*  mb={4}*/}
-          {/*>*/}
-          {/*  <Text>알림 설정</Text>*/}
-          {/*  <Switch />*/}
-          {/*</Stack>*/}
-          {/*<Stack*/}
-          {/*  direction="row"*/}
-          {/*  spacing={4}*/}
-          {/*  align="center"*/}
-          {/*  justify="center"*/}
-          {/*  mb={4}*/}
-          {/*>*/}
-          {/*  <Text>글씨 크기 설정</Text>*/}
-          {/*  <Button size="sm" onClick={() => setFontSize('small')}>*/}
-          {/*    작게*/}
-          {/*  </Button>*/}
-          {/*  <Button size="sm" onClick={() => setFontSize('medium')}>*/}
-          {/*    보통*/}
-          {/*  </Button>*/}
-          {/*  <Button size="sm" onClick={() => setFontSize('large')}>*/}
-          {/*    크게*/}
-          {/*  </Button>*/}
-          {/*</Stack>*/}
           <Button w="100%" fontSize="lg" onClick={toggleColorMode} mt={3}>
             색상 모드 변경
           </Button>
           <Divider mt={3} mb={3} />
-
           <Stack
             direction="row"
             align="center"
@@ -218,6 +120,6 @@ function UserInfo() {
       </Card>
     </Center>
   );
-}
+};
 
 export default UserInfo;

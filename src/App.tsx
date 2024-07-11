@@ -20,6 +20,7 @@ import GameComplete from './pages/game/GameComplete';
 import Error from './pages/Error';
 import EarnBadge from './pages/game/EarnBadge';
 import UserInfo from './pages/user/UserInfo';
+import UserProvider from './pages/user/UserProvider';
 import MainPage from './pages/MainPage';
 import UserSignup from './pages/user/UserSignup';
 import UserLogin from './pages/user/UserLogin';
@@ -98,10 +99,11 @@ const AppContent: React.FC = () => {
 function App() {
   return (
     <RecoilRoot>
-      <AppContent />
+      <UserProvider>
+        <AppContent />
+      </UserProvider>
     </RecoilRoot>
   );
 }
 
 export default App;
-/* eslint-enable react/prop-types */
