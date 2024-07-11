@@ -96,7 +96,7 @@ const AppContent: React.FC = () => {
   );
 };
 
-function App() {
+const App: React.FC = () => {
   return (
     <RecoilRoot>
       <UserProvider>
@@ -104,6 +104,6 @@ function App() {
       </UserProvider>
     </RecoilRoot>
   );
-}
+};
 
 export default App;

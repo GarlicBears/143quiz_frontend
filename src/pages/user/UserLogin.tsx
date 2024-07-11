@@ -30,6 +30,8 @@ function UserLogin() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState(''); // 에러 메시지 상태 추가
+
   const toast = useToast();
 
   function handleLogin() {
@@ -67,14 +69,18 @@ function UserLogin() {
         }
       })
       .catch((error) => {
-        // 네트워크 오류 또는 다른 이유로 인한 실패 처리
-        toast({
-          title: '로그인에 실패했습니다.',
-          description: error.response?.data?.message || 'An error occurred.',
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        });
+        if (error.response && error.response.status === 404) {
+          setErrorMessage('입력한 이메일과 비밀번호를 찾을 수 없습니다. '); // 에러 메시지 설정
+        } else {
+          // 다른 네트워크 오류 또는 다른 이유로 인한 실패 처리
+          toast({
+            title: '로그인에 실패했습니다.',
+            description: error.response?.data?.message || 'An error occurred.',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          });
+        }
       });
   }
 
@@ -131,6 +137,11 @@ function UserLogin() {
                   />
                 </InputRightElement>
               </InputGroup>
+              {errorMessage && (
+                <Text color="red.500" mt={2}>
+                  {errorMessage}
+                </Text>
+              )}
             </FormControl>
             <br />
             <Link style={{ textDecoration: 'underline', color: '#e66119' }}>

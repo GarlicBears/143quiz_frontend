@@ -26,27 +26,24 @@ function UserAccountDelete() {
   const handleDelete = () => {
     axiosInstance
       .delete('/user/', {})
-      .then(() => {
-        Cookies.remove('accessToken');
-        Cookies.remove('refreshToken');
-        toast({
-          description: '회원탈퇴가 완료되었습니다.',
-          status: 'success',
-        });
-        navigate('/');
+      .then((response) => {
+        if (response.status === 200) {
+          Cookies.remove('accessToken');
+          toast({
+            description: '사용자 삭제가 성공적으로 완료되었습니다.',
+            status: 'success',
+          });
+          navigate('/');
+        }
       })
       .catch((error) => {
-        console.error('회원탈퇴에 실패했습니다.', error);
+        console.error('사용자 삭제에 실패했습니다.', error);
         toast({
-          description: '회원탈퇴 중 에러가 발생했습니다',
+          description: '사용자 삭제 도중 에러가 발생했습니다.',
           status: 'error',
         });
-      })
-      .finally(() => {
-        onClose();
       });
   };
-
   const handleCancel = () => {
     onClose();
   };

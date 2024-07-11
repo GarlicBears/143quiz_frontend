@@ -23,14 +23,10 @@ function UserLogout() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    const refreshToken = Cookies.get('refreshToken');
     axiosInstance
-      .delete('/user/logout', {
-        headers: { Authorization: `Bearer ${refreshToken}` },
-      })
+      .delete('/user/logout', {})
       .then((response) => {
         Cookies.remove('accessToken');
-        Cookies.remove('refreshToken');
         toast({
           description: '성공적으로 로그아웃 되었습니다',
           status: 'success',
