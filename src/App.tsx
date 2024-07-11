@@ -74,8 +74,6 @@ const AppContent: React.FC = () => {
           <Route path="/" element={<Layout />}>
             <Route path="/topic" element={<Topic />} />
             <Route path="/main" element={<MainPage />} />
-            <Route path="/signup" element={<UserSignup />} />
-            <Route path="/login" element={<UserLogin />} />
             <Route path="/userInfo" element={<UserInfo />} />
             <Route path="/userAllRanking" element={<UserAllRanking />} />
             <Route path="/userInfo/update" element={<UserInfoUpdate />} />
@@ -87,6 +85,8 @@ const AppContent: React.FC = () => {
           <Route path="/game" element={<GameLayout />}>
             <Route index element={<Game />} />
           </Route>
+          <Route path="/signup" element={<UserSignup />} />
+          <Route path="/login" element={<UserLogin />} />
           <Route path="/game/complete" element={<GameComplete />} />
           <Route path="*" element={<Error />} />
           <Route path="/game/earnbadge" element={<EarnBadge />} />

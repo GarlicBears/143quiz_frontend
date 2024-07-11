@@ -14,6 +14,7 @@ import {
 } from '../../recoil/atoms';
 import axiosInstance from '../../api/axiosInstance';
 import qustionImg from '../../asset/images/question.png';
+import Cookies from 'js-cookie';
 
 interface TopicType {
   topicId: number;
@@ -43,7 +44,6 @@ const Topic = () => {
   const [, setSessionId] = useRecoilState<number>(sessionIdState);
   const [isLoading, setIsLoading] = useState(true);
 
-
   // 토큰이 없는 경우 랜딩 페이지로 리디렉션
   useEffect(() => {
     const accessToken = Cookies.get('accessToken');
@@ -56,7 +56,6 @@ const Topic = () => {
   const [selectedTopicImg, setSelectedTopicImg] = useRecoilState(
     selectedTopicImgState,
   );
-
 
   // 주제 리스트 불러오기
   useEffect(() => {
