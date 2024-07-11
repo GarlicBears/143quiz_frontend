@@ -14,6 +14,7 @@ import {
 import { useRecoilValue } from 'recoil';
 import UserBadge from '../user/UserBadge';
 import { useDisclosure } from '@chakra-ui/react';
+import useGameBlock from '../../hooks/useGameBlock';
 
 const EarnBadge = () => {
   const badgeName = useRecoilValue(titleState);
@@ -22,6 +23,9 @@ const EarnBadge = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
+
+  // 뒤로가기 버튼 클릭 시 이전 페이지가 game 페이지인 경우 뒤로가지 않는 기능
+  useGameBlock();
 
   useEffect(() => {
     if (audioRef.current) {
