@@ -20,6 +20,7 @@ import GameComplete from './pages/game/GameComplete';
 import Error from './pages/Error';
 import EarnBadge from './pages/game/EarnBadge';
 import UserInfo from './pages/user/UserInfo';
+import UserProvider from './pages/user/UserProvider';
 import MainPage from './pages/MainPage';
 import UserSignup from './pages/user/UserSignup';
 import UserLogin from './pages/user/UserLogin';
@@ -28,6 +29,8 @@ import UserAccountDelete from './pages/user/UserAccountDelete';
 import UserAllRanking from './pages/user/UserAllRanking';
 import customTheme from './styles/Theme/index';
 import { fontSizeState } from './recoil/atoms';
+import UserLayout from './components/common/UserLayout';
+import PrivateRoute from './components/common/PrivateRoute';
 
 interface ThemeProps {
   colorMode: ColorMode;
@@ -61,6 +64,15 @@ const AppContent: React.FC = () => {
     } as ThemeConfig,
   });
 
+  // 배포 시 콘솔로그 막기
+  if (process.env.NODE_ENV === 'production') {
+    ['log', 'warn', 'error'].forEach((method) => {
+      (console as any)[method] = () => {
+        /* no-op */
+      };
+    });
+  }
+
   return (
     <ChakraProvider theme={customTheme}>
       <ColorModeScript
@@ -72,8 +84,6 @@ const AppContent: React.FC = () => {
           <Route path="/" element={<Layout />}>
             <Route path="/topic" element={<Topic />} />
             <Route path="/main" element={<MainPage />} />
-            <Route path="/signup" element={<UserSignup />} />
-            <Route path="/login" element={<UserLogin />} />
             <Route path="/userInfo" element={<UserInfo />} />
             <Route path="/userAllRanking" element={<UserAllRanking />} />
             <Route path="/userInfo/update" element={<UserInfoUpdate />} />
@@ -81,6 +91,10 @@ const AppContent: React.FC = () => {
               path="/userInfo/update/delete"
               element={<UserAccountDelete />}
             />
+          </Route>
+          <Route element={<UserLayout />}>
+            <Route path="/signup" element={<UserSignup />} />
+            <Route path="/login" element={<UserLogin />} />
           </Route>
           <Route path="/game" element={<GameLayout />}>
             <Route index element={<Game />} />
@@ -94,13 +108,15 @@ const AppContent: React.FC = () => {
   );
 };
 
-function App() {
+const App: React.FC = () => {
   return (
     <RecoilRoot>
-      <AppContent />
+      <UserProvider>
+        <AppContent />
+      </UserProvider>
     </RecoilRoot>
   );
-}
+};
 
 export default App;
 /* eslint-enable react/prop-types */

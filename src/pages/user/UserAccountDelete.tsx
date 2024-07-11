@@ -17,36 +17,34 @@ import {
 import axiosInstance from '../../api/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { useUserContext } from './UserProvider';
 
 function UserAccountDelete() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const toast = useToast();
+  const { clearUserInfo } = useUserContext();
   //userController (delete) userlogout 시에만 RT삭제 .api 변경 탈퇴 시에도 RT삭제로 변경
   const handleDelete = () => {
-    const refreshToken = Cookies.get('refreshToken');
     axiosInstance
-      .delete('/user/logout', {
-        headers: { Authorization: `Bearer ${refreshToken}` },
-      })
-      .then(() => {
-        Cookies.remove('accessToken');
-        Cookies.remove('refreshToken');
-        toast({
-          description: '성공적으로 로그아웃 되었습니다',
-          status: 'success',
-        });
-        navigate('/');
+      .delete('/user/', {})
+      .then((response) => {
+        if (response.status === 200) {
+          Cookies.remove('accessToken');
+          clearUserInfo();
+          toast({
+            description: '사용자 삭제가 성공적으로 완료되었습니다.',
+            status: 'success',
+          });
+          navigate('/');
+        }
       })
       .catch((error) => {
-        console.error('로그아웃에 실패했습니다.', error);
+        console.error('사용자 삭제에 실패했습니다.', error);
         toast({
-          description: '로그아웃 도중 에러가 발생했습니다',
+          description: '사용자 삭제 도중 에러가 발생했습니다.',
           status: 'error',
         });
-      })
-      .finally(() => {
-        onClose();
       });
   };
 

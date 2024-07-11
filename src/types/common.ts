@@ -55,6 +55,16 @@ export interface Badge {
     {
       topicId: 0;
       title: 'string';
+      imageUrl: string;
     },
   ];
+}
+
+export interface UserInfo {
+  nickname: string;
+  gender: string;
+  location: string;
+  imageUrl: string;
+  birthYear: number;
+  badges: Badge[];
 }

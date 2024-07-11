@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Box,
   Card,
@@ -12,86 +12,21 @@ import {
   Stack,
   useColorMode,
   useColorModeValue,
+  useDisclosure,
+  Flex,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
+import { userInfoState } from '../../recoil/atoms';
 import UserBadge from './UserBadge';
 import UserAgreement from './UserAgreement';
 import UserLogout from './UserLogout';
-import axiosInstance from '../../api/axiosInstance';
-import { fontSizeState } from '../../recoil/atoms';
+import badgeIcon from '../../asset/images/badge48.png';
 
-const genderMap = {
-  male: '남자',
-  female: '여자',
-  other: '기타',
-};
-const locationMap = {
-  Seoul: '서울',
-  Gyeonggi: '경기',
-  Incheon: '인천',
-  Chungcheong: '충청',
-  Jeolla: '전라',
-  Gyeongsang: '경상',
-  Jeju: '제주',
-  Overseas: '해외',
-  Gangwon: '강원',
-};
-
-// API 응답 타입 정의
-interface UserResponse {
-  nickname: string;
-  gender: keyof typeof genderMap;
-  location: keyof typeof locationMap;
-  imageUrl: string;
-  birthYear: number;
-  badges: { title: string; imageUrl: string }[];
-}
-
-interface UserInfo {
-  nickname: string;
-  gender: string;
-  location: string;
-  imageUrl: string;
-  birthYear: number;
-  badges: { title: string; imageUrl: string }[];
-}
-
-function UserInfo() {
+const UserInfo: React.FC = () => {
   const navigate = useNavigate();
-  const [userInfo, setUserInfo] = useState<UserInfo>({
-    nickname: '',
-    gender: '',
-    location: '',
-    imageUrl: '',
-    birthYear: 0,
-    badges: [],
-  });
-
-  const [fontSize, setFontSize] = useRecoilState(fontSizeState);
-
-  useEffect(() => {
-    axiosInstance
-      .get<UserResponse>('/user/')
-      .then((response) => {
-        const { data } = response;
-        if (response.status === 200) {
-          setUserInfo({
-            nickname: data.nickname,
-            gender: genderMap[data.gender] || data.gender,
-            location: locationMap[data.location] || data.location,
-            imageUrl: data.imageUrl || '',
-            birthYear: data.birthYear,
-            badges: data.badges || [],
-          });
-        } else {
-          console.error('Unexpected API response format', data);
-        }
-      })
-      .catch((error) => {
-        console.error('Failed to load user information', error);
-      });
-  }, []);
+  const userInfo = useRecoilValue(userInfoState);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   function handleChangeUserInfo() {
     navigate('/userInfo/update', { state: userInfo });
@@ -120,78 +55,81 @@ function UserInfo() {
             cursor="pointer"
             _hover={{ transform: 'scale(1.02)', transition: 'transform 0.2s' }}
           >
-            {userInfo.imageUrl ? (
-              <Image
-                src={userInfo.imageUrl}
-                borderRadius="full"
-                boxSize="150px"
-                alt="Profile Image"
-                m="auto"
-                mb={3}
-              />
-            ) : (
-              <Text>No image</Text>
-            )}
-            <Box textAlign="center" fontSize="xl" mt={3} color={textColor}>
-              <Text>성별: {userInfo.gender}</Text>
-              <Text>거주지: {userInfo.location}</Text>
-              <Text>별명: {userInfo.nickname}</Text>
-            </Box>
-            <Text align="right" color="gray.500" fontSize="lg">
+            <Flex direction="column" alignItems="center">
+              {userInfo.imageUrl ? (
+                <Image
+                  src={userInfo.imageUrl}
+                  borderRadius="full"
+                  boxSize="150px"
+                  alt="Profile Image"
+                  mb={3}
+                />
+              ) : (
+                <Text>No image</Text>
+              )}
+              <Box textAlign="center" fontSize="xl" color={textColor} mb={3}>
+                <Flex justifyContent="center" mb={1}>
+                  <Box textAlign="right" mr={2}>
+                    <Text>별명:</Text>
+                  </Box>
+                  <Box textAlign="left">
+                    <Text>{userInfo.nickname}</Text>
+                  </Box>
+                </Flex>
+                <Flex justifyContent="center" mb={1}>
+                  <Box textAlign="right" mr={2}>
+                    <Text>출생연도:</Text>
+                  </Box>
+                  <Box textAlign="left">
+                    <Text>{userInfo.birthYear}년</Text>
+                  </Box>
+                </Flex>
+                <Flex justifyContent="center" mb={1}>
+                  <Box textAlign="right" mr={2}>
+                    <Text>성별:</Text>
+                  </Box>
+                  <Box textAlign="left">
+                    <Text>{userInfo.gender}</Text>
+                  </Box>
+                </Flex>
+                <Flex justifyContent="center" mb={1}>
+                  <Box textAlign="right" mr={2}>
+                    <Text>거주지:</Text>
+                  </Box>
+                  <Box textAlign="left">
+                    <Text>{userInfo.location}</Text>
+                  </Box>
+                </Flex>
+              </Box>
+            </Flex>
+            <Text align="right" color="gray.500" fontSize="lg" mt={2} mr={2}>
               정보 수정
             </Text>
           </CardBody>
           <Divider mb={3} />
           <Box>
-            <UserBadge userInfo={userInfo} />
+            <Flex
+              onClick={onOpen}
+              cursor="pointer"
+              alignItems="center"
+              justifyContent="center"
+              p={1}
+              bg="gray.100"
+              borderRadius="lg"
+              _hover={{ bg: 'gray.200' }}
+            >
+              <Image src={badgeIcon} boxSize="36px" />
+              <Text color="black" fontSize="xl" fontWeight="bold">
+                내가 모은 뱃지
+              </Text>
+            </Flex>
+            <UserBadge userInfo={userInfo} isOpen={isOpen} onClose={onClose} />
           </Box>
           <Divider mt={3} mb={3} />
-          <Text fontSize="xl" mt={3} color={textColor}>
-            게임 설정
-          </Text>
-          {/*<Stack*/}
-          {/*  direction="row"*/}
-          {/*  spacing={4}*/}
-          {/*  align="center"*/}
-          {/*  justify="center"*/}
-          {/*  mb={4}*/}
-          {/*>*/}
-          {/*  <Text>효과음 설정</Text>*/}
-          {/*  <Switch />*/}
-          {/*</Stack>*/}
-          {/*<Stack*/}
-          {/*  direction="row"*/}
-          {/*  spacing={4}*/}
-          {/*  align="center"*/}
-          {/*  justify="center"*/}
-          {/*  mb={4}*/}
-          {/*>*/}
-          {/*  <Text>알림 설정</Text>*/}
-          {/*  <Switch />*/}
-          {/*</Stack>*/}
-          {/*<Stack*/}
-          {/*  direction="row"*/}
-          {/*  spacing={4}*/}
-          {/*  align="center"*/}
-          {/*  justify="center"*/}
-          {/*  mb={4}*/}
-          {/*>*/}
-          {/*  <Text>글씨 크기 설정</Text>*/}
-          {/*  <Button size="sm" onClick={() => setFontSize('small')}>*/}
-          {/*    작게*/}
-          {/*  </Button>*/}
-          {/*  <Button size="sm" onClick={() => setFontSize('medium')}>*/}
-          {/*    보통*/}
-          {/*  </Button>*/}
-          {/*  <Button size="sm" onClick={() => setFontSize('large')}>*/}
-          {/*    크게*/}
-          {/*  </Button>*/}
-          {/*</Stack>*/}
-          <Button w="100%" fontSize="lg" onClick={toggleColorMode} mt={3}>
+          <Button w="100%" fontSize="xl" onClick={toggleColorMode} mt={3} p={4}>
             색상 모드 변경
           </Button>
           <Divider mt={3} mb={3} />
-
           <Stack
             direction="row"
             align="center"
@@ -209,6 +147,6 @@ function UserInfo() {
       </Card>
     </Center>
   );
-}
+};
 
 export default UserInfo;

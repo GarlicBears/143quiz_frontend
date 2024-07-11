@@ -1,18 +1,31 @@
 import React, { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../../components/common/Header';
 import Footer from '../../components/common/Footer';
 import Add from '../../components/common/Add';
 import { Box, Button, Flex, Text, VStack, Image } from '@chakra-ui/react';
 import congratulationImage from '../../asset/images/congratulation.png';
 import congratulationSound from '../../asset/audios/glissando_up.mp3';
-import { Link } from 'react-router-dom';
-import { titleState, selectedTopicImgState } from '../../recoil/atoms';
+import {
+  titleState,
+  selectedTopicImgState,
+  userInfoState,
+} from '../../recoil/atoms';
 import { useRecoilValue } from 'recoil';
+import UserBadge from '../user/UserBadge';
+import { useDisclosure } from '@chakra-ui/react';
+import useGameBlock from '../../hooks/useGameBlock';
 
 const EarnBadge = () => {
   const badgeName = useRecoilValue(titleState);
   const selectedTopicImg = useRecoilValue(selectedTopicImgState);
+  const userInfo = useRecoilValue(userInfoState);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
+
+  // 뒤로가기 버튼 클릭 시 이전 페이지가 game 페이지인 경우 뒤로가지 않는 기능
+  useGameBlock();
 
   useEffect(() => {
     if (audioRef.current) {
@@ -135,27 +148,27 @@ const EarnBadge = () => {
           >
             카톡으로 자랑하기
           </Button>
-          <Link to="/userInfo/badge">
-            <Button
-              colorScheme="customOrange"
-              variant="outline"
-              mb={3}
-              width={{ base: '100%', sm: '360px' }}
-            >
-              내가 모은 뱃지 확인
-            </Button>
-          </Link>
           <Button
             colorScheme="customOrange"
             variant="outline"
             mb={3}
             width={{ base: '100%', sm: '360px' }}
+            onClick={onOpen}
+          >
+            내가 모은 뱃지 확인
+          </Button>
+          <Button
+            colorScheme="customOrange"
+            variant="outline"
+            mb={3}
+            width={{ base: '100%', sm: '360px' }}
+            onClick={() => navigate('/topic')}
           >
             이만 끝내기
           </Button>
         </VStack>
       </Flex>
-
+      <UserBadge userInfo={userInfo} isOpen={isOpen} onClose={onClose} />
       <Add />
       <Footer />
     </>

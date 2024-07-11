@@ -17,6 +17,8 @@ import UserAgreement from './UserAgreement';
 import UserAccountDelete from './UserAccountDelete';
 import UserLogout from './UserLogout';
 import axiosInstance from '../../api/axiosInstance';
+import { userInfoState } from '../../recoil/atoms';
+import { useSetRecoilState } from 'recoil';
 
 const genderMap: { [key: string]: string } = {
   남자: 'male',
@@ -27,6 +29,7 @@ const genderMap: { [key: string]: string } = {
 const locationMap: { [key: string]: string } = {
   서울: 'Seoul',
   경기: 'Gyeonggi',
+  인천: 'Incheon',
   강원: 'Gangwon',
   전라: 'Jeolla',
   충청: 'Chungcheong',
@@ -43,11 +46,13 @@ interface UserInfo {
   birthYear: number;
 }
 
-function UserInfoUpdate() {
+const UserInfoUpdate: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const userInfo = location.state as UserInfo;
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const setUserInfo = useSetRecoilState(userInfoState);
+
 
   if (!userInfo) {
     return <div>Loading...</div>;
@@ -58,12 +63,7 @@ function UserInfoUpdate() {
   const [locationState, setLocation] = useState<string>(userInfo.location);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [updatedUserInfo, setUpdatedUserInfo] = useState<UserInfo>(userInfo);
-  // 확인용 로그
-  console.log('Initial birthYear:', birthYear);
-  console.log('Initial gender:', gender);
-  console.log('Initial location:', locationState);
-  console.log('Initial selectedFile:', selectedFile);
-  console.log('Initial updatedUserInfo:', updatedUserInfo);
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setSelectedFile(event.target.files[0]);
@@ -116,6 +116,13 @@ function UserInfoUpdate() {
       .then((response) => {
         if (response.status === 200) {
           alert('회원정보가 성공적으로 수정되었습니다.');
+          setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
+            gender,
+            location: locationState,
+            imageUrl: response.data.imageUrl,
+            birthYear,
+          }));
           navigate('/userInfo');
         } else {
           alert('회원정보 수정에 실패하였습니다.');
@@ -127,9 +134,9 @@ function UserInfoUpdate() {
       });
   };
 
-  const generateYearOption = () => {
+  const generateYearOptions = () => {
     const startYear = 1940;
-    const endYear = 2022;
+    const endYear = new Date().getFullYear();
     const years = Array.from(
       { length: endYear - startYear + 1 },
       (_, i) => startYear + i,
@@ -174,10 +181,10 @@ function UserInfoUpdate() {
             mt={4}
             onClick={() => fileInputRef.current && fileInputRef.current.click()}
           >
-            이미지 업로드
+            사진 업로드
           </Button>
           <Button variant="solid" mt={4} onClick={handleFileUpload}>
-            업로드
+            저장
           </Button>
           <Text>내가 모은 뱃지로 프로필 설정하기</Text>
         </Box>
@@ -186,10 +193,10 @@ function UserInfoUpdate() {
           <FormControl>
             <FormLabel>출생연도 변경</FormLabel>
             <Select
-              value={userInfo.birthYear !== null ? userInfo.birthYear : ''}
+              value={birthYear !== null ? birthYear : ''}
               onChange={(e) => setBirthYear(Number(e.target.value))}
             >
-              {generateYearOption()}
+              {generateYearOptions()}
             </Select>
           </FormControl>
           <FormControl>
@@ -207,6 +214,7 @@ function UserInfoUpdate() {
               onChange={(e) => setLocation(e.target.value)}
             >
               <option value="서울">서울</option>
+              <option value="인천">인천</option>
               <option value="경기">경기</option>
               <option value="강원">강원</option>
               <option value="전라">전라</option>
@@ -230,6 +238,6 @@ function UserInfoUpdate() {
       </VStack>
     </Center>
   );
-}
+};
 
 export default UserInfoUpdate;

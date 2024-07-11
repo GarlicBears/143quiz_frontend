@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Card,
@@ -13,10 +13,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrophy } from '@fortawesome/free-solid-svg-icons';
 import TotalRanking from './TotalRanking';
 import UserRankInfo from './UserRankInfo';
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 // tabs로 랭킹 조회
 const UserAllRanking = () => {
   const [selectedTab, setSelectedTab] = useState(0);
+  const navigate = useNavigate();
 
   return (
     <>

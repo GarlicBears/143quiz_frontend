@@ -13,7 +13,7 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 let isRefreshing = false;
 let refreshSubscribers: ((token: string) => void)[] = [];
 
-function onRrefreshed(token: string) {
+function onRefreshed(token: string) {
   refreshSubscribers.map((cb) => cb(token));
   refreshSubscribers = [];
 }
@@ -80,7 +80,8 @@ axiosInstance.interceptors.response.use(
             });
 
             isRefreshing = false;
-            onRrefreshed(newAccessToken);
+
+            onRefreshed(newAccessToken);
 
             (originalRequest.headers as AxiosRequestHeaders).Authorization =
               `Bearer ${newAccessToken}`;
