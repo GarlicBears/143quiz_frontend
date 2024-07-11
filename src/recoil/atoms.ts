@@ -1,4 +1,5 @@
 import { atom } from 'recoil';
+import { UserInfo } from '../types/common';
 
 // 답변 제출 횟수
 export const answerSubmitCountState = atom({
@@ -52,4 +53,17 @@ export const fontSizeState = atom<'small' | 'medium' | 'large'>({
 export const selectedTopicImgState = atom<string | undefined>({
   key: 'topicImage',
   default: undefined,
+});
+
+//사용자정보 가져오기
+export const userInfoState = atom<UserInfo>({
+  key: 'userInfoState',
+  default: {
+    nickname: '',
+    gender: '',
+    location: '',
+    imageUrl: '',
+    birthYear: 0,
+    badges: [],
+  },
 });
