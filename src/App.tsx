@@ -62,6 +62,14 @@ const AppContent: React.FC = () => {
     } as ThemeConfig,
   });
 
+  // 배포 시 콘솔로그 막기
+  if (process.env.NODE_ENV === 'production') {
+    ['log', 'warn', 'error'].forEach((method) => {
+      (console as any)[method] = () => {
+        /* no-op */
+      };
+    });
+  }
   return (
     <ChakraProvider theme={customTheme}>
       <ColorModeScript
