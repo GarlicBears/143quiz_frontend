@@ -29,6 +29,7 @@ import UserAccountDelete from './pages/user/UserAccountDelete';
 import UserAllRanking from './pages/user/UserAllRanking';
 import customTheme from './styles/Theme/index';
 import { fontSizeState } from './recoil/atoms';
+import UserLayout from './components/common/UserLayout';
 import PrivateRoute from './components/common/PrivateRoute';
 
 interface ThemeProps {
@@ -79,30 +80,24 @@ const AppContent: React.FC = () => {
 
       <Router basename={process.env.REACT_APP_WS_URL}>
         <Routes>
-          <Route element={<PrivateRoute authentication={false} />}>
-            <Route path="/" index element={<LandingPage />} />
-            <Route path="/login" element={<UserLogin />} />
-            <Route path="/signup" element={<UserSignup />} />
+          <Route index element={<LandingPage />} />
+          <Route path="/" element={<Layout />}>
+            <Route path="/topic" element={<Topic />} />
+            <Route path="/main" element={<MainPage />} />
+            <Route path="/userInfo" element={<UserInfo />} />
+            <Route path="/userAllRanking" element={<UserAllRanking />} />
+            <Route path="/userInfo/update" element={<UserInfoUpdate />} />
+            <Route
+              path="/userInfo/update/delete"
+              element={<UserAccountDelete />}
+            />
           </Route>
-
-          <Route element={<PrivateRoute authentication={true} />}>
-            <Route path="/" element={<Layout />}>
-              <Route path="/topic" element={<Topic />} />
-              <Route path="/main" element={<MainPage />} />
-              <Route path="/userInfo" element={<UserInfo />} />
-              <Route path="/userAllRanking" element={<UserAllRanking />} />
-              <Route path="/userInfo/update" element={<UserInfoUpdate />} />
-              <Route
-                path="/userInfo/update/delete"
-                element={<UserAccountDelete />}
-              />
-            </Route>
-            <Route path="/game" element={<GameLayout />}>
-              <Route index element={<Game />} />
-            </Route>
-            <Route path="/game/complete" element={<GameComplete />} />
-            <Route path="*" element={<Error />} />
-            <Route path="/game/earnbadge" element={<EarnBadge />} />
+          <Route element={<UserLayout />}>
+            <Route path="/signup" element={<UserSignup />} />
+            <Route path="/login" element={<UserLogin />} />
+          </Route>
+          <Route path="/game" element={<GameLayout />}>
+            <Route index element={<Game />} />
           </Route>
         </Routes>
       </Router>
