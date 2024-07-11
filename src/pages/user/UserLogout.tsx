@@ -27,7 +27,7 @@ function UserLogout() {
   const handleLogout = () => {
     axiosInstance
       .delete('/user/logout', {})
-      .then((response) => {
+      .then(() => {
         Cookies.remove('accessToken');
         clearUserInfo();
         toast({

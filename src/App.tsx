@@ -123,3 +123,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+/* eslint-enable react/prop-types */
