@@ -16,8 +16,8 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { userInfoState, fontSizeState } from '../../recoil/atoms';
+import { useRecoilValue } from 'recoil';
+import { userInfoState } from '../../recoil/atoms';
 import UserBadge from './UserBadge';
 import UserAgreement from './UserAgreement';
 import UserLogout from './UserLogout';
@@ -26,7 +26,6 @@ import badgeIcon from '../../asset/images/badge48.png';
 const UserInfo: React.FC = () => {
   const navigate = useNavigate();
   const userInfo = useRecoilValue(userInfoState);
-  const [fontSize, setFontSize] = useRecoilState(fontSizeState);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   function handleChangeUserInfo() {
@@ -114,22 +113,20 @@ const UserInfo: React.FC = () => {
               cursor="pointer"
               alignItems="center"
               justifyContent="center"
-              p={4}
-              bg="gray.200"
+              p={1}
+              bg="gray.100"
               borderRadius="lg"
+              _hover={{ bg: 'gray.200' }}
             >
-              <Image src={badgeIcon} boxSize="50px" mr={4} />
-              <Text color="black" fontSize="2xl" fontWeight="bold">
+              <Image src={badgeIcon} boxSize="36px" />
+              <Text color="black" fontSize="xl" fontWeight="bold">
                 내가 모은 뱃지
               </Text>
             </Flex>
             <UserBadge userInfo={userInfo} isOpen={isOpen} onClose={onClose} />
           </Box>
           <Divider mt={3} mb={3} />
-          <Text fontSize="xl" mt={3} color={textColor}>
-            게임 설정
-          </Text>
-          <Button w="100%" fontSize="lg" onClick={toggleColorMode} mt={3}>
+          <Button w="100%" fontSize="xl" onClick={toggleColorMode} mt={3} p={4}>
             색상 모드 변경
           </Button>
           <Divider mt={3} mb={3} />

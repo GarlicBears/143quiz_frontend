@@ -99,7 +99,9 @@ const AppContent: React.FC = () => {
           <Route path="/game" element={<GameLayout />}>
             <Route index element={<Game />} />
           </Route>
+          <Route path="/game/complete" element={<GameComplete />} />
           <Route path="*" element={<Error />} />
+          <Route path="/game/earnbadge" element={<EarnBadge />} />
         </Routes>
       </Router>
     </ChakraProvider>
