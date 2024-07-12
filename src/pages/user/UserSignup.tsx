@@ -134,6 +134,7 @@ function UserSignup() {
   };
 
   const checkNicknameExists = () => {
+    console.log('checkNicknameExists called'); // 함수 호출 확인용 로그
     if (!nickNameRegex.test(nickName)) {
       setNickNameError('유효하지 않은 별명 형식입니다.');
       return;
@@ -141,6 +142,7 @@ function UserSignup() {
     axiosInstance
       .post('/user/checkNickname', { nickname: nickName })
       .then((response) => {
+        console.log('API response:', response); // 응답 확인용 로그
         if (response.data.exists) {
           setNickNameAvailable(false);
           setNickNameError('이미 사용 중인 별명입니다.');
@@ -162,19 +164,35 @@ function UserSignup() {
         }
       })
       .catch((error) => {
-        toast({
-          title: '오류발생',
-          description: '별명 확인 중 오류가 발생했습니다. 다시 시도해 주세요.',
-          status: 'error',
-          duration: 2000,
-          isClosable: true,
-          position: 'top',
-          containerStyle: {
-            display: 'flex',
-            justifyContent: 'center',
-          },
-        });
-        console.error('Request failed:', error.response || error);
+        console.error('Request failed:', error.response || error); // 오류 확인용 로그
+        if (error.response && error.response.status === 409) {
+          toast({
+            title: '별명 중복',
+            description: '이미 사용 중인 별명입니다. 다른 별명을 사용해주세요.',
+            status: 'error',
+            duration: 2000,
+            isClosable: true,
+            position: 'top',
+            containerStyle: {
+              display: 'flex',
+              justifyContent: 'center',
+            },
+          });
+        } else {
+          toast({
+            title: '오류발생',
+            description:
+              '별명 확인 중 오류가 발생했습니다. 다시 시도해 주세요.',
+            status: 'error',
+            duration: 2000,
+            isClosable: true,
+            position: 'top',
+            containerStyle: {
+              display: 'flex',
+              justifyContent: 'center',
+            },
+          });
+        }
       });
   };
 
@@ -190,6 +208,19 @@ function UserSignup() {
       setPasswordError('올바르지 않은 비밀번호 형식입니다.');
     } else {
       setPasswordError('');
+    }
+  };
+
+  const handleNicknameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setNickName(value);
+    setNickNameAvailable(false); // 별명을 변경할 때마다 nickNameAvailable을 false로 설정
+    setNickNameError(''); // 별명 입력 시 기존 오류 메시지 초기화
+
+    if (!nickNameRegex.test(value)) {
+      setNickNameError('유효하지 않은 별명 형식입니다.');
+    } else {
+      setNickNameError('');
     }
   };
 
@@ -332,22 +363,28 @@ function UserSignup() {
                 <FormErrorMessage>비밀번호가 다릅니다.</FormErrorMessage>
               </FormControl>
             </FormControl>
-            <FormControl mb={5}>
+            <FormControl mb={5} isInvalid={!!nickNameError}>
               <FormLabel>별명 입력</FormLabel>
               <Flex gap={2}>
                 <Input
                   type="text"
                   value={nickName}
                   placeholder="3-20자 이내, 한글, 영어 대소문자, 숫자, 이모지 사용 가능합니다."
-                  onChange={(e) => setNickName(e.target.value)}
-                ></Input>
+                  onChange={handleNicknameChange}
+                />
                 <Button size="md" borderRadius="full">
                   <FontAwesomeIcon
                     icon={faMicrophoneLines}
                     style={{ color: '#ff711a' }}
                   />
                 </Button>
-                <Button variant="outline" onClick={checkNicknameExists}>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    console.log('중복확인 버튼 클릭됨'); // 버튼 클릭 확인용 로그
+                    checkNicknameExists();
+                  }}
+                >
                   중복확인
                 </Button>
               </Flex>
